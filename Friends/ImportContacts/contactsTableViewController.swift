@@ -87,7 +87,6 @@ class contactsTableViewController: UITableViewController {
         } else {
             imageView?.image = nil
         }
-        
         return cell
     }
     
