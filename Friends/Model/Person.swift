@@ -22,15 +22,25 @@ class Person: Object {
     @objc dynamic var likeNo = ""
     @objc dynamic var note = ""
     @objc dynamic var imageData: Data?
+
+    public var fullNameLowercase: String {
+        if lastName == "" {
+            return firstName.lowercased()
+        }
+        
+        return "\(firstName) \(lastName)".lowercased()
+    }
+
 }
 
 extension Person {
     
-    var fullName: String {
+    public var fullName: String {
         if lastName == "" {
             return firstName
         }
         
         return "\(firstName) \(lastName)"
     }
+    
 }

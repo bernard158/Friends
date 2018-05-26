@@ -12,6 +12,9 @@ import RealmSwift
 class PersonsTableViewController: UITableViewController {
 
     private var persons: Results<Person>?
+   // private var filteredCandies: Results<Person>?
+    let searchController = UISearchController(searchResultsController: nil)
+    let realm = try! Realm()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +24,30 @@ class PersonsTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
-        let realm = try! Realm()
         persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "FirstName or LastName Search"
+        //navigationItem.searchController = searchController
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
+        /*
+        definesPresentationContext = true
+        
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+        searchController.searchBar.delegate = self
+        
+        // Setup the search footer
+        tableView.tableFooterView = searchFooter
+*/
    }
     
     override func didReceiveMemoryWarning() {
@@ -72,41 +97,38 @@ class PersonsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
     }
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        if searchBarIsEmpty() {
+            persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        } else {
+            let strSearch = searchText.lowercased()
+            persons = realm.objects(Person.self).filter("lastName contains[c] %@ OR firstName contains[c] %@", strSearch, strSearch)
+            //persons = aList.Where(i => i.NomPrenom.ToLower().Contains(searchBar.Text.ToLower()));
+        }
+        tableView.reloadData()
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        /*filteredCandies = candies.filter({( candy : Person) -> Bool in
+            let doesCategoryMatch = (scope == "All") || (candy.category == scope)
+         
+            if searchBarIsEmpty() {
+                return doesCategoryMatch
+            } else {
+                return doesCategoryMatch && candy.name.lowercased().contains(searchText.lowercased())
+            }
+        })*/
+        tableView.reloadData()
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
+  
 
     /*
     // MARK: - Navigation
@@ -117,5 +139,14 @@ class PersonsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }
+
+extension PersonsTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        //let searchBar = searchController.searchBar
+        //let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchController.searchBar.text!, scope: "")
+    }
+}
+

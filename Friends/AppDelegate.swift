@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //realm.deleteAll()
         }
         
-        /*
+        
         let df = DateFormatter()
         df.dateFormat = "dd'-'MM'-'yyyy"
         
@@ -122,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          .joined(separator: ", ")
          print("Full names IOS of all people are: \(fullNamesIOS)")*/
          //print(persons)
-         */
+         
     }
 }
 
