@@ -186,7 +186,7 @@ class ContactIOS {
             strEmail += anEmail
             strEmail = strEmail.replacingOccurrences(of: "\n", with: " - ")
             strEmail = strEmail.replacingOccurrences(of: "  ", with: " ")
-            aPerson.phones.append(strEmail)
+            aPerson.emails.append(strEmail)
             //print(strEmail)
         }
         
@@ -218,7 +218,7 @@ class ContactIOS {
             strSocialProfile += aSocialProfile
             strSocialProfile = strSocialProfile.replacingOccurrences(of: "\n", with: " - ")
             strSocialProfile = strSocialProfile.replacingOccurrences(of: "  ", with: " ")
-            aPerson.phones.append(strSocialProfile)
+            aPerson.socialProfiles.append(strSocialProfile)
             //print(strSocialProfile)
         }
         

@@ -18,6 +18,7 @@ class Person: Object {
     var emails = List<String>()
     var phones = List<String>()
     var addresses = List<String>()
+    var socialProfiles = List<String>()
     @objc dynamic var likeYes = ""
     @objc dynamic var likeNo = ""
     @objc dynamic var note = ""
@@ -43,4 +44,14 @@ extension Person {
         return "\(firstName) \(lastName)"
     }
     
+    public func age() -> Int? {
+        if let bornDate = born {
+            let now = Date()
+            let calendar = Calendar.current
+            
+            let ageComponents = calendar.dateComponents([.year], from: bornDate, to: now)
+            return ageComponents.year!
+        }
+        return nil
+    }
 }

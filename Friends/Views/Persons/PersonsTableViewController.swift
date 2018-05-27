@@ -10,11 +10,11 @@ import UIKit
 import RealmSwift
 
 class PersonsTableViewController: UITableViewController {
-
+    
     private var persons: Results<Person>?
-   // private var filteredCandies: Results<Person>?
+    // private var filteredCandies: Results<Person>?
     let searchController = UISearchController(searchResultsController: nil)
-    let realm = try! Realm()
+    let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,83 +39,81 @@ class PersonsTableViewController: UITableViewController {
             tableView.tableHeaderView = searchController.searchBar
         }
         /*
-        definesPresentationContext = true
-        
-        // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-        searchController.searchBar.delegate = self
-        
-        // Setup the search footer
-        tableView.tableFooterView = searchFooter
-*/
-   }
+         definesPresentationContext = true
+         
+         // Setup the Scope Bar
+         searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+         searchController.searchBar.delegate = self
+         
+         // Setup the search footer
+         tableView.tableFooterView = searchFooter
+         */
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
+        if splitViewController!.isCollapsed {
+            if let selectionIndexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selectionIndexPath, animated: animated)
+            }
+        }
         tableView.reloadData()
-
+        super.viewWillAppear(animated)
     }
-    // MARK: - Table view data source
 
+    // MARK: - Table view data source
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return persons?.count ?? 0
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath)
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
         
         let person = persons![indexPath.row]
-        //let formattedDate = formatter.string(from: message.date)
         
-        //cell.contentView.backgroundColor = message.isNew ? highlightColor : .white
-        cell.textLabel?.text = person.fullName
+        let labelNom = cell.viewWithTag(1001) as! UILabel
+        labelNom.text = person.fullName
         
-        let df = DateFormatter()
-        df.dateFormat = "dd-MM-yyyy"
-        if let born = person.born {
-            let strDate = df.string(from: born)
-            cell.detailTextLabel?.text = strDate
+        //Image
+        var image = UIImage()
+        let imageView = cell.viewWithTag(1000) as! UIImageView
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = nil
+        if person.imageData != nil {
+            image = UIImage(data: person.imageData!)!
         } else {
-            cell.detailTextLabel?.text = ""
+            image = UIImage(named: "noImage.png")!
         }
-        
+        //affectation de l'image réduite
+        imageView.backgroundColor = UIColor.white
+        //imageView.image = scaledImageRound(image, dim: 44, borderWidth: 2.0, borderColor: UIColor.white, imageView: imageView)
+        imageView.image = image
+
         
         return cell
     }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-    }
+    
+    
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         if searchBarIsEmpty() {
             persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
         } else {
             let strSearch = searchText.lowercased()
             persons = realm.objects(Person.self).filter("lastName contains[c] %@ OR firstName contains[c] %@", strSearch, strSearch)
-            //persons = aList.Where(i => i.NomPrenom.ToLower().Contains(searchBar.Text.ToLower()));
         }
         tableView.reloadData()
-
-        /*filteredCandies = candies.filter({( candy : Person) -> Bool in
-            let doesCategoryMatch = (scope == "All") || (candy.category == scope)
-         
-            if searchBarIsEmpty() {
-                return doesCategoryMatch
-            } else {
-                return doesCategoryMatch && candy.name.lowercased().contains(searchText.lowercased())
-            }
-        })*/
+        
         tableView.reloadData()
     }
     
@@ -127,18 +125,25 @@ class PersonsTableViewController: UITableViewController {
         let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
-
-  
-
-    /*
+    
+    
+    
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "personMasterDetail" {
+            print("segue personMasterDetail")
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
+                controller.person = persons![indexPath.row]
+            }
+        }
     }
-    */
+    
 }
 
 extension PersonsTableViewController: UISearchResultsUpdating {

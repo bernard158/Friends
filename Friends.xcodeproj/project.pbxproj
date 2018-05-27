@@ -13,8 +13,9 @@
 		A1626E7720B6E5550026D04C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1626E7520B6E5550026D04C /* Main.storyboard */; };
 		A1626E7920B6E5560026D04C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1626E7820B6E5560026D04C /* Assets.xcassets */; };
 		A1626E7C20B6E5560026D04C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1626E7A20B6E5560026D04C /* LaunchScreen.storyboard */; };
+		A16981F220BAB84F005AC0B6 /* PersonDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16981F120BAB84F005AC0B6 /* PersonDetailTableViewController.swift */; };
+		A16981F420BAC385005AC0B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16981F320BAC384005AC0B6 /* Utils.swift */; };
 		A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A777F20B9792C00F53A52 /* PersonsSplitViewController.swift */; };
-		A16A778220B97A0E00F53A52 /* PersonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A778120B97A0E00F53A52 /* PersonDetailViewController.swift */; };
 		A1E5703C20B6F30700F11D25 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703B20B6F30700F11D25 /* Person.swift */; };
 		A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */; };
 		A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703F20B7254E00F11D25 /* ImportContacts.swift */; };
@@ -32,8 +33,9 @@
 		A1626E7820B6E5560026D04C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1626E7B20B6E5560026D04C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1626E7D20B6E5560026D04C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A16981F120BAB84F005AC0B6 /* PersonDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailTableViewController.swift; sourceTree = "<group>"; };
+		A16981F320BAC384005AC0B6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A16A777F20B9792C00F53A52 /* PersonsSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsSplitViewController.swift; sourceTree = "<group>"; };
-		A16A778120B97A0E00F53A52 /* PersonDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailViewController.swift; sourceTree = "<group>"; };
 		A1E5703B20B6F30700F11D25 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsTableViewController.swift; sourceTree = "<group>"; };
 		A1E5703F20B7254E00F11D25 /* ImportContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContacts.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 		A1626E6E20B6E5550026D04C /* Friends */ = {
 			isa = PBXGroup;
 			children = (
+				A16981F320BAC384005AC0B6 /* Utils.swift */,
 				A1561F9820B8A03800685000 /* Tools */,
 				A1E5704120B75A5200F11D25 /* ImportContacts */,
 				A1626E8420B6E59E0026D04C /* Views */,
@@ -123,7 +126,7 @@
 			children = (
 				A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */,
 				A16A777F20B9792C00F53A52 /* PersonsSplitViewController.swift */,
-				A16A778120B97A0E00F53A52 /* PersonDetailViewController.swift */,
+				A16981F120BAB84F005AC0B6 /* PersonDetailTableViewController.swift */,
 			);
 			path = Persons;
 			sourceTree = "<group>";
@@ -260,8 +263,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A16A778220B97A0E00F53A52 /* PersonDetailViewController.swift in Sources */,
 				A1E5703C20B6F30700F11D25 /* Person.swift in Sources */,
+				A16981F220BAB84F005AC0B6 /* PersonDetailTableViewController.swift in Sources */,
+				A16981F420BAC385005AC0B6 /* Utils.swift in Sources */,
 				A1561F9A20B8A05000685000 /* ToolsTableViewController.swift in Sources */,
 				A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */,
 				A1626E7020B6E5550026D04C /* AppDelegate.swift in Sources */,
