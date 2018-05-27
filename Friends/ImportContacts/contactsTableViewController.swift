@@ -21,8 +21,8 @@ class contactsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 44
+        //tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.estimatedRowHeight = 44
         
         contacts = ImportContacts.loadCNContacts()
         contacts = contacts?.sorted {
@@ -66,6 +66,11 @@ class contactsTableViewController: UITableViewController {
         let firstLineLabel = cell.viewWithTag(firstLineLabelTag) as! UILabel
         firstLineLabel.text = aContact.adresses()
         
+        //pour éviter que la photo soit tronquée si il n'y a qu'une ligne (ex : Jean-louis)
+        if (firstLineLabel.text?.count == 0) && (aContact.contact.imageData != nil) {
+            firstLineLabel.text = " "
+        }
+        
         //le bouton import --------------------------------------------------
         let importButton = cell.viewWithTag(importButtonTag) as? UIButton
         let isAlreadyImported = aContact.isAlreadyImported
@@ -91,12 +96,12 @@ class contactsTableViewController: UITableViewController {
     }
     
     @objc func importButtonClicked(_ sender:UIButton) {
-        print("importButtonClicked")
+        //print("importButtonClicked")
         
         if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
             if let indexPath = tableView.indexPath(for: cell) {
                 let aContact = contacts![indexPath.row]
-                print(aContact.contact)
+                //print(aContact.contact)
                 aContact.isImported = true
                 aContact.addToRealm()
                 tableView.reloadRows(at: [indexPath], with: .automatic)

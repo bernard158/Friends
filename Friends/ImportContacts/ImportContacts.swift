@@ -89,8 +89,8 @@ class ContactIOS {
             }
         }
         if strRetour.count > 0 {
-            print(strRetour)
-            print("----------------")
+            //print(strRetour)
+            //print("----------------")
         }
         
         return strRetour
@@ -150,7 +150,7 @@ class ContactIOS {
             case CNLabelPhoneNumberOtherFax:
                 strPhone = "Other Fax"
             default:
-                strPhone = "Other"
+                strPhone = phoneNumber.label!
                 break
             }
             strPhone += ": "
@@ -176,7 +176,7 @@ class ContactIOS {
             case CNLabelOther:
                 strEmail = "Other"
             default:
-                strEmail = "Other"
+                strEmail = email.label!
                 break
             }
             strEmail += ": "
@@ -208,7 +208,7 @@ class ContactIOS {
             case CNSocialProfileServiceMySpace:
                 strSocialProfile = "MySpace"
             default:
-                strSocialProfile = "Other"
+                strSocialProfile = socialProfile.value.service
                 break
             }
             strSocialProfile += ": "
@@ -239,11 +239,6 @@ class ContactIOS {
         //image
         if let imageData = contact.imageData {
             aPerson.imageData = imageData
-            //let image = UIImage(data: imageData)
-            print(imageData)
-            //print(image)
-            
-            
         }
         let realm = try! Realm()
         try! realm.write {

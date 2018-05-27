@@ -136,7 +136,7 @@ class PersonsTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "personMasterDetail" {
-            print("segue personMasterDetail")
+            //print("segue personMasterDetail")
             if let indexPath = tableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
                 controller.person = persons![indexPath.row]

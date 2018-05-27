@@ -112,12 +112,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
          let persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
          //let fullNames = persons.map { $0.fullName }.joined(separator: ", ")
-         print(persons.count)
+         //print(persons.count)
          //print("Full names of all people are: \(fullNames)")
          // print(persons)
          
          let results = ImportContacts.loadCNContacts()
-         print(results.count)
+         //print(results.count)
          /*let fullNamesIOS = results.map { "\($0.contact.givenName) \($0.contact.familyName)" }
          .joined(separator: ", ")
          print("Full names IOS of all people are: \(fullNamesIOS)")*/

@@ -29,8 +29,8 @@ class PersonDetailTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 44
+        //tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.estimatedRowHeight = 44
         
 
     }
@@ -42,7 +42,7 @@ class PersonDetailTableViewController: UITableViewController {
     
     func configureViewPersonne() {
         
-        print("configureViewPersonne")
+        //print("configureViewPersonne")
         clearView()
         
         // Update the user interface for the detail item.
@@ -109,7 +109,21 @@ class PersonDetailTableViewController: UITableViewController {
             sections.append(sectionSocialProfiles)
         }
         
+        //section note ---------------------------------------
+        if(personne.note.count > 0) {
+            let sectionNote = Section(title: "Note")
+            let ligneNote = Ligne()
+            ligneNote.title = "note"
+            ligneNote.objectRef = personne
+            ligneNote.cellIdentifier = "baseTextCell"
+            
+            sectionNote.lignes.append(ligneNote)
+            sections.append(sectionNote)
+        }
+        
         //---------------------------------------
+        
+        
         tableView.reloadData()
 
     }
@@ -241,6 +255,11 @@ class PersonDetailTableViewController: UITableViewController {
                     cpt += 1
                 }
                 label.text = strSocialProfiles
+            }
+
+            //note
+            if aLigne.title == "note" {
+                label.text = personne.note
             }
         }
         
