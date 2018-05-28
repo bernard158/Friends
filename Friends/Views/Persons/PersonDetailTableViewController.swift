@@ -20,6 +20,7 @@ class PersonDetailTableViewController: UITableViewController {
     var sections: [Section] = []
     
     
+    //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,11 +36,13 @@ class PersonDetailTableViewController: UITableViewController {
 
     }
     
+    //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    //---------------------------------------------------------------------------
     func configureViewPersonne() {
         
         //print("configureViewPersonne")
@@ -128,6 +131,7 @@ class PersonDetailTableViewController: UITableViewController {
 
     }
     
+    //---------------------------------------------------------------------------
     func clearView() {
         sections.removeAll(keepingCapacity: false)
         tableView.reloadData()
@@ -138,22 +142,26 @@ class PersonDetailTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    //---------------------------------------------------------------------------
+   override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sections.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //---------------------------------------------------------------------------
+   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return sections[section].lignes.count
     }
     
+    //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].sectionTitle
     }
     
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    //---------------------------------------------------------------------------
+   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
@@ -268,6 +276,7 @@ class PersonDetailTableViewController: UITableViewController {
     }
 }
 
+//---------------------------------------------------------------------------
 /*
  // MARK: - Navigation
  
@@ -278,8 +287,11 @@ class PersonDetailTableViewController: UITableViewController {
  }
  */
 
+
+//---------------------------------------------------------------------------
 // MARK: - Autres classes
 
+//---------------------------------------------------------------------------
 class Ligne {
     var table: String
     var objectRef: AnyObject?
@@ -301,6 +313,7 @@ class Ligne {
     
 }
 
+//---------------------------------------------------------------------------
 class Section {
     let sectionTitle: String
     var lignes: [Ligne]

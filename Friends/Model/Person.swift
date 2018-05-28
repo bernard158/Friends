@@ -10,8 +10,6 @@ import Foundation
 import RealmSwift
 
 class Person: Object {
-    @objc dynamic var id = UUID().uuidString
-    @objc dynamic var originalID = ""
     @objc dynamic var firstName = ""
     @objc dynamic var lastName = ""
     @objc dynamic var born: Date?
@@ -19,19 +17,22 @@ class Person: Object {
     var phones = List<String>()
     var addresses = List<String>()
     var socialProfiles = List<String>()
+    var cadeauxRecus = List<Gift>()
+    var cadeauxOfferts = List<Gift>()
+    var cadeauxIdees = List<Gift>()
     @objc dynamic var likeYes = ""
     @objc dynamic var likeNo = ""
     @objc dynamic var note = ""
     @objc dynamic var imageData: Data?
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var originalID = ""
 
-    public var fullNameLowercase: String {
-        if lastName == "" {
-            return firstName.lowercased()
-        }
-        
-        return "\(firstName) \(lastName)".lowercased()
+    
+    convenience init(firstName: String, lastName: String) {
+        self.init()
+        self.firstName = firstName
+        self.lastName = lastName
     }
-
 }
 
 extension Person {

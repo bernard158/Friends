@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        //demoPopulate()
+        demoPopulate()
         return true
     }
     
@@ -44,79 +44,112 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func demoPopulate() {
+        
+        let deleteRealm = true
+        let populate = true
+        
         let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
-        try! realm.write {
-            //realm.deleteAll()
+        if deleteRealm {
+            realm.beginWrite()
+            realm.deleteAll()
+            try! realm.commitWrite()
         }
-        
-        
+        if !populate { return }
+
+        // création des personnes
         let df = DateFormatter()
         df.dateFormat = "dd'-'MM'-'yyyy"
         
-        
-        let p1 = Person()
-        p1.firstName = "Sylvette"
-        p1.lastName = "David"
+        let sylvette = Person(firstName: "Sylvette", lastName: "David")
         if let aDate = df.date(from: "08-02-1954"){
-            p1.born = aDate
+            sylvette.born = aDate
         }
         
-        let p2 = Person()
-        p2.firstName = "Bernard"
-        p2.lastName = "David"
+        let bernard = Person(firstName: "Bernard", lastName: "David")
         if let aDate = df.date(from: "15-08-1952"){
-            p2.born = aDate
+            bernard.born = aDate
         }
         
-        let p3 = Person()
-        p3.firstName = "Annette"
-        p3.lastName = "David"
+        let annette = Person(firstName: "Annette", lastName: "David")
         
-        let p4 = Person()
-        p4.firstName = "Sylvie"
-        p4.lastName = "Aimé"
+        let sylvie = Person(firstName: "Sylvie", lastName: "Aimé")
         
-        let p5 = Person()
-        p5.firstName = "Nathalie"
-        p5.lastName = "Rollier-Sigallet"
+        let nathalie = Person(firstName: "Nathalie", lastName: "Rollier-Sigallet")
         
-        let p6 = Person()
-        p6.firstName = "Denis"
-        p6.lastName = "Rollier-Sigallet"
+        let denis = Person(firstName: "Denis", lastName: "Rollier-Sigallet")
         
-        let p7 = Person()
-        p7.firstName = "Clarisse"
-        p7.lastName = "Rollier-Sigallet"
+        let clarisse = Person(firstName: "Clarisse", lastName: "Rollier-Sigallet")
         
-        let p8 = Person()
-        p8.firstName = "Jacqueline"
-        p8.lastName = "David"
+        let jacqueline = Person(firstName: "Jacqueline", lastName: "David")
         
-        let p9 = Person()
-        p9.firstName = "Philippe"
-        p9.lastName = "David"
+        let philippe = Person(firstName: "Philippe", lastName: "David")
         
         if realm.objects(Person.self).count == 0 {
             try! realm.write {
-                realm.add(p1)
-                realm.add(p2)
-                realm.add(p3)
-                realm.add(p4)
-                realm.add(p5)
-                realm.add(p6)
-                realm.add(p7)
-                realm.add(p8)
-                realm.add(p9)
+                realm.add(sylvette)
+                realm.add(bernard)
+                realm.add(annette)
+                realm.add(sylvie)
+                realm.add(nathalie)
+                realm.add(denis)
+                realm.add(clarisse)
+                realm.add(jacqueline)
+                realm.add(philippe)
             }
         }
         
-         let persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
-         //let fullNames = persons.map { $0.fullName }.joined(separator: ", ")
-         //print(persons.count)
+        
+        
+        if realm.objects(Gift.self).count == 0 {
+            try! realm.write {
+                //création des cadeaux
+                let montreBreitling = Gift("Montre Breitling")
+                sylvette.cadeauxOfferts.append(montreBreitling)
+                bernard.cadeauxRecus.append(montreBreitling)
+                
+                let montreHermes = Gift("Montre Hermès")
+                bernard.cadeauxOfferts.append(montreHermes)
+                sylvette.cadeauxRecus.append(montreHermes)
+                
+                let moto = Gift("Moto Yamaha")
+                sylvette.cadeauxOfferts.append(moto)
+                bernard.cadeauxRecus.append(moto)
+                
+                let tomates = Gift("Tomates séchées")
+                sylvette.cadeauxOfferts.append(tomates)
+                bernard.cadeauxOfferts.append(tomates)
+                nathalie.cadeauxRecus.append(tomates)
+                jacqueline.cadeauxRecus.append(tomates)
+                annette.cadeauxRecus.append(tomates)
+                philippe.cadeauxRecus.append(tomates)
+                
+                let marcon = Gift("Stage Marcon")
+                nathalie.cadeauxOfferts.append(marcon)
+                jacqueline.cadeauxOfferts.append(marcon)
+                philippe.cadeauxOfferts.append(marcon)
+                annette.cadeauxOfferts.append(marcon)
+                sylvette.cadeauxRecus.append(marcon)
+                
+                let angkor = Gift("Voyage à Angkor")
+                sylvette.cadeauxIdees.append(angkor)           /*realm.add(montreBreitling)
+                 realm.add(montreHermes)
+                 realm.add(moto)
+                 realm.add(tomates)
+                 realm.add(marcon)
+                 realm.add(angkor)*/
+                
+            }
+        }
+        
+        
+        
+        //let persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        //let fullNames = persons.map { $0.fullName }.joined(separator: ", ")
+        //print(persons.count)
          //print("Full names of all people are: \(fullNames)")
          // print(persons)
          
-         let results = ImportContacts.loadCNContacts()
+         //let results = ImportContacts.loadCNContacts()
          //print(results.count)
          /*let fullNamesIOS = results.map { "\($0.contact.givenName) \($0.contact.familyName)" }
          .joined(separator: ", ")

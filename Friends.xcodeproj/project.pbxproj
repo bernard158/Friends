@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1116C4620BBFB3A004B312B /* Gift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4520BBFB3A004B312B /* Gift.swift */; };
+		A1116C4920BC1E7E004B312B /* GiftSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */; };
+		A1116C4B20BC2083004B312B /* GiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4A20BC2083004B312B /* GiftTableViewController.swift */; };
 		A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1561F9620B89EF500685000 /* contactsTableViewController.swift */; };
 		A1561F9A20B8A05000685000 /* ToolsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1561F9920B8A05000685000 /* ToolsTableViewController.swift */; };
 		A1626E7020B6E5550026D04C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1626E6F20B6E5550026D04C /* AppDelegate.swift */; };
@@ -25,6 +28,9 @@
 /* Begin PBXFileReference section */
 		3873059C352E6CB5AD41BA74 /* Pods-Friends.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Friends.release.xcconfig"; path = "Pods/Target Support Files/Pods-Friends/Pods-Friends.release.xcconfig"; sourceTree = "<group>"; };
 		7C6203C6F17F85CC859256CE /* Pods_Friends.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Friends.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1116C4520BBFB3A004B312B /* Gift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gift.swift; sourceTree = "<group>"; };
+		A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftSplitViewController.swift; sourceTree = "<group>"; };
+		A1116C4A20BC2083004B312B /* GiftTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftTableViewController.swift; sourceTree = "<group>"; };
 		A1561F9620B89EF500685000 /* contactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = contactsTableViewController.swift; sourceTree = "<group>"; };
 		A1561F9920B8A05000685000 /* ToolsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsTableViewController.swift; sourceTree = "<group>"; };
 		A1626E6C20B6E5550026D04C /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +66,15 @@
 				7C6203C6F17F85CC859256CE /* Pods_Friends.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1116C4720BC1E36004B312B /* Gifts */ = {
+			isa = PBXGroup;
+			children = (
+				A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */,
+				A1116C4A20BC2083004B312B /* GiftTableViewController.swift */,
+			);
+			path = Gifts;
 			sourceTree = "<group>";
 		};
 		A1561F9820B8A03800685000 /* Tools */ = {
@@ -109,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				A1E5703B20B6F30700F11D25 /* Person.swift */,
+				A1116C4520BBFB3A004B312B /* Gift.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -116,6 +132,7 @@
 		A1626E8420B6E59E0026D04C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A1116C4720BC1E36004B312B /* Gifts */,
 				A16A777E20B978ED00F53A52 /* Persons */,
 			);
 			path = Views;
@@ -263,13 +280,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1116C4920BC1E7E004B312B /* GiftSplitViewController.swift in Sources */,
 				A1E5703C20B6F30700F11D25 /* Person.swift in Sources */,
+				A1116C4620BBFB3A004B312B /* Gift.swift in Sources */,
 				A16981F220BAB84F005AC0B6 /* PersonDetailTableViewController.swift in Sources */,
 				A16981F420BAC385005AC0B6 /* Utils.swift in Sources */,
 				A1561F9A20B8A05000685000 /* ToolsTableViewController.swift in Sources */,
 				A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */,
 				A1626E7020B6E5550026D04C /* AppDelegate.swift in Sources */,
 				A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */,
+				A1116C4B20BC2083004B312B /* GiftTableViewController.swift in Sources */,
 				A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */,
 				A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */,
 			);

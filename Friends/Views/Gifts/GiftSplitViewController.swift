@@ -1,24 +1,25 @@
 //
-//  PersonsSplitViewController.swift
+//  GiftsUISplitViewController.swift
 //  Friends
 //
-//  Created by bernard on 26/05/2018.
+//  Created by bernard on 28/05/2018.
 //  Copyright © 2018 bernard. All rights reserved.
 //
 
 import UIKit
+import RealmSwift
 
-class PersonsSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class GiftsSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
 
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         self.delegate = self
         self.preferredDisplayMode = .allVisible
     }
-
+    
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -33,8 +34,11 @@ class PersonsSplitViewController: UISplitViewController, UISplitViewControllerDe
         // Return true to prevent UIKit from applying its default behavior
         return true
     }
-
+    
     //---------------------------------------------------------------------------
+
+    
+
     /*
     // MARK: - Navigation
 

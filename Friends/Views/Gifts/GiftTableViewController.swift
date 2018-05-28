@@ -1,17 +1,17 @@
 //
-//  PersonsTableViewController.swift
+//  GiftTableViewController.swift
 //  Friends
 //
-//  Created by bernard on 24/05/2018.
+//  Created by bernard on 28/05/2018.
 //  Copyright © 2018 bernard. All rights reserved.
 //
 
 import UIKit
 import RealmSwift
 
-class PersonsTableViewController: UITableViewController {
-    
-    private var persons: Results<Person>?
+class GiftTableViewController: UITableViewController {
+
+    private var gifts: Results<Gift>?
     // private var filteredCandies: Results<Person>?
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
@@ -26,7 +26,7 @@ class PersonsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         realm = try! Realm()
-        persons = realm!.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        gifts = realm!.objects(Gift.self).sorted(by: ["name"])
         
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -52,9 +52,6 @@ class PersonsTableViewController: UITableViewController {
          tableView.tableFooterView = searchFooter
          */
         
-        //clearBackgroundColor()
-        
-        
         searchController.searchBar.backgroundColor = UIColor.white
         
         //searchController.searchBar.frame.origin.y = searchController.searchBar.frame.origin.y + 5
@@ -69,71 +66,43 @@ class PersonsTableViewController: UITableViewController {
                 }
             }
         }
-        
+
     }
     
-    //---------------------------------------------------------------------------
-    /* private func clearBackgroundColor() {
-     guard let UISearchBarBackground: AnyClass = NSClassFromString("UISearchBarBackground") else { return }
-     
-     for view in (self.navigationController?.view!.subviews)! {
-     for subview in view.subviews {
-     if subview.isKind(of: UISearchBarBackground) {
-     subview.alpha = 0
-     }
-     }
-     }
-     }
-     */
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    //---------------------------------------------------------------------------
-    override func viewWillAppear(_ animated: Bool) {
-        if splitViewController!.isCollapsed {
-            if let selectionIndexPath = tableView.indexPathForSelectedRow {
-                tableView.deselectRow(at: selectionIndexPath, animated: animated)
-            }
-        }
-        tableView.reloadData()
-        super.viewWillAppear(animated)
-    }
-    
-    //---------------------------------------------------------------------------
+
     // MARK: - Table view data source
-    
-    //---------------------------------------------------------------------------
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-    
-    //---------------------------------------------------------------------------
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return persons?.count ?? 0
+        return gifts?.count ?? 0
     }
-    
-    
+
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "giftCell", for: indexPath)
         
-        let person = persons![indexPath.row]
+        let gift = gifts![indexPath.row]
         
         let labelNom = cell.viewWithTag(1001) as! UILabel
-        labelNom.text = person.fullName
+        labelNom.text = gift.name
         
         //Image
         var image = UIImage()
         let imageView = cell.viewWithTag(1000) as! UIImageView
         imageView.contentMode = .scaleAspectFit
         imageView.image = nil
-        if person.imageData != nil {
-            image = UIImage(data: person.imageData!)!
+        if gift.imageData != nil {
+            image = UIImage(data: gift.imageData!)!
         } else {
             image = UIImage(named: "noImage.png")!
         }
@@ -142,18 +111,18 @@ class PersonsTableViewController: UITableViewController {
         //imageView.image = scaledImageRound(image, dim: 44, borderWidth: 2.0, borderColor: UIColor.white, imageView: imageView)
         imageView.image = image
         
-        
         return cell
     }
     
     //---------------------------------------------------------------------------
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         if searchBarIsEmpty() {
-            persons = realm!.objects(Person.self).sorted(by: ["lastName", "firstName"])
+            gifts = realm!.objects(Gift.self).sorted(by: ["name"])
         } else {
             let strSearch = searchText.lowercased()
-            persons = realm!.objects(Person.self).filter("lastName contains[c] %@ OR firstName contains[c] %@", strSearch, strSearch)
+            gifts = realm!.objects(Gift.self).filter("name contains[c] %@ ", strSearch)
         }
+        
         tableView.reloadData()
     }
     
@@ -166,27 +135,10 @@ class PersonsTableViewController: UITableViewController {
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
     
-    //---------------------------------------------------------------------------
-    // MARK: - Navigation
-    
-    //---------------------------------------------------------------------------
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        if segue.identifier == "personMasterDetail" {
-            //print("segue personMasterDetail")
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
-                controller.person = persons![indexPath.row]
-            }
-        }
-    }
-    
 }
 
 //---------------------------------------------------------------------------
-extension PersonsTableViewController: UISearchResultsUpdating {
+extension GiftTableViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         //let searchBar = searchController.searchBar
