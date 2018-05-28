@@ -9,6 +9,41 @@
 import Foundation
 import UIKit
 
+// MARK: - Classes
+//---------------------------------------------------------------------------
+class Ligne {
+    var sujet: String
+    var objectRef: AnyObject?
+    var title: String
+    var label: String
+    var cellIdentifier: String
+    var photoData: Data
+    var accessoryType:UITableViewCellAccessoryType
+    
+    init() {
+        self.sujet = ""
+        self.objectRef = nil as AnyObject?
+        self.title = ""
+        self.label = ""
+        self.cellIdentifier = ""
+        self.photoData = Data()
+        accessoryType = UITableViewCellAccessoryType.none
+    }
+    
+}
+
+//---------------------------------------------------------------------------
+class Section {
+    let sectionTitle: String
+    var lignes: [Ligne]
+    
+    init(title: String) {
+        self.sectionTitle = title
+        self.lignes = []
+    }
+}
+
+// MARK: - Fonctions
 func colorWithHexString (hex:String, alpha: CGFloat = 1.0) -> UIColor {
     return UIColor.gray
 
@@ -36,57 +71,42 @@ func colorWithHexString (hex:String, alpha: CGFloat = 1.0) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
 */
 }
-/*
-func themeColor01(alpha: CGFloat = 1.0) -> UIColor {
-    return colorWithHexString("#f8c66a", alpha: alpha)
-}
 
-func themeColor02() -> UIColor {
-    return colorWithHexString("#f33218")
-}
-
-func themeColor03() -> UIColor {
-    return colorWithHexString("#e05603")
-}
-
-func themeColor04() -> UIColor {
-    return colorWithHexString("#b43102")
-}
-
-func themeColor05() -> UIColor {
-    return colorWithHexString("#660a02")
-}
-*/
-
+//---------------------------------------------------------------------------
 // themeColor01 : arrière plan tableViews master
 func themeColor01(_ alpha: CGFloat = 1.0) -> UIColor {
     //return colorWithHexString("#fdebce", alpha: alpha)
     return colorWithHexString(hex: "#ffffff", alpha: alpha)
 }
 
+//---------------------------------------------------------------------------
 // themeColor02 : bandeaux app
 func themeColor02() -> UIColor {
     //return colorWithHexString("#3e1934")
     return colorWithHexString(hex: "#ffffff")
 }
 
+//---------------------------------------------------------------------------
 // themeColor03 : bandeaux listes
 func themeColor03() -> UIColor {
     //return colorWithHexString("#623f59")
     return colorWithHexString(hex: "#cccccc")
 }
 
+//---------------------------------------------------------------------------
 // themeColor04 : sélection listes master
 func themeColor04() -> UIColor {
     //return colorWithHexString("#8da8a1")
     return colorWithHexString(hex: "#efefef")
 }
 
+//---------------------------------------------------------------------------
 // themeColor05 : non utilisée
 func themeColor05() -> UIColor {
     return colorWithHexString(hex: "#460a02")
 }
 
+//---------------------------------------------------------------------------
 func scaledImageRound(_ image: UIImage, dim: CGFloat, borderWidth: CGFloat, borderColor: UIColor, imageView: UIImageView) -> UIImage{
     let tailleImage = dim as CGFloat
     let coefW = tailleImage / image.size.width
@@ -113,6 +133,7 @@ func scaledImageRound(_ image: UIImage, dim: CGFloat, borderWidth: CGFloat, bord
 
 }
 
+//---------------------------------------------------------------------------
 func squareImageWithImage(_ image: UIImage, newSize: CGSize) -> UIImage {
     var ratio: CGFloat = 0.0
     var delta: CGFloat = 0.0
@@ -152,6 +173,7 @@ func squareImageWithImage(_ image: UIImage, newSize: CGSize) -> UIImage {
     return newImage!;
 }
 
+//---------------------------------------------------------------------------
 func currencyFormatter() ->  NumberFormatter {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency

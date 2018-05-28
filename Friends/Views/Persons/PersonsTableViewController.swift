@@ -15,6 +15,7 @@ class PersonsTableViewController: UITableViewController {
     // private var filteredCandies: Results<Person>?
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
+    var okForReload = true
     
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
@@ -31,7 +32,7 @@ class PersonsTableViewController: UITableViewController {
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "FirstName or LastName Search"
+        searchController.searchBar.placeholder = "First Name or Last Name Search"
         //navigationItem.searchController = searchController
         
         if #available(iOS 11.0, *) {
@@ -41,6 +42,9 @@ class PersonsTableViewController: UITableViewController {
             tableView.tableHeaderView = searchController.searchBar
         }
         
+        searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
+        
+
         /*
          definesPresentationContext = true
          
@@ -52,39 +56,13 @@ class PersonsTableViewController: UITableViewController {
          tableView.tableFooterView = searchFooter
          */
         
-        //clearBackgroundColor()
-        
-        
-        searchController.searchBar.backgroundColor = UIColor.white
         
         //searchController.searchBar.frame.origin.y = searchController.searchBar.frame.origin.y + 5
         
-        for subView in searchController.searchBar.subviews {
-            
-            for subViewOne in subView.subviews {
-                if let textField = subViewOne as? UITextField {
-                    //use the code below if you want to change the color of placeholder
-                    let textFieldInsideUISearchBarLabel = textField.value(forKey: "placeholderLabel") as? UILabel
-                    textFieldInsideUISearchBarLabel?.adjustsFontSizeToFitWidth = true
-                }
-            }
-        }
-        
+        //searchController.searchBar.isHidden = false
+
     }
     
-    //---------------------------------------------------------------------------
-    /* private func clearBackgroundColor() {
-     guard let UISearchBarBackground: AnyClass = NSClassFromString("UISearchBarBackground") else { return }
-     
-     for view in (self.navigationController?.view!.subviews)! {
-     for subview in view.subviews {
-     if subview.isKind(of: UISearchBarBackground) {
-     subview.alpha = 0
-     }
-     }
-     }
-     }
-     */
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -98,10 +76,52 @@ class PersonsTableViewController: UITableViewController {
                 tableView.deselectRow(at: selectionIndexPath, animated: animated)
             }
         }
+        okForReload = true
+        print("view will appear okForReload = \(okForReload)")
         tableView.reloadData()
+        
+        let searchBar = searchController.searchBar
+        //navigationController?.isNavigationBarHidden = true
+        //searchController.searchBar.isHidden = true
+        //searchController.searchBar.backgroundColor = UIColor.white
+ 
+        if UIDevice().userInterfaceIdiom == .phone { // iPhone
+            // SearchBar text
+          
+            searchBar.barStyle = .blackTranslucent
+           let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+            //textFieldInsideUISearchBar?.textColor = UIColor.red
+            textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(15)
+            
+            // SearchBar placeholder
+            let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+            textFieldInsideUISearchBarLabel?.textColor = UIColor.gray
+            
+        } else { // iPad
+            searchController.searchBar.backgroundColor = UIColor.white
+        }
+        for subView in searchController.searchBar.subviews {
+            for subViewOne in subView.subviews {
+                if let textField = subViewOne as? UITextField {
+                    //textField.textColor = UIColor.white
+                    //use the code below if you want to change placeholder
+                    let textFieldInsideUISearchBarLabel = textField.value(forKey: "placeholderLabel") as? UILabel
+                    textFieldInsideUISearchBarLabel?.adjustsFontSizeToFitWidth = true
+               }
+            }
+        }
+        //searchController.searchBar.isHidden = false
+ 
+
         super.viewWillAppear(animated)
-    }
+  }
     
+    //---------------------------------------------------------------------------
+    override func viewDidAppear(_ animated: Bool) {
+        //searchController.searchBar.isHidden = false
+        //navigationController?.isNavigationBarHidden = false
+    }
+
     //---------------------------------------------------------------------------
     // MARK: - Table view data source
     
@@ -154,7 +174,9 @@ class PersonsTableViewController: UITableViewController {
             let strSearch = searchText.lowercased()
             persons = realm!.objects(Person.self).filter("lastName contains[c] %@ OR firstName contains[c] %@", strSearch, strSearch)
         }
-        tableView.reloadData()
+        if okForReload {
+            tableView.reloadData()
+        }
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -175,10 +197,25 @@ class PersonsTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "personMasterDetail" {
+            
             //print("segue personMasterDetail")
             if let indexPath = tableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
                 controller.person = persons![indexPath.row]
+                
+                //Sur un iphone, l'app recharge la liste complète avant de basculer sur l'écran Détail.
+                // Pour éviter le clignotement d'écran occasionné, on bloque le reloadData
+                if UIDevice().userInterfaceIdiom == .phone { // iPhone
+                    okForReload = false
+                    //print("prepare segue okForReload = \(okForReload)")
+                    searchController.isActive = false
+                } else { //iPad
+                    //on masque le clavier
+                    //self.resignFirstResponder()
+                    //view.endEditing(true)
+
+                }
+                
             }
         }
     }

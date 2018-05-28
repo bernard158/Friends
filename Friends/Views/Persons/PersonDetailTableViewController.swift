@@ -65,7 +65,7 @@ class PersonDetailTableViewController: UITableViewController {
         if(nbAddresses > 0) {
             let sectionAdresses = Section(title: nbAddresses == 1 ? "Address" : "Addresses")
             let ligneAdresses = Ligne()
-            ligneAdresses.title = "addresses"
+            ligneAdresses.sujet = "addresses"
             ligneAdresses.objectRef = personne
             ligneAdresses.cellIdentifier = "baseTextCell"
             
@@ -78,7 +78,7 @@ class PersonDetailTableViewController: UITableViewController {
         if(nbPhones > 0) {
             let sectionPhone = Section(title: nbPhones == 1 ? "Phone Number" : "Phone Numbers")
             let lignePhone = Ligne()
-            lignePhone.title = "phones"
+            lignePhone.sujet = "phones"
             lignePhone.objectRef = personne
             lignePhone.cellIdentifier = "baseTextCell"
             
@@ -91,7 +91,7 @@ class PersonDetailTableViewController: UITableViewController {
         if(nbMails > 0) {
             let sectionMail = Section(title: nbMails == 1 ? "Email" : "Emails")
             let ligneMail = Ligne()
-            ligneMail.title = "emails"
+            ligneMail.sujet = "emails"
             ligneMail.objectRef = personne
             ligneMail.cellIdentifier = "baseTextCell"
             
@@ -104,7 +104,7 @@ class PersonDetailTableViewController: UITableViewController {
         if(nbSocialProfiles > 0) {
             let sectionSocialProfiles = Section(title: nbSocialProfiles == 1 ? "Social Profile" : "Social Profiles")
             let ligneSocialProfiles = Ligne()
-            ligneSocialProfiles.title = "socialProfiles"
+            ligneSocialProfiles.sujet = "socialProfiles"
             ligneSocialProfiles.objectRef = personne
             ligneSocialProfiles.cellIdentifier = "baseTextCell"
             
@@ -116,7 +116,7 @@ class PersonDetailTableViewController: UITableViewController {
         if(personne.note.count > 0) {
             let sectionNote = Section(title: "Note")
             let ligneNote = Ligne()
-            ligneNote.title = "note"
+            ligneNote.sujet = "note"
             ligneNote.objectRef = personne
             ligneNote.cellIdentifier = "baseTextCell"
             
@@ -206,7 +206,7 @@ class PersonDetailTableViewController: UITableViewController {
             let label = cell.viewWithTag(1000) as! UILabel
 
             //Adresses
-           if aLigne.title == "addresses" {
+           if aLigne.sujet == "addresses" {
                 let nbAddresses = personne.addresses.count
                 var cpt = 1
                 var strAddreses = ""
@@ -221,7 +221,7 @@ class PersonDetailTableViewController: UITableViewController {
             }
             
             //Phone numbers
-            if aLigne.title == "phones" {
+            if aLigne.sujet == "phones" {
                 let nbPhones = personne.phones.count
                 var cpt = 1
                 var strPhones = ""
@@ -236,7 +236,7 @@ class PersonDetailTableViewController: UITableViewController {
             }
 
             //emails
-            if aLigne.title == "emails" {
+            if aLigne.sujet == "emails" {
                 let nbMails = personne.emails.count
                 var cpt = 1
                 var strMails = ""
@@ -251,7 +251,7 @@ class PersonDetailTableViewController: UITableViewController {
             }
 
             //social profiles
-            if aLigne.title == "socialProfiles" {
+            if aLigne.sujet == "socialProfiles" {
                 let nbSocialProfiles = personne.socialProfiles.count
                 var cpt = 1
                 var strSocialProfiles = ""
@@ -266,7 +266,7 @@ class PersonDetailTableViewController: UITableViewController {
             }
 
             //note
-            if aLigne.title == "note" {
+            if aLigne.sujet == "note" {
                 label.text = personne.note
             }
         }
@@ -292,37 +292,6 @@ class PersonDetailTableViewController: UITableViewController {
 // MARK: - Autres classes
 
 //---------------------------------------------------------------------------
-class Ligne {
-    var table: String
-    var objectRef: AnyObject?
-    var title: String
-    var label: String
-    var cellIdentifier: String
-    var photoData: Data
-    var accessoryType:UITableViewCellAccessoryType
-    
-    init() {
-        self.table = ""
-        self.objectRef = nil as AnyObject?
-        self.title = ""
-        self.label = ""
-        self.cellIdentifier = ""
-        self.photoData = Data()
-        accessoryType = UITableViewCellAccessoryType.none
-    }
-    
-}
-
-//---------------------------------------------------------------------------
-class Section {
-    let sectionTitle: String
-    var lignes: [Ligne]
-    
-    init(title: String) {
-        self.sectionTitle = title
-        self.lignes = []
-    }
-}
 
 
 
