@@ -15,14 +15,45 @@ class Gift: Object {
     @objc dynamic var note = ""
     @objc dynamic var imageData: Data?
     @objc dynamic var id = UUID().uuidString
-
-    let personnesRecu = LinkingObjects(fromType: Person.self, property: "cadeauxRecus")
-    let personnesOffert = LinkingObjects(fromType: Person.self, property: "cadeauxOfferts")
+    
+    let beneficiaires = LinkingObjects(fromType: Person.self, property: "cadeauxRecus")
+    let donateurs = LinkingObjects(fromType: Person.self, property: "cadeauxOfferts")
     let personnesIdee = LinkingObjects(fromType: Person.self, property: "cadeauxIdees")
     
     convenience init(_ name: String) {
         self.init()
         self.name = name
     }
+}
 
+extension Gift {
+    public var giftFrom: String {
+        if donateurs.count == 0 {
+            return name
+        }
+        var strRetour = ""
+        
+        for person in donateurs {
+            strRetour += person.fullName
+            if person != donateurs.last {
+                strRetour += ", "
+            }
+        }
+        return "\(name): from \(strRetour)"
+    }
+    
+    public var giftFor: String {
+        if beneficiaires.count == 0 {
+            return name
+        }
+        var strRetour = ""
+        
+        for person in beneficiaires {
+            strRetour += person.fullName
+            if person != beneficiaires.last {
+                strRetour += ", "
+            }
+        }
+        return "\(name): for \(strRetour)"
+    }
 }

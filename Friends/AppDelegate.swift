@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Realm
 import RealmSwift
 
 @UIApplicationMain
@@ -61,29 +62,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let df = DateFormatter()
         df.dateFormat = "dd'-'MM'-'yyyy"
         
-        let sylvette = Person(firstName: "Sylvette", lastName: "David")
+        let sylvette = Person(prenom: "Sylvette", nom: "David")
         if let aDate = df.date(from: "08-02-1954"){
-            sylvette.born = aDate
+            sylvette.dateNais = aDate
         }
         
-        let bernard = Person(firstName: "Bernard", lastName: "David")
+        let bernard = Person(prenom: "Bernard", nom: "David")
         if let aDate = df.date(from: "15-08-1952"){
-            bernard.born = aDate
+            bernard.dateNais = aDate
         }
         
-        let annette = Person(firstName: "Annette", lastName: "David")
+        let annette = Person(prenom: "Annette", nom: "David")
         
-        let sylvie = Person(firstName: "Sylvie", lastName: "Aimé")
+        let sylvie = Person(prenom: "Sylvie", nom: "Aimé")
         
-        let nathalie = Person(firstName: "Nathalie", lastName: "Rollier-Sigallet")
+        let nathalie = Person(prenom: "Nathalie", nom: "Rollier-Sigallet")
         
-        let denis = Person(firstName: "Denis", lastName: "Rollier-Sigallet")
+        let denis = Person(prenom: "Denis", nom: "Rollier-Sigallet")
         
-        let clarisse = Person(firstName: "Clarisse", lastName: "Rollier-Sigallet")
+        let clarisse = Person(prenom: "Clarisse", nom: "Rollier-Sigallet")
         
-        let jacqueline = Person(firstName: "Jacqueline", lastName: "David")
+        let jacqueline = Person(prenom: "Jacqueline", nom: "David")
         
-        let philippe = Person(firstName: "Philippe", lastName: "David")
+        let philippe = Person(prenom: "Philippe", nom: "David")
         
         if realm.objects(Person.self).count == 0 {
             try! realm.write {
@@ -144,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
-        //let persons = realm.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        //let persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
         //let fullNames = persons.map { $0.fullName }.joined(separator: ", ")
         //print(persons.count)
          //print("Full names of all people are: \(fullNames)")

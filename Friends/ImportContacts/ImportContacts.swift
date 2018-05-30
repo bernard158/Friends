@@ -105,8 +105,8 @@ class ContactIOS {
         let aPerson = Person()
         
         aPerson.originalID = contact.identifier
-        aPerson.firstName = contact.givenName
-        aPerson.lastName = contact.familyName
+        aPerson.prenom = contact.givenName
+        aPerson.nom = contact.familyName
         
         //boucle sur les adresses
         for postalAddress in contact.postalAddresses {
@@ -225,7 +225,7 @@ class ContactIOS {
         //Date de naissance
         let calendar = NSCalendar.current
         if let birthday = contact.birthday, let date = calendar.date(from: birthday) {
-            aPerson.born = date
+            aPerson.dateNais = date
         }
         
         //NOTE

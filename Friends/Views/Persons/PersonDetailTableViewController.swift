@@ -30,10 +30,6 @@ class PersonDetailTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        //tableView.rowHeight = UITableViewAutomaticDimension
-        //tableView.estimatedRowHeight = 44
-        
-
     }
     
     //---------------------------------------------------------------------------
@@ -51,7 +47,7 @@ class PersonDetailTableViewController: UITableViewController {
         // Update the user interface for the detail item.
         let personne = person!
         
-        //section nom prénom ---------------------------------------
+        //section prenom prénom ---------------------------------------
         let sectionNomPrenom = Section(title: "")
         let ligneNomPrenom = Ligne()
         ligneNomPrenom.objectRef = personne
@@ -60,7 +56,46 @@ class PersonDetailTableViewController: UITableViewController {
         sectionNomPrenom.lignes.append(ligneNomPrenom)
         sections.append(sectionNomPrenom)
         
-        //section adresses ---------------------------------------
+        //section cadeaux reçus ---------------------------------------
+        if personne.cadeauxRecus.count > 0 {
+            let sectioncadeauxRecus = Section(title: "Gifts Received")
+            for gift in personne.cadeauxRecus {
+                let lignecadeauxRecus = Ligne()
+                lignecadeauxRecus.sujet = "cadeauxRecus"
+                lignecadeauxRecus.objectRef = gift
+                lignecadeauxRecus.cellIdentifier = "baseTextCell"
+                sectioncadeauxRecus.lignes.append(lignecadeauxRecus)
+            }
+            sections.append(sectioncadeauxRecus)
+        }
+        
+        //section cadeaux offerts ---------------------------------------
+        if personne.cadeauxOfferts.count > 0 {
+            let sectioncadeauxOfferts = Section(title: "Gifts To")
+            for gift in personne.cadeauxOfferts {
+                let lignecadeauxOfferts = Ligne()
+                lignecadeauxOfferts.sujet = "cadeauxOfferts"
+                lignecadeauxOfferts.objectRef = gift
+                lignecadeauxOfferts.cellIdentifier = "baseTextCell"
+                sectioncadeauxOfferts.lignes.append(lignecadeauxOfferts)
+            }
+            sections.append(sectioncadeauxOfferts)
+        }
+        
+         //section cadeaux idées ---------------------------------------
+        if personne.cadeauxIdees.count > 0 {
+            let sectioncadeauxIdees = Section(title: "Gifts Ideas")
+            for gift in personne.cadeauxIdees {
+                let lignecadeauxIdees = Ligne()
+                lignecadeauxIdees.sujet = "cadeauxOfferts"
+                lignecadeauxIdees.objectRef = gift
+                lignecadeauxIdees.cellIdentifier = "baseTextCell"
+                sectioncadeauxIdees.lignes.append(lignecadeauxIdees)
+            }
+            sections.append(sectioncadeauxIdees)
+        }
+
+      //section adresses ---------------------------------------
         let nbAddresses = personne.addresses.count
         if(nbAddresses > 0) {
             let sectionAdresses = Section(title: nbAddresses == 1 ? "Address" : "Addresses")
@@ -170,17 +205,17 @@ class PersonDetailTableViewController: UITableViewController {
         //Titre Nom prénom, photo date nais age
         if (aLigne.cellIdentifier == "CellTitre") {
             let labelNom = cell.viewWithTag(1001) as! UILabel
-            labelNom.text = personne.lastName
+            labelNom.text = personne.nom
             let labelPrenom = cell.viewWithTag(1002) as! UILabel
-            labelPrenom.text = personne.firstName
+            labelPrenom.text = personne.prenom
             let labelJourMois = cell.viewWithTag(1003) as! UILabel
             //xxx labelJourMois.text = Date.getDayMonth(personne.dateNais)
             let labelAge = cell.viewWithTag(1004) as! UILabel
             //xxx labelAge.text = Date.calculateAge(personne.dateNais)
             let df = DateFormatter()
             df.dateFormat = "dd-MM-yyyy"
-            if let born = personne.born {
-                let strDate = df.string(from: born)
+            if let dateNais = personne.dateNais {
+                let strDate = df.string(from: dateNais)
                 labelJourMois.text = strDate
                 labelAge.text = String(personne.age()!)
          } else {
@@ -199,14 +234,25 @@ class PersonDetailTableViewController: UITableViewController {
             //affectation de l'image réduite
             imageView.backgroundColor = UIColor.white
             imageView.image = scaledImageRound(image, dim: 90, borderWidth: 3.0, borderColor: UIColor.white, imageView: imageView)
-            
-            
         }
+    
         if (aLigne.cellIdentifier == "baseTextCell") {
             let label = cell.viewWithTag(1000) as! UILabel
 
+            //Cadeaux reçus
+            if aLigne.sujet == "cadeauxRecus" {
+                let aGift = aLigne.objectRef as! Gift
+                label.text = aGift.giftFrom
+            }
+            
+            //Cadeaux offerts
+            if aLigne.sujet == "cadeauxOfferts" {
+                let aGift = aLigne.objectRef as! Gift
+                label.text = aGift.giftFor
+            }
+            
             //Adresses
-           if aLigne.sujet == "addresses" {
+            if aLigne.sujet == "addresses" {
                 let nbAddresses = personne.addresses.count
                 var cpt = 1
                 var strAddreses = ""

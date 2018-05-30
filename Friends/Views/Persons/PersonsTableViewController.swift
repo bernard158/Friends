@@ -17,6 +17,9 @@ class PersonsTableViewController: UITableViewController {
     var realm: Realm?
     var okForReload = true
     
+    @IBAction func addPerson(_ sender: Any) {
+        print("add person")
+    }
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +30,7 @@ class PersonsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         realm = try! Realm()
-        persons = realm!.objects(Person.self).sorted(by: ["lastName", "firstName"])
+        persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
         
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -44,7 +47,7 @@ class PersonsTableViewController: UITableViewController {
         
         searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
         
-
+        
         /*
          definesPresentationContext = true
          
@@ -60,7 +63,7 @@ class PersonsTableViewController: UITableViewController {
         //searchController.searchBar.frame.origin.y = searchController.searchBar.frame.origin.y + 5
         
         //searchController.searchBar.isHidden = false
-
+        
     }
     
     //---------------------------------------------------------------------------
@@ -77,19 +80,19 @@ class PersonsTableViewController: UITableViewController {
             }
         }
         okForReload = true
-        print("view will appear okForReload = \(okForReload)")
+        //print("view will appear okForReload = \(okForReload)")
         tableView.reloadData()
         
         let searchBar = searchController.searchBar
         //navigationController?.isNavigationBarHidden = true
         //searchController.searchBar.isHidden = true
         //searchController.searchBar.backgroundColor = UIColor.white
- 
+        
         if UIDevice().userInterfaceIdiom == .phone { // iPhone
             // SearchBar text
-          
+            
             searchBar.barStyle = .blackTranslucent
-           let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+            let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
             //textFieldInsideUISearchBar?.textColor = UIColor.red
             textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(15)
             
@@ -107,21 +110,21 @@ class PersonsTableViewController: UITableViewController {
                     //use the code below if you want to change placeholder
                     let textFieldInsideUISearchBarLabel = textField.value(forKey: "placeholderLabel") as? UILabel
                     textFieldInsideUISearchBarLabel?.adjustsFontSizeToFitWidth = true
-               }
+                }
             }
         }
         //searchController.searchBar.isHidden = false
- 
-
+        
+        
         super.viewWillAppear(animated)
-  }
+    }
     
     //---------------------------------------------------------------------------
     override func viewDidAppear(_ animated: Bool) {
         //searchController.searchBar.isHidden = false
         //navigationController?.isNavigationBarHidden = false
     }
-
+    
     //---------------------------------------------------------------------------
     // MARK: - Table view data source
     
@@ -137,6 +140,15 @@ class PersonsTableViewController: UITableViewController {
         return persons?.count ?? 0
     }
     
+    //---------------------------------------------------------------------------
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("commit")
+        let person = persons![indexPath.row]
+        try! realm?.write {
+            realm?.delete(person)
+            tableView.reloadData()
+        }
+    }
     
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -169,10 +181,10 @@ class PersonsTableViewController: UITableViewController {
     //---------------------------------------------------------------------------
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         if searchBarIsEmpty() {
-            persons = realm!.objects(Person.self).sorted(by: ["lastName", "firstName"])
+            persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
         } else {
             let strSearch = searchText.lowercased()
-            persons = realm!.objects(Person.self).filter("lastName contains[c] %@ OR firstName contains[c] %@", strSearch, strSearch)
+            persons = realm!.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch)
         }
         if okForReload {
             tableView.reloadData()
@@ -211,9 +223,8 @@ class PersonsTableViewController: UITableViewController {
                     searchController.isActive = false
                 } else { //iPad
                     //on masque le clavier
-                    //self.resignFirstResponder()
-                    //view.endEditing(true)
-
+                    searchController.searchBar.resignFirstResponder()
+                    
                 }
                 
             }

@@ -10,9 +10,9 @@ import Foundation
 import RealmSwift
 
 class Person: Object {
-    @objc dynamic var firstName = ""
-    @objc dynamic var lastName = ""
-    @objc dynamic var born: Date?
+    @objc dynamic var prenom = ""
+    @objc dynamic var nom = ""
+    @objc dynamic var dateNais: Date?
     var emails = List<String>()
     var phones = List<String>()
     var addresses = List<String>()
@@ -28,29 +28,28 @@ class Person: Object {
     @objc dynamic var originalID = ""
 
     
-    convenience init(firstName: String, lastName: String) {
+    convenience init(prenom: String, nom: String) {
         self.init()
-        self.firstName = firstName
-        self.lastName = lastName
+        self.prenom = prenom
+        self.nom = nom
     }
 }
 
 extension Person {
     
     public var fullName: String {
-        if lastName == "" {
-            return firstName
+        if nom == "" {
+            return prenom
         }
-        
-        return "\(firstName) \(lastName)"
+        return "\(prenom) \(nom)"
     }
     
     public func age() -> Int? {
-        if let bornDate = born {
+        if let dateNaisDate = dateNais {
             let now = Date()
             let calendar = Calendar.current
             
-            let ageComponents = calendar.dateComponents([.year], from: bornDate, to: now)
+            let ageComponents = calendar.dateComponents([.year], from: dateNaisDate, to: now)
             return ageComponents.year!
         }
         return nil

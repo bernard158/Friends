@@ -17,6 +17,11 @@ class GiftTableViewController: UITableViewController {
     var realm: Realm?
     
     //---------------------------------------------------------------------------
+    @IBAction func addGift(_ sender: Any) {
+        
+    }
+
+    //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +36,7 @@ class GiftTableViewController: UITableViewController {
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "FirstName or LastName Search"
+        searchController.searchBar.placeholder = "FirstName or nom Search"
         //navigationItem.searchController = searchController
         
         if #available(iOS 11.0, *) {
@@ -87,7 +92,16 @@ class GiftTableViewController: UITableViewController {
         return gifts?.count ?? 0
     }
 
-    //---------------------------------------------------------------------------
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("commit")
+        let gift = gifts![indexPath.row]
+        try! realm?.write {
+            realm?.delete(gift)
+            tableView.reloadData()
+        }
+    }
+    
+   //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "giftCell", for: indexPath)
         
@@ -122,7 +136,6 @@ class GiftTableViewController: UITableViewController {
             let strSearch = searchText.lowercased()
             gifts = realm!.objects(Gift.self).filter("name contains[c] %@ ", strSearch)
         }
-        
         tableView.reloadData()
     }
     
@@ -135,6 +148,11 @@ class GiftTableViewController: UITableViewController {
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "addGift" {
+            segue.destination.title = "Add Gift"
+        }
+    }
 }
 
 //---------------------------------------------------------------------------

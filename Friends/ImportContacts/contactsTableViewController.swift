@@ -21,9 +21,6 @@ class contactsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        //tableView.rowHeight = UITableViewAutomaticDimension
-        //tableView.estimatedRowHeight = 44
-        
         contacts = ImportContacts.loadCNContacts()
         contacts = contacts?.sorted {
             $0.lastFirstName < $1.lastFirstName
