@@ -58,7 +58,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         //section cadeaux reçus ---------------------------------------
         if personne.cadeauxRecus.count > 0 {
-            let sectioncadeauxRecus = Section(title: "Gifts Received")
+            let sectioncadeauxRecus = Section(title: "Cadeaux reçus")
             for gift in personne.cadeauxRecus {
                 let lignecadeauxRecus = Ligne()
                 lignecadeauxRecus.sujet = "cadeauxRecus"
@@ -71,7 +71,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         //section cadeaux offerts ---------------------------------------
         if personne.cadeauxOfferts.count > 0 {
-            let sectioncadeauxOfferts = Section(title: "Gifts To")
+            let sectioncadeauxOfferts = Section(title: "Cadeaux offerts")
             for gift in personne.cadeauxOfferts {
                 let lignecadeauxOfferts = Ligne()
                 lignecadeauxOfferts.sujet = "cadeauxOfferts"
@@ -84,7 +84,7 @@ class PersonDetailTableViewController: UITableViewController {
         
          //section cadeaux idées ---------------------------------------
         if personne.cadeauxIdees.count > 0 {
-            let sectioncadeauxIdees = Section(title: "Gifts Ideas")
+            let sectioncadeauxIdees = Section(title: "Idées cadeaux")
             for gift in personne.cadeauxIdees {
                 let lignecadeauxIdees = Ligne()
                 lignecadeauxIdees.sujet = "cadeauxOfferts"
@@ -98,7 +98,7 @@ class PersonDetailTableViewController: UITableViewController {
       //section adresses ---------------------------------------
         let nbAddresses = personne.addresses.count
         if(nbAddresses > 0) {
-            let sectionAdresses = Section(title: nbAddresses == 1 ? "Address" : "Addresses")
+            let sectionAdresses = Section(title: nbAddresses == 1 ? "Adresse" : "Adresses")
             let ligneAdresses = Ligne()
             ligneAdresses.sujet = "addresses"
             ligneAdresses.objectRef = personne
@@ -111,7 +111,7 @@ class PersonDetailTableViewController: UITableViewController {
         //section phones ---------------------------------------
         let nbPhones = personne.phones.count
         if(nbPhones > 0) {
-            let sectionPhone = Section(title: nbPhones == 1 ? "Phone Number" : "Phone Numbers")
+            let sectionPhone = Section(title: nbPhones == 1 ? "Téléphone" : "Téléphones")
             let lignePhone = Ligne()
             lignePhone.sujet = "phones"
             lignePhone.objectRef = personne
@@ -137,7 +137,7 @@ class PersonDetailTableViewController: UITableViewController {
         //section social profiles ---------------------------------------
         let nbSocialProfiles = personne.socialProfiles.count
         if(nbSocialProfiles > 0) {
-            let sectionSocialProfiles = Section(title: nbSocialProfiles == 1 ? "Social Profile" : "Social Profiles")
+            let sectionSocialProfiles = Section(title: nbSocialProfiles == 1 ? "Réseau social" : "Réseaux sociaux")
             let ligneSocialProfiles = Ligne()
             ligneSocialProfiles.sujet = "socialProfiles"
             ligneSocialProfiles.objectRef = personne
@@ -320,7 +320,14 @@ class PersonDetailTableViewController: UITableViewController {
 
         return cell
     }
+    
+    //---------------------------------------------------------------------------
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35.0
+    }
 }
+
+
 
 //---------------------------------------------------------------------------
 /*

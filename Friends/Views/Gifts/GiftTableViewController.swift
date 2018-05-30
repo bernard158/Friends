@@ -36,7 +36,7 @@ class GiftTableViewController: UITableViewController {
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "FirstName or nom Search"
+        searchController.searchBar.placeholder = "Recherche par nom du cadeau"
         //navigationItem.searchController = searchController
         
         if #available(iOS 11.0, *) {
@@ -150,7 +150,7 @@ class GiftTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addGift" {
-            segue.destination.title = "Add Gift"
+            segue.destination.title = "Ajout cadeau"
         }
     }
 }

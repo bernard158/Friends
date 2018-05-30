@@ -33,7 +33,7 @@
             </objects>
             <point key="canvasLocation" x="-1586" y="789"/>
         </scene>
-        <!--Détail cadeau-->
+        <!--Gift Detail-->
         <scene sceneID="dqQ-uR-nep">
             <objects>
                 <tableViewController id="UvL-0N-pQd" customClass="GiftDetailTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
@@ -56,7 +56,7 @@
                             <outlet property="delegate" destination="UvL-0N-pQd" id="Mqe-ta-WTM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Détail cadeau" id="dQV-ry-lNn">
+                    <navigationItem key="navigationItem" title="Gift Detail" id="dQV-ry-lNn">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Z3o-Ln-Cv6">
                             <connections>
                                 <segue destination="AjN-h7-5sq" kind="show" identifier="editGift" id="oy3-Lq-21H"/>
@@ -68,7 +68,7 @@
             </objects>
             <point key="canvasLocation" x="2529" y="1174"/>
         </scene>
-        <!--Outils-->
+        <!--Tools-->
         <scene sceneID="1QW-ZQ-9ou">
             <objects>
                 <tableViewController id="2zy-xd-4he" customClass="ToolsTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
@@ -86,7 +86,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Préférences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Pf-hc-aPQ">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Preferences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Pf-hc-aPQ">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -103,7 +103,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Alertes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cdK-P7-Q9H">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Alerts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cdK-P7-Q9H">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -120,7 +120,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Statistiques" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dja-Qs-Wm4">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Statistics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dja-Qs-Wm4">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -137,7 +137,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Import de contacts iOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KLf-iJ-xn5">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Contacts Import" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KLf-iJ-xn5">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -158,7 +158,7 @@
                             <outlet property="delegate" destination="2zy-xd-4he" id="QVU-MW-zaY"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Outils" leftItemsSupplementBackButton="YES" id="cN5-Ps-ddB"/>
+                    <navigationItem key="navigationItem" title="Tools" leftItemsSupplementBackButton="YES" id="cN5-Ps-ddB"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vm-bf-73n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -310,7 +310,7 @@
         <scene sceneID="G8P-CO-bYp">
             <objects>
                 <splitViewController title="Invitations" id="VQb-RG-f8a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Invitations" image="second" id="f70-WM-2lZ"/>
+                    <tabBarItem key="tabBarItem" title="Invitations" id="f70-WM-2lZ"/>
                     <connections>
                         <segue destination="nb0-Gm-aRg" kind="relationship" relationship="masterViewController" id="VST-SO-P71"/>
                         <segue destination="LJB-aB-d8w" kind="relationship" relationship="detailViewController" id="ri8-Tk-THQ"/>
@@ -320,7 +320,7 @@
             </objects>
             <point key="canvasLocation" x="646" y="2377"/>
         </scene>
-        <!--Cadeaux-->
+        <!--Gifts-->
         <scene sceneID="qua-Pb-jS8">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="M23-zB-jNf" customClass="GiftTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
@@ -369,7 +369,7 @@
                             <outlet property="delegate" destination="M23-zB-jNf" id="M9Q-6c-I0j"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Cadeaux" id="mpd-Nb-c2B">
+                    <navigationItem key="navigationItem" title="Gifts" id="mpd-Nb-c2B">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="rdM-sn-DsY">
                             <connections>
                                 <action selector="addGift:" destination="M23-zB-jNf" id="AxP-eo-IRR"/>
@@ -435,7 +435,7 @@
         <scene sceneID="qaL-eJ-MQ3">
             <objects>
                 <splitViewController title="Gifts" id="4fw-BQ-tEm" customClass="GiftsSplitViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Cadeaux" image="first" id="lev-1l-GtY"/>
+                    <tabBarItem key="tabBarItem" title="Gifts" id="lev-1l-GtY"/>
                     <connections>
                         <segue destination="cPh-Zs-KSA" kind="relationship" relationship="masterViewController" id="X9n-zq-pTc"/>
                         <segue destination="cy6-GN-e7F" kind="relationship" relationship="detailViewController" id="AYG-B2-JSK"/>
@@ -445,7 +445,7 @@
             </objects>
             <point key="canvasLocation" x="646" y="743"/>
         </scene>
-        <!--Personnes-->
+        <!--Persons-->
         <scene sceneID="k3H-kQ-Eg2">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="uKi-BM-Qnf" customClass="PersonsTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
@@ -493,7 +493,7 @@
                             <outlet property="delegate" destination="uKi-BM-Qnf" id="lVB-BC-Sq2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Personnes" id="aQC-Yq-6C7">
+                    <navigationItem key="navigationItem" title="Persons" id="aQC-Yq-6C7">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="2fj-k0-sbV">
                             <connections>
                                 <action selector="addPerson:" destination="uKi-BM-Qnf" id="5Tn-OT-oie"/>
@@ -527,11 +527,11 @@
             </objects>
             <point key="canvasLocation" x="1454" y="-1164"/>
         </scene>
-        <!--Personnes-->
+        <!--Persons-->
         <scene sceneID="kyH-ou-vM9">
             <objects>
                 <splitViewController id="pcv-uL-cYZ" customClass="PersonsSplitViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Personnes" image="second" id="z5V-ff-8hs"/>
+                    <tabBarItem key="tabBarItem" title="Persons" id="z5V-ff-8hs"/>
                     <connections>
                         <segue destination="mhA-yg-iKI" kind="relationship" relationship="masterViewController" id="5jf-Ht-8zf"/>
                         <segue destination="gn8-ap-I64" kind="relationship" relationship="detailViewController" id="MkF-fQ-fWl"/>
@@ -545,7 +545,7 @@
         <scene sceneID="Lod-Fd-S4C">
             <objects>
                 <navigationController title="Tools" automaticallyAdjustsScrollViewInsets="NO" id="oIC-ih-vsO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Outils" image="first" id="kc3-Op-F7H"/>
+                    <tabBarItem key="tabBarItem" title="Tools" id="kc3-Op-F7H"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fbh-sC-OIQ">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -588,7 +588,7 @@
             </objects>
             <point key="canvasLocation" x="1454" y="-385"/>
         </scene>
-        <!--Détail Personne-->
+        <!--Detail Person-->
         <scene sceneID="l2v-mu-doj">
             <objects>
                 <tableViewController id="Xy9-VW-9th" customClass="PersonDetailTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
@@ -679,7 +679,7 @@
                             <outlet property="delegate" destination="Xy9-VW-9th" id="lrq-K2-Huf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Détail Personne" id="E9t-t9-W4t"/>
+                    <navigationItem key="navigationItem" title="Detail Person" id="E9t-t9-W4t"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="etA-ff-ZxF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -709,13 +709,9 @@
             <point key="canvasLocation" x="1454" y="1175"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="AYG-B2-JSK"/>
-        <segue reference="MkF-fQ-fWl"/>
-        <segue reference="oy3-Lq-21H"/>
+        <segue reference="BAk-xa-maO"/>
+        <segue reference="oal-WZ-lff"/>
     </inferredMetricsTieBreakers>
 </document>

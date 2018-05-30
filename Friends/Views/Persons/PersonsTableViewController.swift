@@ -35,7 +35,7 @@ class PersonsTableViewController: UITableViewController {
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "First Name or Last Name Search"
+        searchController.searchBar.placeholder = "Recherche par nom ou prénom"
         //navigationItem.searchController = searchController
         
         if #available(iOS 11.0, *) {

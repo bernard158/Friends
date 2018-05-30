@@ -32,6 +32,7 @@ extension Gift {
             return name
         }
         var strRetour = ""
+        let deLaPart = "de la part de"
         
         for person in donateurs {
             strRetour += person.fullName
@@ -39,7 +40,7 @@ extension Gift {
                 strRetour += ", "
             }
         }
-        return "\(name): from \(strRetour)"
+        return "\(name): \(deLaPart) \(strRetour)"
     }
     
     public var giftFor: String {
@@ -47,6 +48,7 @@ extension Gift {
             return name
         }
         var strRetour = ""
+        let pour = "à"
         
         for person in beneficiaires {
             strRetour += person.fullName
@@ -54,6 +56,6 @@ extension Gift {
                 strRetour += ", "
             }
         }
-        return "\(name): for \(strRetour)"
+        return "\(name): \(pour) \(strRetour)"
     }
 }
