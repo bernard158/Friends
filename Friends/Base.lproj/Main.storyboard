@@ -484,7 +484,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="gn8-ap-I64" kind="showDetail" identifier="personMasterDetail" id="BAk-xa-maO"/>
+                                    <segue destination="gn8-ap-I64" kind="showDetail" identifier="personMasterDetail" id="dx9-f4-jO1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -493,13 +493,7 @@
                             <outlet property="delegate" destination="uKi-BM-Qnf" id="lVB-BC-Sq2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Personnes" id="aQC-Yq-6C7">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="2fj-k0-sbV">
-                            <connections>
-                                <action selector="addPerson:" destination="uKi-BM-Qnf" id="5Tn-OT-oie"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Personnes" id="aQC-Yq-6C7"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6oP-Gp-oz4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -673,6 +667,31 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="baseTextViewCell" rowHeight="62" id="uNG-hM-w0P">
+                                <rect key="frame" x="0.0" y="159" width="375" height="62"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uNG-hM-w0P" id="ule-fa-Kp7">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1000" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="xxx" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="tPY-yA-ItS">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="51"/>
+                                            <accessibility key="accessibilityConfiguration">
+                                                <accessibilityTraits key="traits" adjustable="YES"/>
+                                            </accessibility>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="tPY-yA-ItS" secondAttribute="trailing" constant="16" id="IKI-dW-VOL"/>
+                                        <constraint firstAttribute="bottom" secondItem="tPY-yA-ItS" secondAttribute="bottom" constant="11" id="J5V-7w-HNL"/>
+                                        <constraint firstItem="tPY-yA-ItS" firstAttribute="top" secondItem="ule-fa-Kp7" secondAttribute="top" id="jWJ-2u-ry0"/>
+                                        <constraint firstItem="tPY-yA-ItS" firstAttribute="leading" secondItem="ule-fa-Kp7" secondAttribute="leading" constant="16" id="vmT-nL-ROu"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Xy9-VW-9th" id="SiH-Kc-iwT"/>
@@ -715,7 +734,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="AYG-B2-JSK"/>
-        <segue reference="MkF-fQ-fWl"/>
+        <segue reference="dx9-f4-jO1"/>
         <segue reference="oy3-Lq-21H"/>
     </inferredMetricsTieBreakers>
 </document>

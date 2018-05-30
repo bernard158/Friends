@@ -10,6 +10,9 @@ import UIKit
 
 class GiftDetailTableViewController: UITableViewController {
 
+    @IBAction func editButton(_ sender: Any) {
+        print("editGift")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 

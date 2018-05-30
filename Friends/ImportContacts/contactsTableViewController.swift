@@ -73,7 +73,7 @@ class contactsTableViewController: UITableViewController {
         let isAlreadyImported = aContact.isAlreadyImported
         importButton!.isEnabled = !isAlreadyImported
         if(isAlreadyImported) {
-            importButton!.setTitle("imported", for: .normal)
+            importButton!.setTitle("importé", for: .normal)
             importButton!.removeTarget(nil, action: nil, for: .allEvents)
         } else {
             importButton!.setTitle("import", for: .normal)

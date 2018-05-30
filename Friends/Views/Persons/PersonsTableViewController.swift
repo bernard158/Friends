@@ -16,6 +16,7 @@ class PersonsTableViewController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
     var okForReload = true
+    var currentSearchbarText = ""
     
     @IBAction func addPerson(_ sender: Any) {
         print("add person")
@@ -46,7 +47,6 @@ class PersonsTableViewController: UITableViewController {
         }
         
         searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
-        
         
         /*
          definesPresentationContext = true
@@ -79,11 +79,14 @@ class PersonsTableViewController: UITableViewController {
                 tableView.deselectRow(at: selectionIndexPath, animated: animated)
             }
         }
-        okForReload = true
+        let searchBar = searchController.searchBar
+        searchController.isActive = true
+        searchBar.text = currentSearchbarText
+        //okForReload = true
         //print("view will appear okForReload = \(okForReload)")
+        updateSearchResults(for: searchController)
         tableView.reloadData()
         
-        let searchBar = searchController.searchBar
         //navigationController?.isNavigationBarHidden = true
         //searchController.searchBar.isHidden = true
         //searchController.searchBar.backgroundColor = UIColor.white
@@ -180,11 +183,11 @@ class PersonsTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        if searchBarIsEmpty() {
+        if (searchBarIsEmpty()) {
             persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
         } else {
             let strSearch = searchText.lowercased()
-            persons = realm!.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch)
+            persons = realm!.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(by: ["nom", "prenom"])
         }
         if okForReload {
             tableView.reloadData()
@@ -209,7 +212,7 @@ class PersonsTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "personMasterDetail" {
-            
+            currentSearchbarText = searchController.searchBar.text!
             //print("segue personMasterDetail")
             if let indexPath = tableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
@@ -218,9 +221,11 @@ class PersonsTableViewController: UITableViewController {
                 //Sur un iphone, l'app recharge la liste complète avant de basculer sur l'écran Détail.
                 // Pour éviter le clignotement d'écran occasionné, on bloque le reloadData
                 if UIDevice().userInterfaceIdiom == .phone { // iPhone
-                    okForReload = false
                     //print("prepare segue okForReload = \(okForReload)")
-                    searchController.isActive = false
+                    updateSearchResults(for: searchController)
+                    okForReload = false
+                   searchController.isActive = false
+                    okForReload = true
                 } else { //iPad
                     //on masque le clavier
                     searchController.searchBar.resignFirstResponder()

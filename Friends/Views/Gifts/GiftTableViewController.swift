@@ -18,7 +18,7 @@ class GiftTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     @IBAction func addGift(_ sender: Any) {
-        
+        print("addGift")
     }
 
     //---------------------------------------------------------------------------

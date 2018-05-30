@@ -15,7 +15,7 @@ class PersonDetailTableViewController: UITableViewController {
             // Update the view.
             configureViewPersonne()
         }
-
+        
     }
     var sections: [Section] = []
     
@@ -29,7 +29,6 @@ class PersonDetailTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
     }
     
     //---------------------------------------------------------------------------
@@ -82,7 +81,7 @@ class PersonDetailTableViewController: UITableViewController {
             sections.append(sectioncadeauxOfferts)
         }
         
-         //section cadeaux idées ---------------------------------------
+        //section cadeaux idées ---------------------------------------
         if personne.cadeauxIdees.count > 0 {
             let sectioncadeauxIdees = Section(title: "Idées cadeaux")
             for gift in personne.cadeauxIdees {
@@ -94,15 +93,15 @@ class PersonDetailTableViewController: UITableViewController {
             }
             sections.append(sectioncadeauxIdees)
         }
-
-      //section adresses ---------------------------------------
+        
+        //section adresses ---------------------------------------
         let nbAddresses = personne.addresses.count
         if(nbAddresses > 0) {
             let sectionAdresses = Section(title: nbAddresses == 1 ? "Adresse" : "Adresses")
             let ligneAdresses = Ligne()
             ligneAdresses.sujet = "addresses"
             ligneAdresses.objectRef = personne
-            ligneAdresses.cellIdentifier = "baseTextCell"
+            ligneAdresses.cellIdentifier = "baseTextViewCell"
             
             sectionAdresses.lignes.append(ligneAdresses)
             sections.append(sectionAdresses)
@@ -115,7 +114,7 @@ class PersonDetailTableViewController: UITableViewController {
             let lignePhone = Ligne()
             lignePhone.sujet = "phones"
             lignePhone.objectRef = personne
-            lignePhone.cellIdentifier = "baseTextCell"
+            lignePhone.cellIdentifier = "baseTextViewCell"
             
             sectionPhone.lignes.append(lignePhone)
             sections.append(sectionPhone)
@@ -128,7 +127,7 @@ class PersonDetailTableViewController: UITableViewController {
             let ligneMail = Ligne()
             ligneMail.sujet = "emails"
             ligneMail.objectRef = personne
-            ligneMail.cellIdentifier = "baseTextCell"
+            ligneMail.cellIdentifier = "baseTextViewCell"
             
             sectionMail.lignes.append(ligneMail)
             sections.append(sectionMail)
@@ -141,7 +140,7 @@ class PersonDetailTableViewController: UITableViewController {
             let ligneSocialProfiles = Ligne()
             ligneSocialProfiles.sujet = "socialProfiles"
             ligneSocialProfiles.objectRef = personne
-            ligneSocialProfiles.cellIdentifier = "baseTextCell"
+            ligneSocialProfiles.cellIdentifier = "baseTextViewCell"
             
             sectionSocialProfiles.lignes.append(ligneSocialProfiles)
             sections.append(sectionSocialProfiles)
@@ -153,7 +152,7 @@ class PersonDetailTableViewController: UITableViewController {
             let ligneNote = Ligne()
             ligneNote.sujet = "note"
             ligneNote.objectRef = personne
-            ligneNote.cellIdentifier = "baseTextCell"
+            ligneNote.cellIdentifier = "baseTextViewCell"
             
             sectionNote.lignes.append(ligneNote)
             sections.append(sectionNote)
@@ -163,7 +162,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         
         tableView.reloadData()
-
+        
     }
     
     //---------------------------------------------------------------------------
@@ -178,13 +177,13 @@ class PersonDetailTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     //---------------------------------------------------------------------------
-   override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sections.count
     }
     
     //---------------------------------------------------------------------------
-   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return sections[section].lignes.count
     }
@@ -196,12 +195,12 @@ class PersonDetailTableViewController: UITableViewController {
     
     
     //---------------------------------------------------------------------------
-   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
         let personne = person!
-
+        
         //Titre Nom prénom, photo date nais age
         if (aLigne.cellIdentifier == "CellTitre") {
             let labelNom = cell.viewWithTag(1001) as! UILabel
@@ -218,7 +217,7 @@ class PersonDetailTableViewController: UITableViewController {
                 let strDate = df.string(from: dateNais)
                 labelJourMois.text = strDate
                 labelAge.text = String(personne.age()!)
-         } else {
+            } else {
                 labelJourMois.text = ""
                 labelAge.text = ""
             }
@@ -235,20 +234,44 @@ class PersonDetailTableViewController: UITableViewController {
             imageView.backgroundColor = UIColor.white
             imageView.image = scaledImageRound(image, dim: 90, borderWidth: 3.0, borderColor: UIColor.white, imageView: imageView)
         }
-    
-        if (aLigne.cellIdentifier == "baseTextCell") {
-            let label = cell.viewWithTag(1000) as! UILabel
-
-            //Cadeaux reçus
-            if aLigne.sujet == "cadeauxRecus" {
-                let aGift = aLigne.objectRef as! Gift
-                label.text = aGift.giftFrom
+        
+        if (aLigne.cellIdentifier == "baseTextViewCell") {
+            let textView = cell.viewWithTag(1000) as! UITextView
+            //emails
+            if aLigne.sujet == "emails" {
+                let nbMails = personne.emails.count
+                var cpt = 1
+                var strMails = ""
+                for strMail in personne.emails {
+                    strMails += strMail
+                    if cpt < nbMails {
+                        strMails += "\n"
+                    }
+                    cpt += 1
+                }
+                //textView.text = strMails
+                textView.attributedText = attrStr(str: strMails)
+          }
+            
+            //social profiles
+            if aLigne.sujet == "socialProfiles" {
+                let nbSocialProfiles = personne.socialProfiles.count
+                var cpt = 1
+                var strSocialProfiles = ""
+                for strSocialProfile in personne.socialProfiles {
+                    strSocialProfiles += strSocialProfile
+                    if cpt < nbSocialProfiles {
+                        strSocialProfiles += "\n"
+                    }
+                    cpt += 1
+                }
+                //textView.text = strSocialProfiles
+                textView.attributedText = attrStr(str: strSocialProfiles)
             }
             
-            //Cadeaux offerts
-            if aLigne.sujet == "cadeauxOfferts" {
-                let aGift = aLigne.objectRef as! Gift
-                label.text = aGift.giftFor
+            //note
+            if aLigne.sujet == "note" {
+                textView.attributedText = attrStr(str: personne.note)
             }
             
             //Adresses
@@ -263,7 +286,8 @@ class PersonDetailTableViewController: UITableViewController {
                     }
                     cpt += 1
                 }
-                label.text = strAddreses
+                
+                textView.attributedText = attrStr(str: strAddreses)
             }
             
             //Phone numbers
@@ -278,52 +302,41 @@ class PersonDetailTableViewController: UITableViewController {
                     }
                     cpt += 1
                 }
-                label.text = strPhones
-            }
-
-            //emails
-            if aLigne.sujet == "emails" {
-                let nbMails = personne.emails.count
-                var cpt = 1
-                var strMails = ""
-                for strMail in personne.emails {
-                    strMails += strMail
-                    if cpt < nbMails {
-                        strMails += "\n"
-                    }
-                    cpt += 1
-                }
-                label.text = strMails
-            }
-
-            //social profiles
-            if aLigne.sujet == "socialProfiles" {
-                let nbSocialProfiles = personne.socialProfiles.count
-                var cpt = 1
-                var strSocialProfiles = ""
-                for strSocialProfile in personne.socialProfiles {
-                    strSocialProfiles += strSocialProfile
-                    if cpt < nbSocialProfiles {
-                        strSocialProfiles += "\n"
-                    }
-                    cpt += 1
-                }
-                label.text = strSocialProfiles
-            }
-
-            //note
-            if aLigne.sujet == "note" {
-                label.text = personne.note
+                textView.attributedText = attrStr(str: strPhones)
             }
         }
         
-
+        if (aLigne.cellIdentifier == "baseTextCell") {
+            let label = cell.viewWithTag(1000) as! UILabel
+            
+            //Cadeaux reçus
+            if aLigne.sujet == "cadeauxRecus" {
+                let aGift = aLigne.objectRef as! Gift
+                label.text = aGift.giftFrom
+            }
+            
+            //Cadeaux offerts
+            if aLigne.sujet == "cadeauxOfferts" {
+                let aGift = aLigne.objectRef as! Gift
+                label.text = aGift.giftFor
+            }
+            
+            
+        }
+        
+        
         return cell
     }
     
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 35.0
+        
+        let strSection = sections[section].sectionTitle
+        if strSection.count == 0 {
+            return 0
+        } else {
+            return 35.0
+        }
     }
 }
 
