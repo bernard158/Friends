@@ -216,7 +216,7 @@
 			};
 			buildConfigurationList = A1626E6720B6E5550026D04C /* Build configuration list for PBXProject "Friends" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = en;
+			developmentRegion = fr;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				fr,
