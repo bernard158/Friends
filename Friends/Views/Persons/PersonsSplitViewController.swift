@@ -9,6 +9,18 @@
 import UIKit
 
 class PersonsSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+    
+    public var detailViewController: UINavigationController? {
+        get {
+            if viewControllers.count > 1 {
+                return viewControllers[1] as? UINavigationController
+            }
+            return nil
+        }
+    }
+
+    
+    
 
     //---------------------------------------------------------------------------
     override func viewDidLoad() {

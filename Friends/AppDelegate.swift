@@ -47,8 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func demoPopulate() {
         
-        let deleteRealm = true
-        let populate = true
+        let deleteRealm = false
+        let populate = false
         
         let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
         if deleteRealm {

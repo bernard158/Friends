@@ -7,17 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PersonDetailTableViewController: UITableViewController {
     
     var person: Person? {
         didSet {
-            // Update the view.
+            /*
+             let realm = try! Realm()
+             realm.beginWrite()
+             person?.prenom += " Toto"
+             try! realm.commitWrite()
+             */
             configureViewPersonne()
         }
-        
     }
     var sections: [Section] = []
+    public var openInEdition = false
     
     
     //---------------------------------------------------------------------------
@@ -28,15 +34,43 @@ class PersonDetailTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(PersonDetailTableViewController.editDetail))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //print("viewWillAppear PersonDetailTableViewController")
+
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+           //print("viewWillDisappear PersonDetailTableViewController")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        //print("viewDidAppear PersonDetailTableViewController")
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        //print("viewDidDisappear PersonDetailTableViewController")
+    }
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    //---------------------------------------------------------------------------
+    @objc func editDetail() {
+        print("editDetail")
+        let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
+        let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
+        editView.person = Person(person: person!) // contructeur de copie
+        editView.detailView = self
+        let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
+        editView.masterView = (leftNavController.topViewController as? PersonsTableViewController)
+        
+        editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        editViewNav.preferredContentSize = CGSize(width: 500, height: 800)
+
+        self.present(editViewNav, animated: true, completion: nil)
+    }
     //---------------------------------------------------------------------------
     func configureViewPersonne() {
         
@@ -46,7 +80,7 @@ class PersonDetailTableViewController: UITableViewController {
         // Update the user interface for the detail item.
         let personne = person!
         
-        //section prenom prénom ---------------------------------------
+        //section nom prénom ---------------------------------------
         let sectionNomPrenom = Section(title: "")
         let ligneNomPrenom = Ligne()
         ligneNomPrenom.objectRef = personne
@@ -239,7 +273,7 @@ class PersonDetailTableViewController: UITableViewController {
             let textView = cell.viewWithTag(1000) as! UITextView
             //emails
             if aLigne.sujet == "emails" {
-                let nbMails = personne.emails.count
+                /*let nbMails = personne.emails.count
                 var cpt = 1
                 var strMails = ""
                 for strMail in personne.emails {
@@ -249,13 +283,13 @@ class PersonDetailTableViewController: UITableViewController {
                     }
                     cpt += 1
                 }
-                //textView.text = strMails
-                textView.attributedText = attrStr(str: strMails)
-          }
+                //textView.text = strMails*/
+                textView.attributedText = attrStr(str: personne.emails)
+            }
             
             //social profiles
             if aLigne.sujet == "socialProfiles" {
-                let nbSocialProfiles = personne.socialProfiles.count
+                /*let nbSocialProfiles = personne.socialProfiles.count
                 var cpt = 1
                 var strSocialProfiles = ""
                 for strSocialProfile in personne.socialProfiles {
@@ -265,8 +299,8 @@ class PersonDetailTableViewController: UITableViewController {
                     }
                     cpt += 1
                 }
-                //textView.text = strSocialProfiles
-                textView.attributedText = attrStr(str: strSocialProfiles)
+                //textView.text = strSocialProfiles*/
+                textView.attributedText = attrStr(str: personne.socialProfiles)
             }
             
             //note
@@ -276,7 +310,7 @@ class PersonDetailTableViewController: UITableViewController {
             
             //Adresses
             if aLigne.sujet == "addresses" {
-                let nbAddresses = personne.addresses.count
+                /*let nbAddresses = personne.addresses.count
                 var cpt = 1
                 var strAddreses = ""
                 for strAddress in personne.addresses {
@@ -285,14 +319,14 @@ class PersonDetailTableViewController: UITableViewController {
                         strAddreses += "\n"
                     }
                     cpt += 1
-                }
+                }*/
                 
-                textView.attributedText = attrStr(str: strAddreses)
+                textView.attributedText = attrStr(str: personne.addresses)
             }
             
             //Phone numbers
             if aLigne.sujet == "phones" {
-                let nbPhones = personne.phones.count
+                /*let nbPhones = personne.phones.count
                 var cpt = 1
                 var strPhones = ""
                 for strPhone in personne.phones {
@@ -301,8 +335,8 @@ class PersonDetailTableViewController: UITableViewController {
                         strPhones += "\n"
                     }
                     cpt += 1
-                }
-                textView.attributedText = attrStr(str: strPhones)
+                }*/
+                textView.attributedText = attrStr(str: personne.phones)
             }
         }
         
@@ -323,7 +357,6 @@ class PersonDetailTableViewController: UITableViewController {
             
             
         }
-        
         
         return cell
     }

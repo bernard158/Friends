@@ -103,6 +103,7 @@ class ContactIOS {
         if !isValidToImport { return }
         
         let aPerson = Person()
+        var str = ""
         
         aPerson.originalID = contact.identifier
         aPerson.prenom = contact.givenName
@@ -120,11 +121,13 @@ class ContactIOS {
             var strAdresse = address + postalCode + city + state + country
             strAdresse = strAdresse.replacingOccurrences(of: "\n", with: " - ")
             strAdresse = strAdresse.replacingOccurrences(of: "  ", with: " ")
-            aPerson.addresses.append(strAdresse)
-            //print(strAdresse)
+            //aPerson.addresses.append(strAdresse)
+            str += "\(strAdresse)\n"
         }
+        aPerson.addresses = str.removeLastCR()
         
         //boucle sur les téléphones
+        str = ""
         for phoneNumber in contact.phoneNumbers {
             var strPhone = ""
             
@@ -160,11 +163,13 @@ class ContactIOS {
             strPhone += aPhoneNumber
             strPhone = strPhone.replacingOccurrences(of: "\n", with: " - ")
             strPhone = strPhone.replacingOccurrences(of: "  ", with: " ")
-            aPerson.phones.append(strPhone)
-            //print(strPhone)
+            //aPerson.phones.append(strPhone)
+            str += "\(strPhone)\n"
         }
-        
+        aPerson.phones = str.removeLastCR()
+
         //boucle sur les emails
+        str = ""
         for email in contact.emailAddresses {
             var strEmail = ""
             
@@ -186,11 +191,13 @@ class ContactIOS {
             strEmail += anEmail
             strEmail = strEmail.replacingOccurrences(of: "\n", with: " - ")
             strEmail = strEmail.replacingOccurrences(of: "  ", with: " ")
-            aPerson.emails.append(strEmail)
-            //print(strEmail)
+            //aPerson.emails.append(strEmail)
+            str += "\(strEmail)\n"
         }
-        
+        aPerson.emails = str.removeLastCR()
+
         //boucle sur les réseaux sociaux
+        str = ""
         for socialProfile in contact.socialProfiles {
             var strSocialProfile = ""
             
@@ -218,10 +225,11 @@ class ContactIOS {
             strSocialProfile += aSocialProfile
             strSocialProfile = strSocialProfile.replacingOccurrences(of: "\n", with: " - ")
             strSocialProfile = strSocialProfile.replacingOccurrences(of: "  ", with: " ")
-            aPerson.socialProfiles.append(strSocialProfile)
-            //print(strSocialProfile)
+            //aPerson.socialProfiles.append(strSocialProfile)
+            str += "\(strSocialProfile)\n"
         }
-        
+        aPerson.socialProfiles = str.removeLastCR()
+
         //Date de naissance
         let calendar = NSCalendar.current
         if let birthday = contact.birthday, let date = calendar.date(from: birthday) {

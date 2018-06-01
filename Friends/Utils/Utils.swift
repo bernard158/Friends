@@ -15,6 +15,7 @@ class Ligne {
     var sujet: String
     var objectRef: AnyObject?
     var title: String
+    var placeHolder: String
     var label: String
     var cellIdentifier: String
     var photoData: Data
@@ -24,6 +25,7 @@ class Ligne {
         self.sujet = ""
         self.objectRef = nil as AnyObject?
         self.title = ""
+        self.placeHolder = ""
         self.label = ""
         self.cellIdentifier = ""
         self.photoData = Data()
@@ -186,8 +188,23 @@ public func attrStr(str: String, lineSpacing: CGFloat = 6.0, fontSize:CGFloat = 
     
     let myAttributes = [ NSAttributedStringKey.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedStringKey.paragraphStyle: style ]
     let attrString = NSAttributedString(string: str, attributes: myAttributes)
-
+    
     return attrString
+}
+
+//---------------------------------------------------------------------------
+// MARK: - Extensions
+
+//---------------------------------------------------------------------------
+extension String {
+    public func removeLastCR() -> String {
+        var strRetour = self
+        while strRetour.last == "\n" {
+            strRetour = String(strRetour.dropLast())
+        }
+        
+        return strRetour
+    }
 }
 
 

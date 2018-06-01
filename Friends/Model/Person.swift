@@ -13,10 +13,10 @@ class Person: Object {
     @objc dynamic var prenom = ""
     @objc dynamic var nom = ""
     @objc dynamic var dateNais: Date?
-    var emails = List<String>()
-    var phones = List<String>()
-    var addresses = List<String>()
-    var socialProfiles = List<String>()
+    @objc dynamic var emails = ""
+    @objc dynamic var phones = ""
+    @objc dynamic var addresses = ""
+    @objc dynamic var socialProfiles = ""
     var cadeauxRecus = List<Gift>()
     var cadeauxOfferts = List<Gift>()
     var cadeauxIdees = List<Gift>()
@@ -32,6 +32,31 @@ class Person: Object {
         self.init()
         self.prenom = prenom
         self.nom = nom
+    }
+    
+    // Contructeur de copie pour déconnecter de Realm
+    convenience init(person: Person) {
+        self.init()
+        self.prenom = person.prenom
+        self.nom = person.nom
+        self.dateNais = person.dateNais
+        self.emails = person.emails
+        self.phones = person.phones
+        self.addresses = person.addresses
+        self.socialProfiles = person.socialProfiles
+        self.cadeauxRecus = person.cadeauxRecus
+        self.cadeauxOfferts = person.cadeauxOfferts
+        self.cadeauxIdees = person.cadeauxIdees
+        self.likeYes = person.likeYes
+        self.likeNo = person.likeNo
+        self.note = person.note
+        self.imageData = person.imageData
+        self.id = person.id
+        self.originalID = person.originalID
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
 }
 
@@ -54,4 +79,13 @@ extension Person {
         }
         return nil
     }
+    public func save() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(self, update: true)
+        }
+        
+    }
 }
+
+
