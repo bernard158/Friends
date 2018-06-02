@@ -62,11 +62,11 @@ class PersonsTableViewController: UITableViewController {
         
         searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
         
-        
+        /*
         if UIDevice().userInterfaceIdiom == .pad { // iPad
             tableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
             performSegue(withIdentifier: "personMasterDetail", sender: self)
-        }
+        }*/
         /*
          definesPresentationContext = true
          

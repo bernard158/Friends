@@ -584,7 +584,6 @@
         <!--Navigation Controller-->
         <scene sceneID="U8h-Bt-yvL">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5bc-fa-q6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gn8-ap-I64" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uae-WJ-HEV">
@@ -601,6 +600,7 @@
                         <segue destination="Xy9-VW-9th" kind="relationship" relationship="rootViewController" id="1lD-60-LfW"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5bc-fa-q6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1454" y="-385"/>
         </scene>
@@ -759,11 +759,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LAp-6J-cZo">
+                                        <textField opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LAp-6J-cZo" customClass="BindableUITextField" customModule="Friends" customModuleProvider="target">
                                             <rect key="frame" x="16" y="3" width="343" height="30"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -771,6 +771,31 @@
                                         <constraint firstAttribute="trailing" secondItem="LAp-6J-cZo" secondAttribute="trailing" constant="16" id="LhC-T7-BBF"/>
                                         <constraint firstItem="LAp-6J-cZo" firstAttribute="leading" secondItem="ioi-Zz-YGS" secondAttribute="leading" constant="16" id="UQb-zb-JJO"/>
                                         <constraint firstAttribute="bottom" secondItem="LAp-6J-cZo" secondAttribute="bottom" constant="10.5" id="zuF-em-cAX"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="textViewCell" rowHeight="85" id="gpA-Sk-67b" userLabel="textViewCell">
+                                <rect key="frame" x="0.0" y="72" width="375" height="85"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gpA-Sk-67b" id="cvH-5e-KPX">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1001" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="oyg-3J-L78" customClass="BindableUITextView" customModule="Friends" customModuleProvider="target">
+                                            <rect key="frame" x="16" y="3" width="343" height="74"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="74" id="WXD-YX-Elh"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="oyg-3J-L78" secondAttribute="trailing" constant="16" id="Dyh-cE-u1I"/>
+                                        <constraint firstAttribute="bottom" secondItem="oyg-3J-L78" secondAttribute="bottom" constant="7.5" id="UI6-HR-yat"/>
+                                        <constraint firstItem="oyg-3J-L78" firstAttribute="leading" secondItem="cvH-5e-KPX" secondAttribute="leading" constant="16" id="YzJ-F7-A1o"/>
+                                        <constraint firstItem="oyg-3J-L78" firstAttribute="top" secondItem="cvH-5e-KPX" secondAttribute="top" constant="3" id="tQ4-iW-AFc"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>

@@ -80,10 +80,15 @@ extension Person {
         return nil
     }
     public func save() {
-        let realm = try! Realm()
+        /*let realm = try! Realm()
         try! realm.write {
             realm.add(self, update: true)
-        }
+        }*/
+        let realm = try! Realm()
+        realm.beginWrite()
+        realm.add(self, update: true)
+        try! realm.commitWrite()
+
         
     }
 }
