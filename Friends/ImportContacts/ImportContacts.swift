@@ -229,7 +229,31 @@ class ContactIOS {
             str += "\(strSocialProfile)\n"
         }
         aPerson.socialProfiles = str.removeLastCR()
-
+        
+        //boucle sur les urls
+        str = ""
+        for url in contact.urlAddresses {
+            var strUrl = ""
+            
+            switch url.label {
+            case CNLabelURLAddressHomePage:
+                strUrl = "Home"
+            default:
+                strUrl = url.label!
+                break
+            }
+            strUrl += ": "
+            
+            let anUrl = url.value as String
+            //supprimer les retours ligne et les doubles espaces
+            strUrl += anUrl
+            strUrl = strUrl.replacingOccurrences(of: "\n", with: " - ")
+            strUrl = strUrl.replacingOccurrences(of: "  ", with: " ")
+            //aPerson.socialProfiles.append(strSocialProfile)
+            str += "\(strUrl)\n"
+        }
+        aPerson.urls = str.removeLastCR()
+        
         //Date de naissance
         let calendar = NSCalendar.current
         if let birthday = contact.birthday, let date = calendar.date(from: birthday) {
@@ -269,6 +293,7 @@ class ImportContacts {
                                                                CNContactImageDataKey as CNKeyDescriptor,
                                                                CNContactBirthdayKey as CNKeyDescriptor,
                                                                CNContactSocialProfilesKey as CNKeyDescriptor,
+                                                               CNContactUrlAddressesKey as CNKeyDescriptor,
                                                                CNContactNoteKey as CNKeyDescriptor,
                                                                CNContactPostalAddressesKey as CNKeyDescriptor
             ])

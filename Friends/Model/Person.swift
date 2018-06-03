@@ -17,6 +17,7 @@ class Person: Object {
     @objc dynamic var phones = ""
     @objc dynamic var addresses = ""
     @objc dynamic var socialProfiles = ""
+    @objc dynamic var urls = ""
     var cadeauxRecus = List<Gift>()
     var cadeauxOfferts = List<Gift>()
     var cadeauxIdees = List<Gift>()
@@ -44,6 +45,7 @@ class Person: Object {
         self.phones = person.phones
         self.addresses = person.addresses
         self.socialProfiles = person.socialProfiles
+        self.urls = person.urls
         self.cadeauxRecus = person.cadeauxRecus
         self.cadeauxOfferts = person.cadeauxOfferts
         self.cadeauxIdees = person.cadeauxIdees

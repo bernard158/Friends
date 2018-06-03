@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class EditPersonTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
     
     public var person: Person? // reçoit un  objec détaché de realm
@@ -19,10 +20,14 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     
     //---------------------------------------------------------------------------
     @IBAction func SavePerson(_ sender: Any) {
+        self.person!.save()
         dismiss(animated: true, completion: {
-            self.person!.save()
-            self.detailView?.tableView.reloadData()
+            self.detailView?.configureViewPersonne()
             self.masterView?.tableView.reloadData()
+        /* DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.detailView?.configureViewPersonne()
+                self.masterView?.tableView.reloadData()
+            }*/
         })
     }
     //---------------------------------------------------------------------------
@@ -81,74 +86,77 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         sectionNomPrenom.lignes.append(lignePrenom)
         sections.append(sectionNomPrenom)
         
-        
         //section adresses ---------------------------------------
         let sectionAdresses = Section(title: "Adresse")
         let ligneAdresses = Ligne()
         ligneAdresses.cellIdentifier = "textViewCell"
         ligneAdresses.sujet = "addresses"
-        ligneAdresses.placeHolder = "Adresse"
         
         sectionAdresses.lignes.append(ligneAdresses)
         sections.append(sectionAdresses)
         
-        return
-
         //section phones ---------------------------------------
-        let nbPhones = person!.phones.count
-        if(nbPhones > 0) {
-            let sectionPhone = Section(title: nbPhones == 1 ? "Téléphone" : "Téléphones")
-            let lignePhone = Ligne()
-            lignePhone.sujet = "phones"
-            lignePhone.objectRef = person
-            lignePhone.cellIdentifier = "baseTextViewCell"
-            
-            sectionPhone.lignes.append(lignePhone)
-            sections.append(sectionPhone)
-        }
+        let sectionPhones = Section(title: "Téléphones")
+        let lignePhones = Ligne()
+        lignePhones.cellIdentifier = "textViewCell"
+        lignePhones.sujet = "phones"
+        
+        sectionPhones.lignes.append(lignePhones)
+        sections.append(sectionPhones)
         
         //section emails ---------------------------------------
-        let nbMails = person!.emails.count
-        if(nbMails > 0) {
-            let sectionMail = Section(title: nbMails == 1 ? "Email" : "Emails")
-            let ligneMail = Ligne()
-            ligneMail.sujet = "emails"
-            ligneMail.objectRef = person
-            ligneMail.cellIdentifier = "baseTextViewCell"
-            
-            sectionMail.lignes.append(ligneMail)
-            sections.append(sectionMail)
-        }
+        let sectionEmails = Section(title: "Emails")
+        let ligneEmails = Ligne()
+        ligneEmails.cellIdentifier = "textViewCell"
+        ligneEmails.sujet = "emails"
         
-        //section social profiles ---------------------------------------
-        let nbSocialProfiles = person!.socialProfiles.count
-        if(nbSocialProfiles > 0) {
-            let sectionSocialProfiles = Section(title: nbSocialProfiles == 1 ? "Réseau social" : "Réseaux sociaux")
-            let ligneSocialProfiles = Ligne()
-            ligneSocialProfiles.sujet = "socialProfiles"
-            ligneSocialProfiles.objectRef = person
-            ligneSocialProfiles.cellIdentifier = "baseTextViewCell"
-            
-            sectionSocialProfiles.lignes.append(ligneSocialProfiles)
-            sections.append(sectionSocialProfiles)
-        }
+        sectionEmails.lignes.append(ligneEmails)
+        sections.append(sectionEmails)
+        
+        //section socialProfiles ---------------------------------------
+        let sectionSocialProfiles = Section(title: "Réseaux sociaux")
+        let ligneSocialProfiles = Ligne()
+        ligneSocialProfiles.cellIdentifier = "textViewCell"
+        ligneSocialProfiles.sujet = "socialProfiles"
+        
+        sectionSocialProfiles.lignes.append(ligneSocialProfiles)
+        sections.append(sectionSocialProfiles)
+        
+        //section urls ---------------------------------------
+        let sectionUrls = Section(title: "URLs")
+        let ligneUrls = Ligne()
+        ligneUrls.cellIdentifier = "textViewCell"
+        ligneUrls.sujet = "urls"
+        
+        sectionUrls.lignes.append(ligneUrls)
+        sections.append(sectionUrls)
+        
+        //section Aime ---------------------------------------
+        let sectionAime = Section(title: "Aime")
+        let ligneAime = Ligne()
+        ligneAime.cellIdentifier = "textViewCell"
+        ligneAime.sujet = "likeYes"
+        
+        sectionAime.lignes.append(ligneAime)
+        sections.append(sectionAime)
+        
+        //section AimePas ---------------------------------------
+        let sectionAimePas = Section(title: "N'aime pas")
+        let ligneAimePas = Ligne()
+        ligneAimePas.cellIdentifier = "textViewCell"
+        ligneAimePas.sujet = "likeNo"
+        
+        sectionAimePas.lignes.append(ligneAimePas)
+        sections.append(sectionAimePas)
         
         //section note ---------------------------------------
-        if(person!.note.count > 0) {
-            let sectionNote = Section(title: "Note")
-            let ligneNote = Ligne()
-            ligneNote.sujet = "note"
-            ligneNote.objectRef = person
-            ligneNote.cellIdentifier = "baseTextViewCell"
-            
-            sectionNote.lignes.append(ligneNote)
-            sections.append(sectionNote)
-        }
+        let sectionNote = Section(title: "Note")
+        let ligneNote = Ligne()
+        ligneNote.cellIdentifier = "textViewCell"
+        ligneNote.sujet = "note"
         
-        //---------------------------------------
-        
-        
-        tableView.reloadData()
+        sectionNote.lignes.append(ligneNote)
+        sections.append(sectionNote)
         
     }
     //---------------------------------------------------------------------------
@@ -180,158 +188,101 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
         //let person = person!
         
-        //Titre Nom prénom, photo date nais age
+        //textFieldCell
         if (aLigne.cellIdentifier == "textFieldCell") {
             let textField = cell.viewWithTag(1000) as! BindableUITextField
             textField.sujet = aLigne.sujet
             textField.delegate = self as UITextFieldDelegate
             textField.placeholder = aLigne.placeHolder
-            if aLigne.sujet == "nom" {
+            switch aLigne.sujet {
+            case "nom":
                 textField.text = person!.nom
-            } else if aLigne.sujet == "prenom" {
+            case "prenom":
                 textField.text = person!.prenom
+            default:
+                print("switch default")
             }
         }
-
-        //Adresses
+        
+        //textViewCell
         if (aLigne.cellIdentifier == "textViewCell") {
+            let cell = cell as! EditableTextViewCell
             let textView = cell.viewWithTag(1001) as! BindableUITextView
+            textView.addBorder()
             textView.sujet = aLigne.sujet
             textView.indexPath = indexPath
-            textView.delegate = self as UITextViewDelegate
+            textView.delegate = cell
             //textView.placeholder = aLigne.placeHolder
+            switch aLigne.sujet {
+            case "addresses":
+                textView.text = person!.addresses
+            case "phones":
+                textView.text = person!.phones
+            case "emails":
+                textView.text = person!.emails
+            case "socialProfiles":
+                textView.text = person!.socialProfiles
+            case "urls":
+                textView.text = person!.urls
+            case "likeYes":
+                textView.text = person!.likeYes
+            case "likeNo":
+                textView.text = person!.likeNo
+            case "note":
+                textView.text = person!.note
+            default:
+                print("switch default")
+            }
             if aLigne.sujet == "addresses" {
                 textView.text = person!.addresses
             }
-        }
+            cell.callBack = {
+                textView in
+                // update data source
+                switch aLigne.sujet{
+                case "addresses":
+                    self.person!.addresses = textView.text!
+                case "phones":
+                    self.person!.phones = textView.text!
+                case "emails":
+                    self.person!.emails = textView.text!
+                case "socialProfiles":
+                    self.person!.socialProfiles = textView.text!
+                case "urls":
+                    self.person!.urls = textView.text!
+                case "likeYes":
+                    self.person!.likeYes = textView.text!
+                case "likeNo":
+                    self.person!.likeNo = textView.text!
+                case "note":
+                    self.person!.note = textView.text!
 
+                default:
+                    print("switch default")
+                }
+                // tell table view we're starting layout updates
+                tableView.beginUpdates()
+                // get current content offset
+                var scOffset = tableView.contentOffset
+                // get current text view height
+                let tvHeight = textView.frame.size.height
+                // telll text view to size itself
+                textView.sizeToFit()
+                // get the difference between previous height and new height (if word-wrap or newline change)
+                let yDiff = textView.frame.size.height - tvHeight
+                // adjust content offset
+                scOffset.y += yDiff
+                // update table content offset so edit caret is not covered by keyboard
+                tableView.contentOffset = scOffset
+                // tell table view to apply layout updates
+                tableView.endUpdates()
+            }
+        }
+        
         return cell
     }
     
-    
-    
-    /*
-     let labelJourMois = cell.viewWithTag(1003) as! UILabel
-     //xxx labelJourMois.text = Date.getDayMonth(person.dateNais)
-     let labelAge = cell.viewWithTag(1004) as! UILabel
-     //xxx labelAge.text = Date.calculateAge(person.dateNais)
-     let df = DateFormatter()
-     df.dateFormat = "dd-MM-yyyy"
-     if let dateNais = person.dateNais {
-     let strDate = df.string(from: dateNais)
-     labelJourMois.text = strDate
-     labelAge.text = String(person.age()!)
-     } else {
-     labelJourMois.text = ""
-     labelAge.text = ""
-     }
-     //image
-     var image = UIImage()
-     let imageView = cell.viewWithTag(1000) as! UIImageView
-     imageView.image = nil
-     if person.imageData != nil {
-     image = UIImage(data: person.imageData!)!
-     } else {
-     image = UIImage(named: "noImage.png")!
-     }
-     //affectation de l'image réduite
-     imageView.backgroundColor = UIColor.white
-     imageView.image = scaledImageRound(image, dim: 90, borderWidth: 3.0, borderColor: UIColor.white, imageView: imageView)
-     */
-    //}
-    /*
-     if (aLigne.cellIdentifier == "baseTextViewCell") {
-     let textView = cell.viewWithTag(1000) as! UITextView
-     //emails
-     if aLigne.sujet == "emails" {
-     let nbMails = person.emails.count
-     var cpt = 1
-     var strMails = ""
-     for strMail in person.emails {
-     strMails += strMail
-     if cpt < nbMails {
-     strMails += "\n"
-     }
-     cpt += 1
-     }
-     //textView.text = strMails
-     textView.attributedText = attrStr(str: strMails)
-     }
-     
-     //social profiles
-     if aLigne.sujet == "socialProfiles" {
-     let nbSocialProfiles = person.socialProfiles.count
-     var cpt = 1
-     var strSocialProfiles = ""
-     for strSocialProfile in person.socialProfiles {
-     strSocialProfiles += strSocialProfile
-     if cpt < nbSocialProfiles {
-     strSocialProfiles += "\n"
-     }
-     cpt += 1
-     }
-     //textView.text = strSocialProfiles
-     textView.attributedText = attrStr(str: strSocialProfiles)
-     }
-     
-     //note
-     if aLigne.sujet == "note" {
-     textView.attributedText = attrStr(str: person.note)
-     }
-     
-     //Adresses
-     if aLigne.sujet == "addresses" {
-     let nbAddresses = person.addresses.count
-     var cpt = 1
-     var strAddreses = ""
-     for strAddress in person.addresses {
-     strAddreses += strAddress
-     if cpt < nbAddresses {
-     strAddreses += "\n"
-     }
-     cpt += 1
-     }
-     
-     textView.attributedText = attrStr(str: strAddreses)
-     }
-     
-     //Phone numbers
-     if aLigne.sujet == "phones" {
-     let nbPhones = person.phones.count
-     var cpt = 1
-     var strPhones = ""
-     for strPhone in person.phones {
-     strPhones += strPhone
-     if cpt < nbPhones {
-     strPhones += "\n"
-     }
-     cpt += 1
-     }
-     textView.attributedText = attrStr(str: strPhones)
-     }
-     }
-     
-     if (aLigne.cellIdentifier == "baseTextCell") {
-     let label = cell.viewWithTag(1000) as! UILabel
-     
-     //Cadeaux reçus
-     if aLigne.sujet == "cadeauxRecus" {
-     let aGift = aLigne.objectRef as! Gift
-     label.text = aGift.giftFrom
-     }
-     
-     //Cadeaux offerts
-     if aLigne.sujet == "cadeauxOfferts" {
-     let aGift = aLigne.objectRef as! Gift
-     label.text = aGift.giftFor
-     }
-     
-     
-     }
-     */
-    
-    //return cell
-    
+   
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
@@ -353,46 +304,13 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             person!.nom = textField.text!
         case "prenom":
             person!.prenom = textField.text!
-            
+
         default:
             print("switch default")
         }
     }
-
-
-    // MARK: - UITextView delegate
-    //---------------------------------------------------------------------------
-    func textViewDidEndEditing(_ textView: UITextView) {
-        print("textViewDidEndEditing")
-        let bindableTextField = textView as! BindableUITextView
-        switch bindableTextField.sujet {
-        case "addresses":
-            person!.addresses = textView.text!
-            
-        default:
-            print("switch default")
-        }
-    }
-
-    //---------------------------------------------------------------------------
-   /* func textViewDidChange(_ textView: UITextView) {
-        let textView = textView as! BindableUITextView
-        let indexPaths = [textView.indexPath]
-        //let endPosition: UITextPosition = textView.endOfDocument
-        
-        if let selectedRange = textView.selectedTextRange {
-            
-            tableView.reloadRows(at: indexPaths, with: .none)
-            textView.becomeFirstResponder()
-            
-            if let newPosition = textView.position(from: selectedRange.start, offset: +1) {
-                
-                // set the new position
-                textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
-            }
-        }
-        //textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
-    }*/
+    
+    
     /*
      // MARK: - Navigation
      

@@ -39,10 +39,10 @@ class PersonDetailTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         //print("viewWillAppear PersonDetailTableViewController")
-
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
-           //print("viewWillDisappear PersonDetailTableViewController")
+        //print("viewWillDisappear PersonDetailTableViewController")
     }
     override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonDetailTableViewController")
@@ -68,7 +68,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
         editViewNav.preferredContentSize = CGSize(width: 500, height: 800)
-
+        
         self.present(editViewNav, animated: true, completion: nil)
     }
     //---------------------------------------------------------------------------
@@ -90,48 +90,54 @@ class PersonDetailTableViewController: UITableViewController {
         sections.append(sectionNomPrenom)
         
         //section cadeaux reçus ---------------------------------------
-        if personne.cadeauxRecus.count > 0 {
-            let sectioncadeauxRecus = Section(title: "Cadeaux reçus")
-            for gift in personne.cadeauxRecus {
-                let lignecadeauxRecus = Ligne()
-                lignecadeauxRecus.sujet = "cadeauxRecus"
-                lignecadeauxRecus.objectRef = gift
-                lignecadeauxRecus.cellIdentifier = "baseTextCell"
-                sectioncadeauxRecus.lignes.append(lignecadeauxRecus)
-            }
-            sections.append(sectioncadeauxRecus)
+        let sectioncadeauxRecus = Section(title: "Cadeaux reçus")
+        for gift in personne.cadeauxRecus {
+            let lignecadeauxRecus = Ligne()
+            lignecadeauxRecus.sujet = "cadeauxRecus"
+            lignecadeauxRecus.objectRef = gift
+            lignecadeauxRecus.cellIdentifier = "baseTextCell"
+            sectioncadeauxRecus.lignes.append(lignecadeauxRecus)
         }
+        let ligneAjoutCadeauxRecus = Ligne()
+        ligneAjoutCadeauxRecus.sujet = "cadeauxRecus"
+        ligneAjoutCadeauxRecus.cellIdentifier = "addGiftCell"
+        sectioncadeauxRecus.lignes.append(ligneAjoutCadeauxRecus)
+        sections.append(sectioncadeauxRecus)
+        //}
         
         //section cadeaux offerts ---------------------------------------
-        if personne.cadeauxOfferts.count > 0 {
-            let sectioncadeauxOfferts = Section(title: "Cadeaux offerts")
-            for gift in personne.cadeauxOfferts {
-                let lignecadeauxOfferts = Ligne()
-                lignecadeauxOfferts.sujet = "cadeauxOfferts"
-                lignecadeauxOfferts.objectRef = gift
-                lignecadeauxOfferts.cellIdentifier = "baseTextCell"
-                sectioncadeauxOfferts.lignes.append(lignecadeauxOfferts)
-            }
-            sections.append(sectioncadeauxOfferts)
+        let sectioncadeauxOfferts = Section(title: "Cadeaux offerts")
+        for gift in personne.cadeauxOfferts {
+            let lignecadeauxOfferts = Ligne()
+            lignecadeauxOfferts.sujet = "cadeauxOfferts"
+            lignecadeauxOfferts.objectRef = gift
+            lignecadeauxOfferts.cellIdentifier = "baseTextCell"
+            sectioncadeauxOfferts.lignes.append(lignecadeauxOfferts)
         }
+        let ligneAjoutCadeauxOfferts = Ligne()
+        ligneAjoutCadeauxOfferts.sujet = "cadeauxRecus"
+        ligneAjoutCadeauxOfferts.cellIdentifier = "addGiftCell"
+        sectioncadeauxOfferts.lignes.append(ligneAjoutCadeauxOfferts)
+        sections.append(sectioncadeauxOfferts)
         
         //section cadeaux idées ---------------------------------------
-        if personne.cadeauxIdees.count > 0 {
-            let sectioncadeauxIdees = Section(title: "Idées cadeaux")
-            for gift in personne.cadeauxIdees {
-                let lignecadeauxIdees = Ligne()
-                lignecadeauxIdees.sujet = "cadeauxOfferts"
-                lignecadeauxIdees.objectRef = gift
-                lignecadeauxIdees.cellIdentifier = "baseTextCell"
-                sectioncadeauxIdees.lignes.append(lignecadeauxIdees)
-            }
-            sections.append(sectioncadeauxIdees)
+        let sectioncadeauxIdees = Section(title: "Idées cadeaux")
+        for gift in personne.cadeauxIdees {
+            let lignecadeauxIdees = Ligne()
+            lignecadeauxIdees.sujet = "cadeauxOfferts"
+            lignecadeauxIdees.objectRef = gift
+            lignecadeauxIdees.cellIdentifier = "baseTextCell"
+            sectioncadeauxIdees.lignes.append(lignecadeauxIdees)
         }
+        let ligneAjoutCadeauxIdees = Ligne()
+        ligneAjoutCadeauxIdees.sujet = "cadeauxRecus"
+        ligneAjoutCadeauxIdees.cellIdentifier = "addGiftCell"
+        sectioncadeauxIdees.lignes.append(ligneAjoutCadeauxIdees)
+        sections.append(sectioncadeauxIdees)
         
         //section adresses ---------------------------------------
-        let nbAddresses = personne.addresses.count
-        if(nbAddresses > 0) {
-            let sectionAdresses = Section(title: nbAddresses == 1 ? "Adresse" : "Adresses")
+        if(personne.addresses.count > 0) {
+            let sectionAdresses = Section(title: "Adresses")
             let ligneAdresses = Ligne()
             ligneAdresses.sujet = "addresses"
             ligneAdresses.objectRef = personne
@@ -142,9 +148,8 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section phones ---------------------------------------
-        let nbPhones = personne.phones.count
-        if(nbPhones > 0) {
-            let sectionPhone = Section(title: nbPhones == 1 ? "Téléphone" : "Téléphones")
+        if(personne.phones.count > 0) {
+            let sectionPhone = Section(title: "Téléphones")
             let lignePhone = Ligne()
             lignePhone.sujet = "phones"
             lignePhone.objectRef = personne
@@ -155,9 +160,8 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section emails ---------------------------------------
-        let nbMails = personne.emails.count
-        if(nbMails > 0) {
-            let sectionMail = Section(title: nbMails == 1 ? "Email" : "Emails")
+        if(personne.emails.count > 0) {
+            let sectionMail = Section(title: "Emails")
             let ligneMail = Ligne()
             ligneMail.sujet = "emails"
             ligneMail.objectRef = personne
@@ -168,9 +172,8 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section social profiles ---------------------------------------
-        let nbSocialProfiles = personne.socialProfiles.count
-        if(nbSocialProfiles > 0) {
-            let sectionSocialProfiles = Section(title: nbSocialProfiles == 1 ? "Réseau social" : "Réseaux sociaux")
+        if(personne.socialProfiles.count > 0) {
+            let sectionSocialProfiles = Section(title: "Réseaux sociaux")
             let ligneSocialProfiles = Ligne()
             ligneSocialProfiles.sujet = "socialProfiles"
             ligneSocialProfiles.objectRef = personne
@@ -178,6 +181,42 @@ class PersonDetailTableViewController: UITableViewController {
             
             sectionSocialProfiles.lignes.append(ligneSocialProfiles)
             sections.append(sectionSocialProfiles)
+        }
+        
+        //section urls ---------------------------------------
+        if(personne.urls.count > 0) {
+            let sectionUrls = Section(title: "URLs")
+            let ligneUrls = Ligne()
+            ligneUrls.sujet = "urls"
+            ligneUrls.objectRef = personne
+            ligneUrls.cellIdentifier = "baseTextViewCell"
+            
+            sectionUrls.lignes.append(ligneUrls)
+            sections.append(sectionUrls)
+        }
+        
+        //section aime ---------------------------------------
+        if(personne.likeYes.count > 0) {
+            let sectionAime = Section(title: "Aime")
+            let ligneAime = Ligne()
+            ligneAime.sujet = "likeYes"
+            ligneAime.objectRef = personne
+            ligneAime.cellIdentifier = "baseTextViewCell"
+            
+            sectionAime.lignes.append(ligneAime)
+            sections.append(sectionAime)
+        }
+        
+        //section aime pas ---------------------------------------
+        if(personne.likeNo.count > 0) {
+            let sectionAimePas = Section(title: "N'aime pas")
+            let ligneAimePas = Ligne()
+            ligneAimePas.sujet = "likeNo"
+            ligneAimePas.objectRef = personne
+            ligneAimePas.cellIdentifier = "baseTextViewCell"
+            
+            sectionAimePas.lignes.append(ligneAimePas)
+            sections.append(sectionAimePas)
         }
         
         //section note ---------------------------------------
@@ -271,72 +310,27 @@ class PersonDetailTableViewController: UITableViewController {
         
         if (aLigne.cellIdentifier == "baseTextViewCell") {
             let textView = cell.viewWithTag(1000) as! UITextView
-            //emails
-            if aLigne.sujet == "emails" {
-                /*let nbMails = personne.emails.count
-                var cpt = 1
-                var strMails = ""
-                for strMail in personne.emails {
-                    strMails += strMail
-                    if cpt < nbMails {
-                        strMails += "\n"
-                    }
-                    cpt += 1
-                }
-                //textView.text = strMails*/
+            
+            switch aLigne.sujet {
+            case "emails":
                 textView.attributedText = attrStr(str: personne.emails)
-            }
-            
-            //social profiles
-            if aLigne.sujet == "socialProfiles" {
-                /*let nbSocialProfiles = personne.socialProfiles.count
-                var cpt = 1
-                var strSocialProfiles = ""
-                for strSocialProfile in personne.socialProfiles {
-                    strSocialProfiles += strSocialProfile
-                    if cpt < nbSocialProfiles {
-                        strSocialProfiles += "\n"
-                    }
-                    cpt += 1
-                }
-                //textView.text = strSocialProfiles*/
+            case "socialProfiles":
                 textView.attributedText = attrStr(str: personne.socialProfiles)
-            }
-            
-            //note
-            if aLigne.sujet == "note" {
+            case "note":
                 textView.attributedText = attrStr(str: personne.note)
-            }
-            
-            //Adresses
-            if aLigne.sujet == "addresses" {
-                /*let nbAddresses = personne.addresses.count
-                var cpt = 1
-                var strAddreses = ""
-                for strAddress in personne.addresses {
-                    strAddreses += strAddress
-                    if cpt < nbAddresses {
-                        strAddreses += "\n"
-                    }
-                    cpt += 1
-                }*/
-                
+            case "addresses":
                 textView.attributedText = attrStr(str: personne.addresses)
-            }
-            
-            //Phone numbers
-            if aLigne.sujet == "phones" {
-                /*let nbPhones = personne.phones.count
-                var cpt = 1
-                var strPhones = ""
-                for strPhone in personne.phones {
-                    strPhones += strPhone
-                    if cpt < nbPhones {
-                        strPhones += "\n"
-                    }
-                    cpt += 1
-                }*/
+            case "phones":
                 textView.attributedText = attrStr(str: personne.phones)
+            case "urls":
+                textView.attributedText = attrStr(str: personne.urls)
+            case "likeYes":
+                textView.attributedText = attrStr(str: personne.likeYes)
+            case "likeNo":
+                textView.attributedText = attrStr(str: personne.likeNo)
+                
+            default:
+                print("default switch")
             }
         }
         
@@ -368,12 +362,28 @@ class PersonDetailTableViewController: UITableViewController {
         if strSection.count == 0 {
             return 0
         } else {
-            return 35.0
+            return 28
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.textColor = navigationController?.navigationBar.barTintColor
+        header.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        header.textLabel?.frame = header.frame
+        header.textLabel?.textAlignment = .natural
+        
     }
 }
 
 
+/*override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+ guard let header = view as? UITableViewHeaderFooterView else { return }
+ header.textLabel?.textColor = UIColor.red
+ header.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+ header.textLabel?.frame = header.frame
+ header.textLabel?.textAlignment = .center
+ }*/
 
 //---------------------------------------------------------------------------
 /*
