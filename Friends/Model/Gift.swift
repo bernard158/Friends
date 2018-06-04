@@ -24,6 +24,11 @@ class Gift: Object {
         self.init()
         self.name = name
     }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
 }
 
 extension Gift {

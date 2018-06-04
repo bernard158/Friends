@@ -90,53 +90,42 @@ class PersonDetailTableViewController: UITableViewController {
         sections.append(sectionNomPrenom)
         
         //section cadeaux reçus ---------------------------------------
-        let sectioncadeauxRecus = Section(title: "Cadeaux reçus")
-        for gift in personne.cadeauxRecus {
+        if !personne.cadeauxRecus.isEmpty {
+            let sectioncadeauxRecus = Section(title: "Cadeaux reçus")
+            // for gift in personne.cadeauxRecus {
             let lignecadeauxRecus = Ligne()
             lignecadeauxRecus.sujet = "cadeauxRecus"
-            lignecadeauxRecus.objectRef = gift
+            //lignecadeauxRecus.objectRef = gift
             lignecadeauxRecus.cellIdentifier = "baseTextCell"
             sectioncadeauxRecus.lignes.append(lignecadeauxRecus)
+            //}
+            sections.append(sectioncadeauxRecus)
         }
-        let ligneAjoutCadeauxRecus = Ligne()
-        ligneAjoutCadeauxRecus.sujet = "cadeauxRecus"
-        ligneAjoutCadeauxRecus.cellIdentifier = "addGiftCell"
-        sectioncadeauxRecus.lignes.append(ligneAjoutCadeauxRecus)
-        sections.append(sectioncadeauxRecus)
-        //}
         
         //section cadeaux offerts ---------------------------------------
-        let sectioncadeauxOfferts = Section(title: "Cadeaux offerts")
-        for gift in personne.cadeauxOfferts {
+        if !personne.cadeauxOfferts.isEmpty {
+            let sectioncadeauxOfferts = Section(title: "Cadeaux offerts")
             let lignecadeauxOfferts = Ligne()
             lignecadeauxOfferts.sujet = "cadeauxOfferts"
-            lignecadeauxOfferts.objectRef = gift
             lignecadeauxOfferts.cellIdentifier = "baseTextCell"
             sectioncadeauxOfferts.lignes.append(lignecadeauxOfferts)
+            
+            sections.append(sectioncadeauxOfferts)
         }
-        let ligneAjoutCadeauxOfferts = Ligne()
-        ligneAjoutCadeauxOfferts.sujet = "cadeauxRecus"
-        ligneAjoutCadeauxOfferts.cellIdentifier = "addGiftCell"
-        sectioncadeauxOfferts.lignes.append(ligneAjoutCadeauxOfferts)
-        sections.append(sectioncadeauxOfferts)
         
         //section cadeaux idées ---------------------------------------
-        let sectioncadeauxIdees = Section(title: "Idées cadeaux")
-        for gift in personne.cadeauxIdees {
+        if !personne.cadeauxIdees.isEmpty {
+            let sectioncadeauxIdees = Section(title: "Idées cadeaux")
             let lignecadeauxIdees = Ligne()
-            lignecadeauxIdees.sujet = "cadeauxOfferts"
-            lignecadeauxIdees.objectRef = gift
+            lignecadeauxIdees.sujet = "cadeauxIdees"
             lignecadeauxIdees.cellIdentifier = "baseTextCell"
             sectioncadeauxIdees.lignes.append(lignecadeauxIdees)
+            
+            sections.append(sectioncadeauxIdees)
         }
-        let ligneAjoutCadeauxIdees = Ligne()
-        ligneAjoutCadeauxIdees.sujet = "cadeauxRecus"
-        ligneAjoutCadeauxIdees.cellIdentifier = "addGiftCell"
-        sectioncadeauxIdees.lignes.append(ligneAjoutCadeauxIdees)
-        sections.append(sectioncadeauxIdees)
         
         //section adresses ---------------------------------------
-        if(personne.addresses.count > 0) {
+        if !personne.addresses.isEmpty {
             let sectionAdresses = Section(title: "Adresses")
             let ligneAdresses = Ligne()
             ligneAdresses.sujet = "addresses"
@@ -148,7 +137,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section phones ---------------------------------------
-        if(personne.phones.count > 0) {
+        if !personne.phones.isEmpty {
             let sectionPhone = Section(title: "Téléphones")
             let lignePhone = Ligne()
             lignePhone.sujet = "phones"
@@ -160,7 +149,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section emails ---------------------------------------
-        if(personne.emails.count > 0) {
+        if !personne.emails.isEmpty {
             let sectionMail = Section(title: "Emails")
             let ligneMail = Ligne()
             ligneMail.sujet = "emails"
@@ -172,7 +161,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section social profiles ---------------------------------------
-        if(personne.socialProfiles.count > 0) {
+        if !personne.socialProfiles.isEmpty {
             let sectionSocialProfiles = Section(title: "Réseaux sociaux")
             let ligneSocialProfiles = Ligne()
             ligneSocialProfiles.sujet = "socialProfiles"
@@ -184,7 +173,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section urls ---------------------------------------
-        if(personne.urls.count > 0) {
+        if !personne.urls.isEmpty {
             let sectionUrls = Section(title: "URLs")
             let ligneUrls = Ligne()
             ligneUrls.sujet = "urls"
@@ -196,7 +185,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section aime ---------------------------------------
-        if(personne.likeYes.count > 0) {
+        if !personne.likeYes.isEmpty {
             let sectionAime = Section(title: "Aime")
             let ligneAime = Ligne()
             ligneAime.sujet = "likeYes"
@@ -208,7 +197,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section aime pas ---------------------------------------
-        if(personne.likeNo.count > 0) {
+        if !personne.likeNo.isEmpty {
             let sectionAimePas = Section(title: "N'aime pas")
             let ligneAimePas = Ligne()
             ligneAimePas.sujet = "likeNo"
@@ -220,7 +209,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
         
         //section note ---------------------------------------
-        if(personne.note.count > 0) {
+        if !personne.note.isEmpty {
             let sectionNote = Section(title: "Note")
             let ligneNote = Ligne()
             ligneNote.sujet = "note"
@@ -241,8 +230,8 @@ class PersonDetailTableViewController: UITableViewController {
     //---------------------------------------------------------------------------
     func clearView() {
         sections.removeAll(keepingCapacity: false)
-        tableView.reloadData()
-        tableView.setNeedsDisplay()
+        // tableView.reloadData()
+        //tableView.setNeedsDisplay()
         //print("ClearView")
     }
     
@@ -339,14 +328,21 @@ class PersonDetailTableViewController: UITableViewController {
             
             //Cadeaux reçus
             if aLigne.sujet == "cadeauxRecus" {
-                let aGift = aLigne.objectRef as! Gift
-                label.text = aGift.giftFrom
+                //let aGift = aLigne.objectRef as! Gift
+                label.text = personne.cadeauxRecusSortedByDonateur()
+                
             }
             
             //Cadeaux offerts
             if aLigne.sujet == "cadeauxOfferts" {
-                let aGift = aLigne.objectRef as! Gift
-                label.text = aGift.giftFor
+                //let aGift = aLigne.objectRef as! Gift
+                label.text = personne.cadeauxOffertsSortedByBeneficiaire()
+            }
+            
+            //Cadeaux idées
+            if aLigne.sujet == "cadeauxIdees" {
+                //let aGift = aLigne.objectRef as! Gift
+                label.text = personne.ideesCadeaux()
             }
             
             

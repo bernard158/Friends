@@ -47,8 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func demoPopulate() {
         
-        let deleteRealm = false
-        let populate = false
+        let deleteRealm = true
+        let populate = true
         
         let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
         if deleteRealm {
@@ -57,20 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! realm.commitWrite()
         }
         if !populate { return }
-
+        
         // création des personnes
         let df = DateFormatter()
         df.dateFormat = "dd'-'MM'-'yyyy"
         
         let sylvette = Person(prenom: "Sylvette", nom: "David")
-        if let aDate = df.date(from: "08-02-1954"){
-            sylvette.dateNais = aDate
-        }
+        sylvette.dateNais = df.date(from: "08-02-1954")
         
         let bernard = Person(prenom: "Bernard", nom: "David")
-        if let aDate = df.date(from: "15-08-1952"){
-            bernard.dateNais = aDate
-        }
+        bernard.dateNais = df.date(from: "15-08-1952")
         
         let annette = Person(prenom: "Annette", nom: "David")
         
@@ -106,18 +102,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! realm.write {
                 //création des cadeaux
                 let montreBreitling = Gift("Montre Breitling")
+                montreBreitling.date = df.date(from: "15-08-2010")
                 sylvette.cadeauxOfferts.append(montreBreitling)
                 bernard.cadeauxRecus.append(montreBreitling)
                 
                 let montreHermes = Gift("Montre Hermès")
+                montreHermes.date = df.date(from: "08-02-2008")
                 bernard.cadeauxOfferts.append(montreHermes)
                 sylvette.cadeauxRecus.append(montreHermes)
                 
                 let moto = Gift("Moto Yamaha")
+                moto.date = df.date(from: "15-08-1998")
                 sylvette.cadeauxOfferts.append(moto)
                 bernard.cadeauxRecus.append(moto)
                 
                 let tomates = Gift("Tomates séchées")
+                tomates.date = df.date(from: "25-12-2013")
                 sylvette.cadeauxOfferts.append(tomates)
                 bernard.cadeauxOfferts.append(tomates)
                 nathalie.cadeauxRecus.append(tomates)
@@ -126,20 +126,78 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 philippe.cadeauxRecus.append(tomates)
                 
                 let marcon = Gift("Stage Marcon")
+                marcon.date = df.date(from: "05-07-2014")
                 nathalie.cadeauxOfferts.append(marcon)
                 jacqueline.cadeauxOfferts.append(marcon)
                 philippe.cadeauxOfferts.append(marcon)
                 annette.cadeauxOfferts.append(marcon)
                 sylvette.cadeauxRecus.append(marcon)
                 
-                let angkor = Gift("Voyage à Angkor")
-                sylvette.cadeauxIdees.append(angkor)           /*realm.add(montreBreitling)
-                 realm.add(montreHermes)
-                 realm.add(moto)
-                 realm.add(tomates)
-                 realm.add(marcon)
-                 realm.add(angkor)*/
+                let robeChambre = Gift("Robe de chambre")
+                robeChambre.date = df.date(from: "08-02-2018")
+                bernard.cadeauxOfferts.append(robeChambre)
+                sylvette.cadeauxRecus.append(robeChambre)
                 
+                let ficus = Gift("Ficus")
+                ficus.date = df.date(from: "08-02-2013")
+                bernard.cadeauxOfferts.append(ficus)
+                sylvette.cadeauxRecus.append(ficus)
+                
+                let sicile = Gift("Sicile")
+                sicile.date = df.date(from: "30-05-2014")
+                bernard.cadeauxOfferts.append(sicile)
+                sylvette.cadeauxRecus.append(sicile)
+                
+                let montreCK = Gift("Montre Calvin Klein")
+                montreCK.date = df.date(from: "04-02-2007")
+                bernard.cadeauxOfferts.append(montreCK)
+                sylvette.cadeauxRecus.append(montreCK)
+                
+                let theiere = Gift("Théière Mariage")
+                theiere.date = df.date(from: "24-12-2011")
+                sylvette.cadeauxOfferts.append(theiere)
+                jacqueline.cadeauxRecus.append(theiere)
+                
+                let jars = Gift("Plat Jars rouge")
+                jars.date = df.date(from: "24-12-2011")
+                sylvette.cadeauxOfferts.append(jars)
+                nathalie.cadeauxRecus.append(jars)
+                
+                let sexCity = Gift("Sex and the city")
+                sexCity.date = df.date(from: "24-12-2004")
+                bernard.cadeauxOfferts.append(sexCity)
+                sylvette.cadeauxRecus.append(sexCity)
+                
+                let chaussons = Gift("Chaussons Isotoner")
+                chaussons.date = df.date(from: "24-12-2004")
+                sylvette.cadeauxOfferts.append(chaussons)
+                nathalie.cadeauxRecus.append(chaussons)
+                
+                let gourmiBox = Gift("GourmiBox")
+                gourmiBox.date = df.date(from: "24-12-2017")
+                philippe.cadeauxOfferts.append(gourmiBox)
+                sylvette.cadeauxRecus.append(gourmiBox)
+                jacqueline.cadeauxRecus.append(gourmiBox)
+                annette.cadeauxRecus.append(gourmiBox)
+                bernard.cadeauxRecus.append(gourmiBox)
+                
+                let sets = Gift("Sets de table")
+                sets.date = df.date(from: "24-12-2016")
+                philippe.cadeauxOfferts.append(sets)
+                sylvette.cadeauxRecus.append(sets)
+                jacqueline.cadeauxRecus.append(sets)
+                annette.cadeauxRecus.append(sets)
+                bernard.cadeauxRecus.append(sets)
+                
+                let angkor = Gift("Voyage à Angkor")
+                sylvette.cadeauxIdees.append(angkor)
+                let stPeter = Gift("Voyage à Saint-Pétersbourg")
+                sylvette.cadeauxIdees.append(stPeter)
+                let rmn = Gift("Objet RMN")
+                sylvette.cadeauxIdees.append(rmn)
+                let soins = Gift("Soins de beauté")
+                sylvette.cadeauxIdees.append(soins)
+
             }
         }
         
@@ -148,16 +206,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
         //let fullNames = persons.map { $0.fullName }.joined(separator: ", ")
         //print(persons.count)
-         //print("Full names of all people are: \(fullNames)")
-         // print(persons)
-         
-         //let results = ImportContacts.loadCNContacts()
-         //print(results.count)
-         /*let fullNamesIOS = results.map { "\($0.contact.givenName) \($0.contact.familyName)" }
+        //print("Full names of all people are: \(fullNames)")
+        // print(persons)
+        
+        //let results = ImportContacts.loadCNContacts()
+        //print(results.count)
+        /*let fullNamesIOS = results.map { "\($0.contact.givenName) \($0.contact.familyName)" }
          .joined(separator: ", ")
          print("Full names IOS of all people are: \(fullNamesIOS)")*/
-         //print(persons)
-         
+        //print(persons)
+        
     }
 }
 

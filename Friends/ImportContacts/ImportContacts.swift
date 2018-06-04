@@ -133,13 +133,13 @@ class ContactIOS {
             
             switch phoneNumber.label {
             case CNLabelHome:
-                strPhone = "Home"
+                strPhone = "Domicile"
             case CNLabelPhoneNumberiPhone:
                 strPhone = "iPhone"
             case CNLabelOther:
-                strPhone = "Other"
+                strPhone = "Autre"
             case CNLabelWork:
-                strPhone = "Work"
+                strPhone = "Bureau"
             case CNLabelPhoneNumberMain:
                 strPhone = "Main Phone"
             case CNLabelPhoneNumberMobile:
@@ -147,11 +147,11 @@ class ContactIOS {
             case CNLabelPhoneNumberPager:
                 strPhone = "Pager"
             case CNLabelPhoneNumberHomeFax:
-                strPhone = "Home Fax"
+                strPhone = "Fax domicile"
             case CNLabelPhoneNumberWorkFax:
-                strPhone = "Work Fax"
+                strPhone = "Fax bureau"
             case CNLabelPhoneNumberOtherFax:
-                strPhone = "Other Fax"
+                strPhone = "Autre fax"
             default:
                 strPhone = phoneNumber.label!
                 break
@@ -175,11 +175,11 @@ class ContactIOS {
             
             switch email.label {
             case CNLabelHome:
-                strEmail = "Home"
+                strEmail = "Domicile"
             case CNLabelWork:
-                strEmail = "Work"
+                strEmail = "Bureau"
             case CNLabelOther:
-                strEmail = "Other"
+                strEmail = "Autre"
             default:
                 strEmail = email.label!
                 break
@@ -237,8 +237,14 @@ class ContactIOS {
             
             switch url.label {
             case CNLabelURLAddressHomePage:
-                strUrl = "Home"
-            default:
+                strUrl = "Site Web"
+            case CNLabelHome:
+                strUrl = "Domicile"
+            case CNLabelWork:
+                strUrl = "Bureau"
+            case CNLabelOther:
+                strUrl = "Autre"
+           default:
                 strUrl = url.label!
                 break
             }

@@ -184,7 +184,7 @@
         <scene sceneID="RbW-GC-cI3">
             <objects>
                 <tableViewController title="Contacts" id="g9x-iQ-JsE" customClass="contactsTableViewController" customModule="Friends" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="SRc-2g-r64">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="SRc-2g-r64">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -205,6 +205,7 @@
                                         <imageView userInteractionEnabled="NO" tag="1003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q0b-aW-0fU">
                                             <rect key="frame" x="9" y="3" width="49" height="49"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="49" id="0If-SQ-OzR"/>
                                                 <constraint firstAttribute="height" constant="49" id="7eb-zs-tsG"/>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="N4K-Mc-m2g"/>
                                                 <constraint firstAttribute="width" constant="49" id="jmu-a3-WMN"/>
@@ -218,6 +219,9 @@
                                         </label>
                                         <button opaque="NO" tag="1001" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWe-r2-FTj">
                                             <rect key="frame" x="296" y="3" width="63" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="63" id="SZl-8r-njj"/>
+                                            </constraints>
                                             <state key="normal" title="Imported"/>
                                         </button>
                                     </subviews>
@@ -229,9 +233,9 @@
                                         <constraint firstItem="oWe-r2-FTj" firstAttribute="leading" secondItem="TEq-Pd-PeF" secondAttribute="trailing" constant="8" id="C3v-OL-Zce"/>
                                         <constraint firstItem="Q0b-aW-0fU" firstAttribute="leading" secondItem="efl-c8-GPZ" secondAttribute="leading" constant="9" id="Kn4-As-AJf"/>
                                         <constraint firstAttribute="bottom" secondItem="6g0-gt-bcM" secondAttribute="bottom" constant="5.5" id="Q65-3M-q9z"/>
+                                        <constraint firstItem="TEq-Pd-PeF" firstAttribute="leading" secondItem="efl-c8-GPZ" secondAttribute="leading" constant="66" id="cwg-va-g9V"/>
                                         <constraint firstAttribute="trailing" secondItem="oWe-r2-FTj" secondAttribute="trailing" constant="16" id="lXo-xg-Vqt"/>
                                         <constraint firstItem="6g0-gt-bcM" firstAttribute="leading" secondItem="Q0b-aW-0fU" secondAttribute="trailing" constant="8" id="phr-j8-rIp"/>
-                                        <constraint firstItem="TEq-Pd-PeF" firstAttribute="leading" secondItem="Q0b-aW-0fU" secondAttribute="trailing" constant="8" id="rEa-dW-b1f"/>
                                         <constraint firstItem="Q0b-aW-0fU" firstAttribute="top" secondItem="efl-c8-GPZ" secondAttribute="top" constant="3" id="xHt-fX-eX3"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -245,7 +249,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iqx-8D-ndb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2572" y="3521"/>
+            <point key="canvasLocation" x="2572" y="3520.3898050974517"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="pvZ-Od-Fei">

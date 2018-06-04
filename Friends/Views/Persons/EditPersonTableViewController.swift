@@ -20,14 +20,14 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     
     //---------------------------------------------------------------------------
     @IBAction func SavePerson(_ sender: Any) {
-        self.person!.save()
         dismiss(animated: true, completion: {
+            self.person!.save()
             self.detailView?.configureViewPersonne()
             self.masterView?.tableView.reloadData()
-        /* DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.detailView?.configureViewPersonne()
-                self.masterView?.tableView.reloadData()
-            }*/
+            /* DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+             self.detailView?.configureViewPersonne()
+             self.masterView?.tableView.reloadData()
+             }*/
         })
     }
     //---------------------------------------------------------------------------

@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+//---------------------------------------------------------------------------
 class Person: Object {
     @objc dynamic var prenom = ""
     @objc dynamic var nom = ""
@@ -27,8 +28,9 @@ class Person: Object {
     @objc dynamic var imageData: Data?
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var originalID = ""
-
     
+    
+    //---------------------------------------------------------------------------
     convenience init(prenom: String, nom: String) {
         self.init()
         self.prenom = prenom
@@ -36,6 +38,7 @@ class Person: Object {
     }
     
     // Contructeur de copie pour déconnecter de Realm
+    //---------------------------------------------------------------------------
     convenience init(person: Person) {
         self.init()
         self.prenom = person.prenom
@@ -57,6 +60,7 @@ class Person: Object {
         self.originalID = person.originalID
     }
     
+    //---------------------------------------------------------------------------
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -64,6 +68,7 @@ class Person: Object {
 
 extension Person {
     
+    //---------------------------------------------------------------------------
     public var fullName: String {
         if nom == "" {
             return prenom
@@ -71,6 +76,7 @@ extension Person {
         return "\(prenom) \(nom)"
     }
     
+    //---------------------------------------------------------------------------
     public func age() -> Int? {
         if let dateNaisDate = dateNais {
             let now = Date()
@@ -81,18 +87,116 @@ extension Person {
         }
         return nil
     }
+    
+    //---------------------------------------------------------------------------
     public func save() {
-        /*let realm = try! Realm()
+        let realm = try! Realm()
         try! realm.write {
             realm.add(self, update: true)
-        }*/
+        }
+        /*let realm = try! Realm()
+         realm.beginWrite()
+         realm.add(self, update: true)
+         try! realm.commitWrite()*/
+    }
+    
+    //---------------------------------------------------------------------------
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    //---------------------------------------------------------------------------
+    
+    
+    //---------------------------------------------------------------------------
+    public func cadeauxRecusSortedByDonateur() -> String {
         let realm = try! Realm()
-        realm.beginWrite()
-        realm.add(self, update: true)
-        try! realm.commitWrite()
-
         
+        var strRetour = ""
+        //Liste des donateurs
+        var lesDonateurs = [Person]()
+        for gift in cadeauxRecus {
+            for aDonateur in gift.donateurs {
+                if !lesDonateurs.contains(aDonateur) {
+                    lesDonateurs.append(aDonateur)
+                }
+            }
+        }
+        //on trie les donnateurs alpha
+        lesDonateurs.sort {
+            ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
+        }
+        
+        for aDonateur in lesDonateurs {
+            strRetour += "• de \(aDonateur.fullName) : "
+            // récupérer les cadeaux du donateur concerné
+            let cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
+            
+            for aCadeau in cadeaux {
+                strRetour += aCadeau.name
+                if aCadeau == cadeaux.last {
+                    strRetour += "\n"
+                } else {
+                    strRetour += ", "
+                }
+            }
+            
+        }
+        return strRetour
+    }
+    
+    //---------------------------------------------------------------------------
+    public func cadeauxOffertsSortedByBeneficiaire() -> String {
+        let realm = try! Realm()
+        
+        var strRetour = ""
+        //Liste des bénéficiaires
+        var lesBeneficiaires = [Person]()
+        for gift in cadeauxOfferts {
+            for aBeneficiaire in gift.beneficiaires {
+                if !lesBeneficiaires.contains(aBeneficiaire) {
+                    lesBeneficiaires.append(aBeneficiaire)
+                }
+            }
+        }
+        //on trie les bénéficiaires alpha
+        lesBeneficiaires.sort {
+            ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
+        }
+        
+        for aBeneficiaire in lesBeneficiaires {
+            strRetour += "• à \(aBeneficiaire.fullName) : "
+            // récupérer les cadeaux du donateur concerné
+            let cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", self, aBeneficiaire).sorted(byKeyPath: "date", ascending: false)
+            
+            for aCadeau in cadeaux {
+                strRetour += aCadeau.name
+                if aCadeau == cadeaux.last {
+                    strRetour += "\n"
+                } else {
+                    strRetour += ", "
+                }
+            }
+            
+        }
+        return strRetour
+    }
+
+    //---------------------------------------------------------------------------
+    public func ideesCadeaux() -> String {
+        let sortedCadeaux = cadeauxIdees.sorted(byKeyPath: "date", ascending: false)
+        
+        var strRetour = ""
+        
+        for aCadeau in sortedCadeaux {
+            strRetour += aCadeau.name
+            if aCadeau == sortedCadeaux.last {
+                strRetour += "…"
+            } else {
+                strRetour += ", "
+            }
+        }
+        return strRetour
     }
 }
-
 
