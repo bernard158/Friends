@@ -9,69 +9,32 @@
 import UIKit
 import RealmSwift
 
-class GiftTableViewController: UITableViewController {
+class GiftViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     private var gifts: Results<Gift>?
     // private var filteredCandies: Results<Person>?
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
     
+    @IBOutlet weak var tableViewMasterCadeaux: UITableView!
     //---------------------------------------------------------------------------
     @IBAction func addGift(_ sender: Any) {
         print("addGift")
     }
 
     //---------------------------------------------------------------------------
+    @IBAction func nomEditChange(_ sender: UITextField) {
+        if sender.text!.count >= 2 {
+            print("nomEditchange")
+        }
+  }
+    //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
         realm = try! Realm()
         gifts = realm!.objects(Gift.self).sorted(by: ["name"])
         
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Recherche par nom du cadeau"
-        //navigationItem.searchController = searchController
-        
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = false
-        } else {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-        
-        /*
-         definesPresentationContext = true
-         
-         // Setup the Scope Bar
-         searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-         searchController.searchBar.delegate = self
-         
-         // Setup the search footer
-         tableView.tableFooterView = searchFooter
-         */
-        
-        searchController.searchBar.backgroundColor = UIColor.white
-        
-        //searchController.searchBar.frame.origin.y = searchController.searchBar.frame.origin.y + 5
-        
-        for subView in searchController.searchBar.subviews {
-            
-            for subViewOne in subView.subviews {
-                if let textField = subViewOne as? UITextField {
-                    //use the code below if you want to change the color of placeholder
-                    let textFieldInsideUISearchBarLabel = textField.value(forKey: "placeholderLabel") as? UILabel
-                    textFieldInsideUISearchBarLabel?.adjustsFontSizeToFitWidth = true
-                }
-            }
-        }
-
     }
     
     //---------------------------------------------------------------------------
@@ -81,28 +44,12 @@ class GiftTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gifts?.count ?? 0
-    }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        print("commit")
-        let gift = gifts![indexPath.row]
-        try! realm?.write {
-            realm?.delete(gift)
-            tableView.reloadData()
-        }
     }
     
-   //---------------------------------------------------------------------------
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "giftCell", for: indexPath)
         
         let gift = gifts![indexPath.row]
@@ -126,10 +73,20 @@ class GiftTableViewController: UITableViewController {
         imageView.image = image
         
         return cell
+
     }
-    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("commit")
+        let gift = gifts![indexPath.row]
+        try! realm?.write {
+            realm?.delete(gift)
+            tableView.reloadData()
+        }
+
+    }
+
     //---------------------------------------------------------------------------
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+    /*func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         if searchBarIsEmpty() {
             gifts = realm!.objects(Gift.self).sorted(by: ["name"])
         } else {
@@ -147,7 +104,7 @@ class GiftTableViewController: UITableViewController {
         let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
-    
+    */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addGift" {
             segue.destination.title = "Ajout cadeau"
@@ -156,12 +113,12 @@ class GiftTableViewController: UITableViewController {
 }
 
 //---------------------------------------------------------------------------
-extension GiftTableViewController: UISearchResultsUpdating {
+/*extension GiftTableViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         //let searchBar = searchController.searchBar
         //let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
         filterContentForSearchText(searchController.searchBar.text!, scope: "")
     }
-}
+}*/
 

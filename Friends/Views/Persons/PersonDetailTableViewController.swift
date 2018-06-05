@@ -13,18 +13,12 @@ class PersonDetailTableViewController: UITableViewController {
     
     var person: Person? {
         didSet {
-            /*
-             let realm = try! Realm()
-             realm.beginWrite()
-             person?.prenom += " Toto"
-             try! realm.commitWrite()
-             */
             configureViewPersonne()
         }
     }
     var sections: [Section] = []
-    public var openInEdition = false
-    
+    private var itemsToken: NotificationToken?
+
     
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
@@ -35,6 +29,11 @@ class PersonDetailTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(PersonDetailTableViewController.editDetail))
+        
+        itemsToken = person?.observe( { change in
+
+            self.clearView()
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +42,7 @@ class PersonDetailTableViewController: UITableViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonDetailTableViewController")
+        itemsToken?.invalidate()
     }
     override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonDetailTableViewController")
@@ -78,7 +78,7 @@ class PersonDetailTableViewController: UITableViewController {
         clearView()
         
         // Update the user interface for the detail item.
-        let personne = person!
+        guard let personne = person else { return }
         
         //section nom prénom ---------------------------------------
         let sectionNomPrenom = Section(title: "")
@@ -228,7 +228,7 @@ class PersonDetailTableViewController: UITableViewController {
     }
     
     //---------------------------------------------------------------------------
-    func clearView() {
+    public func clearView() {
         sections.removeAll(keepingCapacity: false)
         // tableView.reloadData()
         //tableView.setNeedsDisplay()
@@ -261,6 +261,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
+
         let personne = person!
         
         //Titre Nom prénom, photo date nais age

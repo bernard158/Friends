@@ -12,28 +12,53 @@ import RealmSwift
 class PersonsTableViewController: UITableViewController {
     
     private var persons: Results<Person>?
-
+    private var itemsToken: NotificationToken?
+    
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
     var okForReload = true
     var currentSearchbarText = ""
-    var openInEdition = false
     
     //---------------------------------------------------------------------------
     @IBAction func addPerson(_ sender: Any) {
         print("add person")
         
-        //Création d'une personne vide
-        let newPerson: Person = Person(prenom: "", nom: "Sans nom")
-        newPerson.save()
-        tableView.reloadData()
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        // sélectionner la nouvelle personne
-        let index = persons!.index(of: newPerson)
-        tableView.selectRow(at: IndexPath(item: index!, section: 0), animated: true, scrollPosition: .middle)
-        //ouvrir la saisie
-        openInEdition = true
-        performSegue(withIdentifier: "personMasterDetail", sender: self)
+        alert.addAction(UIAlertAction(title: "Créer une nouvelle personne", style: .default) { _ in
+            //Création d'une personne vide
+            let newPerson: Person = Person(prenom: "", nom: "Sans nom")
+            newPerson.save()
+            self.tableView.reloadData()
+            
+            // sélectionner la nouvelle personne
+            let index = self.persons!.index(of: newPerson)
+            self.tableView.selectRow(at: IndexPath(item: index!, section: 0), animated: true, scrollPosition: .middle)
+            //ouvrir la saisie
+            self.performSegue(withIdentifier: "personMasterDetail", sender: self)
+        })
+        
+        alert.addAction(UIAlertAction(title: "Importer des contacts", style: .default) { _ in
+            let importContacts = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactsModal")
+            //let  importContacts:contactsTableViewController = importContacts.childViewControllers.first as! contactsTableViewController
+            //let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
+            //editView.masterView = (leftNavController.topViewController as? PersonsTableViewController)
+            
+            importContacts.modalPresentationStyle = UIModalPresentationStyle.formSheet
+            importContacts.preferredContentSize = CGSize(width: 500, height: 800)
+            
+            self.present(importContacts, animated: true, completion: nil)
+            
+        })
+        
+        alert.addAction(UIAlertAction(title: "Annuler", style: .cancel) { _ in
+            
+        })
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.barButtonItem = sender as? UIBarButtonItem
+        }
+        present(alert, animated: true)
     }
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
@@ -46,6 +71,13 @@ class PersonsTableViewController: UITableViewController {
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         realm = try! Realm()
         persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
+        if persons!.count > 0 {
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            if UIDevice().userInterfaceIdiom == .pad { // iPad
+                self.performSegue(withIdentifier: "personMasterDetail", sender: self)
+            }
+        }
         
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -62,11 +94,13 @@ class PersonsTableViewController: UITableViewController {
         
         searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
         
+        
+        
         /*
-        if UIDevice().userInterfaceIdiom == .pad { // iPad
-            tableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
-            performSegue(withIdentifier: "personMasterDetail", sender: self)
-        }*/
+         if UIDevice().userInterfaceIdiom == .pad { // iPad
+         tableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+         performSegue(withIdentifier: "personMasterDetail", sender: self)
+         }*/
         /*
          definesPresentationContext = true
          
@@ -90,11 +124,11 @@ class PersonsTableViewController: UITableViewController {
     //---------------------------------------------------------------------------
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear PersonsTableViewController")
-       /* if splitViewController!.isCollapsed {
-            if let selectionIndexPath = tableView.indexPathForSelectedRow {
-                tableView.deselectRow(at: selectionIndexPath, animated: animated)
-            }
-        }*/
+        /* if splitViewController!.isCollapsed {
+         if let selectionIndexPath = tableView.indexPathForSelectedRow {
+         tableView.deselectRow(at: selectionIndexPath, animated: animated)
+         }
+         }*/
         let searchBar = searchController.searchBar
         searchController.isActive = true
         searchBar.text = currentSearchbarText
@@ -126,6 +160,16 @@ class PersonsTableViewController: UITableViewController {
         }
         //searchController.searchBar.isHidden = false
         
+        itemsToken = persons?.observe( { change in
+            //print("itemToken")
+            switch change {
+            case .initial:
+                print()
+            default:
+                self.tableView.reloadData()
+           }
+        })
+        
         
         super.viewWillAppear(animated)
     }
@@ -137,10 +181,10 @@ class PersonsTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonsTableViewController")
-        
+        itemsToken?.invalidate()
     }
     override func viewDidDisappear(_ animated: Bool) {
-       // print("viewDidDisappear PersonsTableViewController")
+        // print("viewDidDisappear PersonsTableViewController")
         
     }
     //---------------------------------------------------------------------------
@@ -164,7 +208,29 @@ class PersonsTableViewController: UITableViewController {
         let person = persons![indexPath.row]
         try! realm?.write {
             realm?.delete(person)
-            tableView.reloadData()
+            //tableView.reloadData()
+        }
+        //print(indexPath)
+        
+        if UIDevice().userInterfaceIdiom == .pad { // iPad
+            var newIndexPath = IndexPath(row: 0, section: 0)
+            
+            // il faut attendre un peu pour que la sélection se fasse !!!
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                if !self.persons!.isEmpty {
+                    newIndexPath.row = indexPath.row - 1
+                    if newIndexPath.row == -1 {
+                        newIndexPath.row = 0
+                    }
+                    tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .top)
+                    //print(newIndexPath)
+                    //let indexPath2 = tableView.indexPathForSelectedRow
+                    //print(indexPath2)
+                    
+                    self.performSegue(withIdentifier: "personMasterDetail", sender: self)
+                }
+            }
+            
         }
     }
     
@@ -230,9 +296,7 @@ class PersonsTableViewController: UITableViewController {
             currentSearchbarText = searchController.searchBar.text!
             if let indexPath = tableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
-                controller.openInEdition = openInEdition
                 controller.person = persons![indexPath.row]
-                openInEdition = false
                 
                 //Sur un iphone, l'app recharge la liste complète avant de basculer sur l'écran Détail.
                 // Pour éviter le clignotement d'écran occasionné, on bloque le reloadData
@@ -258,6 +322,7 @@ class PersonsTableViewController: UITableViewController {
 extension PersonsTableViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
+        //print("updateSearchResults")
         //let searchBar = searchController.searchBar
         //let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
         filterContentForSearchText(searchController.searchBar.text!, scope: "")

@@ -12,6 +12,11 @@ class contactsTableViewController: UITableViewController {
     
     var contacts: [ContactIOS]?
     
+    //Depuis ContactsModal
+    @IBAction func doneFromModal(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

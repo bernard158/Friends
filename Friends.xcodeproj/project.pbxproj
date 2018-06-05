@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		A1116C4620BBFB3A004B312B /* Gift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4520BBFB3A004B312B /* Gift.swift */; };
 		A1116C4920BC1E7E004B312B /* GiftSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */; };
-		A1116C4B20BC2083004B312B /* GiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4A20BC2083004B312B /* GiftTableViewController.swift */; };
+		A1116C4B20BC2083004B312B /* GiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4A20BC2083004B312B /* GiftViewController.swift */; };
 		A1116C4D20BC5CA9004B312B /* GiftDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1116C4C20BC5CA9004B312B /* GiftDetailTableViewController.swift */; };
 		A1436D4620C3207C00C26AFE /* BindableFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1436D4520C3207C00C26AFE /* BindableFields.swift */; };
 		A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1561F9620B89EF500685000 /* contactsTableViewController.swift */; };
@@ -33,7 +33,7 @@
 		7C6203C6F17F85CC859256CE /* Pods_Friends.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Friends.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1116C4520BBFB3A004B312B /* Gift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gift.swift; sourceTree = "<group>"; };
 		A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftSplitViewController.swift; sourceTree = "<group>"; };
-		A1116C4A20BC2083004B312B /* GiftTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftTableViewController.swift; sourceTree = "<group>"; };
+		A1116C4A20BC2083004B312B /* GiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftViewController.swift; sourceTree = "<group>"; };
 		A1116C4C20BC5CA9004B312B /* GiftDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftDetailTableViewController.swift; sourceTree = "<group>"; };
 		A1436D4520C3207C00C26AFE /* BindableFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableFields.swift; sourceTree = "<group>"; };
 		A1561F9620B89EF500685000 /* contactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = contactsTableViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */,
-				A1116C4A20BC2083004B312B /* GiftTableViewController.swift */,
+				A1116C4A20BC2083004B312B /* GiftViewController.swift */,
 				A1116C4C20BC5CA9004B312B /* GiftDetailTableViewController.swift */,
 			);
 			path = Gifts;
@@ -309,7 +309,7 @@
 				A1626E7020B6E5550026D04C /* AppDelegate.swift in Sources */,
 				A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */,
 				A1971C2B20C173A000D5E82F /* EditPersonTableViewController.swift in Sources */,
-				A1116C4B20BC2083004B312B /* GiftTableViewController.swift in Sources */,
+				A1116C4B20BC2083004B312B /* GiftViewController.swift in Sources */,
 				A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */,
 				A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */,
 			);
