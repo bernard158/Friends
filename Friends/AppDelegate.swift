@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        demoPopulate()
+        //demoPopulate(deleteRealm: false, populate: true)
+        //demoPopulate(deleteRealm: false, populate: false)
+        demoPopulate(deleteRealm: true, populate: true)
         return true
     }
     
@@ -45,10 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func demoPopulate() {
-        
-        let deleteRealm = true
-        let populate = true
+    func demoPopulate(deleteRealm:Bool, populate: Bool) {
         
         let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
         if deleteRealm {
@@ -58,15 +57,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if !populate { return }
         
+        if !realm.isEmpty { return }
+        
         // création des personnes
         let df = DateFormatter()
         df.dateFormat = "dd'-'MM'-'yyyy"
         
         let sylvette = Person(prenom: "Sylvette", nom: "David")
         sylvette.dateNais = df.date(from: "08-02-1954")
+        sylvette.addresses = "4 rue de la Voûte - 07290 Quintenas"
+        sylvette.urls = "FDQ : familles-de-quintenas.com"
         
         let bernard = Person(prenom: "Bernard", nom: "David")
         bernard.dateNais = df.date(from: "15-08-1952")
+        bernard.addresses = "4 rue de la Voûte - 07290 Quintenas"
         
         let annette = Person(prenom: "Annette", nom: "David")
         
@@ -103,16 +107,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //création des cadeaux
                 let montreBreitling = Gift("Montre Breitling")
                 montreBreitling.date = df.date(from: "15-08-2010")
+                montreBreitling.note = "Offert à Bernard le jour de son anniversaire à Arles, avec Annette et Fabien"
                 sylvette.cadeauxOfferts.append(montreBreitling)
                 bernard.cadeauxRecus.append(montreBreitling)
                 
                 let montreHermes = Gift("Montre Hermès")
                 montreHermes.date = df.date(from: "08-02-2008")
+                montreHermes.note = "Offert à Sylvette lors d'une ballade à Nice"
                 bernard.cadeauxOfferts.append(montreHermes)
                 sylvette.cadeauxRecus.append(montreHermes)
                 
                 let moto = Gift("Moto Yamaha")
                 moto.date = df.date(from: "15-08-1998")
+                moto.note = "Quel cadeau de rêve !!!"
+                moto.url = "http://www.yam34.com"
+                moto.magasin = "YAM34 - 250 Rue de la Jasse, 34130 Mauguio"
+                moto.prix = 5000.0
                 sylvette.cadeauxOfferts.append(moto)
                 bernard.cadeauxRecus.append(moto)
                 
@@ -127,6 +137,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let marcon = Gift("Stage Marcon")
                 marcon.date = df.date(from: "05-07-2014")
+                marcon.magasin = "Régis Marcon - Saint-Bonnet-le-Frois"
+                marcon.url = "http://www.regismarcon.fr/stages.php"
                 nathalie.cadeauxOfferts.append(marcon)
                 jacqueline.cadeauxOfferts.append(marcon)
                 philippe.cadeauxOfferts.append(marcon)
@@ -197,7 +209,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 sylvette.cadeauxIdees.append(rmn)
                 let soins = Gift("Soins de beauté")
                 sylvette.cadeauxIdees.append(soins)
-
+                
             }
         }
         

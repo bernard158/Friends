@@ -106,8 +106,14 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "addGift" {
-            segue.destination.title = "Ajout cadeau"
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "giftMasterDetail" {
+            if let indexPath = tableViewMasterCadeaux.indexPathForSelectedRow {
+                let controller = (segue.destination as! UINavigationController).topViewController as! GiftDetailTableViewController
+                controller.gift = gifts![indexPath.row]
+                
+            }
         }
     }
 }

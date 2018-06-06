@@ -17,7 +17,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
     }
     var sections: [Section] = []
-    private var itemsToken: NotificationToken?
+    //private var itemsToken: NotificationToken?
 
     
     //---------------------------------------------------------------------------
@@ -28,12 +28,12 @@ class PersonDetailTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(PersonDetailTableViewController.editDetail))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(PersonDetailTableViewController.personEditDetail))
         
-        itemsToken = person?.observe( { change in
+        /*itemsToken = person?.observe( { change in
 
             self.clearView()
-        })
+        })*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +42,7 @@ class PersonDetailTableViewController: UITableViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonDetailTableViewController")
-        itemsToken?.invalidate()
+        //itemsToken?.invalidate()
     }
     override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonDetailTableViewController")
@@ -57,8 +57,8 @@ class PersonDetailTableViewController: UITableViewController {
     }
     
     //---------------------------------------------------------------------------
-    @objc func editDetail() {
-        print("editDetail")
+    @objc func personEditDetail() {
+        print("personEditDetail")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
         let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
         editView.person = Person(person: person!) // contructeur de copie
@@ -222,9 +222,7 @@ class PersonDetailTableViewController: UITableViewController {
         
         //---------------------------------------
         
-        
         tableView.reloadData()
-        
     }
     
     //---------------------------------------------------------------------------
@@ -369,7 +367,6 @@ class PersonDetailTableViewController: UITableViewController {
         header.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         header.textLabel?.frame = header.frame
         header.textLabel?.textAlignment = .natural
-        
     }
 }
 

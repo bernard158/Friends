@@ -13,6 +13,9 @@ class Gift: Object {
     @objc dynamic var name = ""
     @objc dynamic var date: Date?
     @objc dynamic var note = ""
+    @objc dynamic var prix: Double = 0.0
+    @objc dynamic var magasin = ""
+    @objc dynamic var url = ""
     @objc dynamic var imageData: Data?
     @objc dynamic var id = UUID().uuidString
     

@@ -222,7 +222,7 @@ class PersonsTableViewController: UITableViewController {
                     if newIndexPath.row == -1 {
                         newIndexPath.row = 0
                     }
-                    tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .top)
+                    tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .middle)
                     //print(newIndexPath)
                     //let indexPath2 = tableView.indexPathForSelectedRow
                     //print(indexPath2)

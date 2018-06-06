@@ -20,7 +20,8 @@ class Ligne {
     var cellIdentifier: String
     var photoData: Data
     var accessoryType:UITableViewCellAccessoryType
-    
+    var deletable:Bool
+
     init() {
         self.sujet = ""
         self.objectRef = nil as AnyObject?
@@ -30,6 +31,7 @@ class Ligne {
         self.cellIdentifier = ""
         self.photoData = Data()
         accessoryType = UITableViewCellAccessoryType.none
+        deletable = false
     }
     
 }
