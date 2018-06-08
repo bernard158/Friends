@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GiftDetailTableViewController: UITableViewController {
     
@@ -17,10 +18,6 @@ class GiftDetailTableViewController: UITableViewController {
         }
     }
     
-    //---------------------------------------------------------------------------
-    @IBAction func editButton(_ sender: Any) {
-        print("editGift")
-    }
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +57,7 @@ class GiftDetailTableViewController: UITableViewController {
         //section Offert par ---------------------------------------
         //if !cadeau.donateurs.isEmpty {
         let sectionDonateurs = Section(title: cadeau.donateurs.isEmpty ? "" : "Offert par")
-        for person in cadeau.donateurs {
+        for person in cadeau.donateurs.sorted(by: ["nom", "prenom"]) {
             let ligneDonateurs = Ligne()
             ligneDonateurs.sujet = "donateurs"
             ligneDonateurs.objectRef = person
@@ -79,9 +76,9 @@ class GiftDetailTableViewController: UITableViewController {
         //section Offert à ---------------------------------------
         //if !cadeau.beneficiaires.isEmpty {
         let sectionBeneficiaire = Section(title: cadeau.beneficiaires.isEmpty ? "" : "Offert à")
-        for person in cadeau.beneficiaires {
+        for person in cadeau.beneficiaires.sorted(by: ["nom", "prenom"]) {
             let ligneBeneficiaire = Ligne()
-            ligneBeneficiaire.sujet = "donateurs"
+            ligneBeneficiaire.sujet = "beneficiaires"
             ligneBeneficiaire.objectRef = person
             ligneBeneficiaire.cellIdentifier = "baseTextCell"
             ligneBeneficiaire.deletable = true
@@ -98,7 +95,7 @@ class GiftDetailTableViewController: UITableViewController {
         //section Idée pour ---------------------------------------
         //if !cadeau.personnesIdee.isEmpty {
         let sectionIdees = Section(title: cadeau.personnesIdee.isEmpty ? "" : "Idée pour")
-        for person in cadeau.personnesIdee {
+        for person in cadeau.personnesIdee.sorted(by: ["nom", "prenom"]) {
             let ligneIdee = Ligne()
             ligneIdee.sujet = "personneIdee"
             ligneIdee.objectRef = person
@@ -173,8 +170,56 @@ class GiftDetailTableViewController: UITableViewController {
         //print("ClearView")
     }
     
+    //---------------------------------------------------------------------------
+    @objc func addDonateurButtonClicked(_ sender:UIButton) {
+        print("addDonateurButtonClicked")
+        
+        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
+         if let indexPath = tableView.indexPath(for: cell) {
+         let aContact = contacts![indexPath.row]
+         //print(aContact.contact)
+         aContact.isImported = true
+         aContact.addToRealm()
+         tableView.reloadRows(at: [indexPath], with: .automatic)
+         }
+         }*/
+    }
+    
+    //---------------------------------------------------------------------------
+    @objc func addBeneficiaireButtonClicked(_ sender:UIButton) {
+        print("addBeneficiaireButtonClicked")
+        
+        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
+         if let indexPath = tableView.indexPath(for: cell) {
+         let aContact = contacts![indexPath.row]
+         //print(aContact.contact)
+         aContact.isImported = true
+         aContact.addToRealm()
+         tableView.reloadRows(at: [indexPath], with: .automatic)
+         }
+         }*/
+    }
+    
+    //---------------------------------------------------------------------------
+    @objc func addIdeeButtonClicked(_ sender:UIButton) {
+        print("addIdeeButtonClicked")
+        
+        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
+         if let indexPath = tableView.indexPath(for: cell) {
+         let aContact = contacts![indexPath.row]
+         //print(aContact.contact)
+         aContact.isImported = true
+         aContact.addToRealm()
+         tableView.reloadRows(at: [indexPath], with: .automatic)
+         }
+         }*/
+    }
+    
+
+
     // MARK: - Table view data source
     
+    //---------------------------------------------------------------------------
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sections.count
@@ -286,22 +331,29 @@ class GiftDetailTableViewController: UITableViewController {
         
         if (aLigne.cellIdentifier == "addPersonCell") {
             let label = cell.viewWithTag(1000) as! UILabel
+            let addButton = cell.viewWithTag(1100) as? UIButton
             
             //Donateurs
             if aLigne.sujet == "addDonateur" {
                 label.text = "Ajouter un donateur"
+                //le bouton add --------------------------------------------------
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addDonateurButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                
             }
             
             //Bénéficiaires
             if aLigne.sujet == "addBeneficiaire" {
                 label.text = "Ajouter un bénéficiaire"
-            }
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addBeneficiaireButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+          }
             
             //Idée pour
             if aLigne.sujet == "addPersonneIdee" {
                 label.text = "Ajouter comme idée pour"
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addIdeeButtonClicked(_:)), for: UIControlEvents.touchUpInside)
             }
         }
+        
         
         return cell
     }
@@ -329,9 +381,27 @@ class GiftDetailTableViewController: UITableViewController {
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print("commit")
+        let aLigne = sections[indexPath.section].lignes[indexPath.row]
+        let aPerson = aLigne.objectRef as! Person
+        let realm = try! Realm()
         
+        try! realm.write {
+            switch aLigne.sujet {
+            case "donateurs":
+                aPerson.cadeauxOfferts.remove(at: aPerson.cadeauxOfferts.index(of: gift!)!)
+            case "beneficiaires":
+                aPerson.cadeauxRecus.remove(at: aPerson.cadeauxRecus.index(of: gift!)!)
+            case "personneIdee":
+                aPerson.cadeauxIdees.remove(at: aPerson.cadeauxIdees.index(of: gift!)!)
+            default:
+                print("switch default commit GiftDetailTableViewController")
+            }
+        }
+        
+        configureViewCadeau()
     }
     
+    //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         // Seules les personnes liées peuvent être supprimées par glissement
@@ -342,6 +412,7 @@ class GiftDetailTableViewController: UITableViewController {
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    //---------------------------------------------------------------------------
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editGift" {
             segue.destination.title = "Editer cadeau"

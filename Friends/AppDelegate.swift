@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let marcon = Gift("Stage Marcon")
                 marcon.date = df.date(from: "05-07-2014")
-                marcon.magasin = "Régis Marcon - Saint-Bonnet-le-Frois"
+                marcon.magasin = "Régis Marcon - Saint-Bonnet-le-Froid"
                 marcon.url = "http://www.regismarcon.fr/stages.php"
                 nathalie.cadeauxOfferts.append(marcon)
                 jacqueline.cadeauxOfferts.append(marcon)

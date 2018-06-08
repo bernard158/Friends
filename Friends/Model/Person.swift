@@ -113,12 +113,22 @@ extension Person {
         let realm = try! Realm()
         
         var strRetour = ""
-        //Liste des donateurs
+        let donateurNonConnu = Person(prenom: "", nom: "?")
+        
+        //Liste des donateurs uniques
         var lesDonateurs = [Person]()
         for gift in cadeauxRecus {
-            for aDonateur in gift.donateurs {
-                if !lesDonateurs.contains(aDonateur) {
-                    lesDonateurs.append(aDonateur)
+            if gift.donateurs .isEmpty {
+                //cadeau sans donateur
+                if !lesDonateurs.contains(donateurNonConnu) {
+                    lesDonateurs.append(donateurNonConnu)
+                }
+
+            } else {
+                for aDonateur in gift.donateurs {
+                    if !lesDonateurs.contains(aDonateur) {
+                        lesDonateurs.append(aDonateur)
+                    }
                 }
             }
         }
@@ -130,7 +140,11 @@ extension Person {
         for aDonateur in lesDonateurs {
             strRetour += "• de \(aDonateur.fullName) : "
             // récupérer les cadeaux du donateur concerné
-            let cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
+            if cadeaux.isEmpty {
+                //on a un cadeau sans donateur connu
+                cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+           }
             
             for aCadeau in cadeaux {
                 strRetour += aCadeau.name
@@ -150,12 +164,21 @@ extension Person {
         let realm = try! Realm()
         
         var strRetour = ""
-        //Liste des bénéficiaires
+        let beneficiaireNonConnu = Person(prenom: "", nom: "?")
+
+        //Liste des bénéficiaires uniques
         var lesBeneficiaires = [Person]()
         for gift in cadeauxOfferts {
-            for aBeneficiaire in gift.beneficiaires {
-                if !lesBeneficiaires.contains(aBeneficiaire) {
-                    lesBeneficiaires.append(aBeneficiaire)
+            if gift.beneficiaires .isEmpty {
+                //cadeau sans bénéficiaire
+                if !lesBeneficiaires.contains(beneficiaireNonConnu) {
+                    lesBeneficiaires.append(beneficiaireNonConnu)
+                }
+            } else {
+                for aBeneficiaire in gift.beneficiaires {
+                    if !lesBeneficiaires.contains(aBeneficiaire) {
+                        lesBeneficiaires.append(aBeneficiaire)
+                    }
                 }
             }
         }
@@ -167,8 +190,12 @@ extension Person {
         for aBeneficiaire in lesBeneficiaires {
             strRetour += "• à \(aBeneficiaire.fullName) : "
             // récupérer les cadeaux du donateur concerné
-            let cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", self, aBeneficiaire).sorted(byKeyPath: "date", ascending: false)
-            
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", self, aBeneficiaire).sorted(byKeyPath: "date", ascending: false)
+            if cadeaux.isEmpty {
+                //on a un cadeau sans bénéficiaire connu
+                cadeaux = realm.objects(Gift.self).filter("ANY beneficiaires.@count == %d AND ANY donateurs == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+            }
+
             for aCadeau in cadeaux {
                 strRetour += aCadeau.name
                 if aCadeau == cadeaux.last {
@@ -191,7 +218,7 @@ extension Person {
         for aCadeau in sortedCadeaux {
             strRetour += aCadeau.name
             if aCadeau == sortedCadeaux.last {
-                strRetour += "…"
+                strRetour += ""
             } else {
                 strRetour += ", "
             }

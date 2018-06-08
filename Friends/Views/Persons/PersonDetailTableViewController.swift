@@ -13,11 +13,10 @@ class PersonDetailTableViewController: UITableViewController {
     
     var person: Person? {
         didSet {
-            configureViewPersonne()
+            //configureViewPersonne()
         }
     }
     var sections: [Section] = []
-    //private var itemsToken: NotificationToken?
 
     
     //---------------------------------------------------------------------------
@@ -30,15 +29,13 @@ class PersonDetailTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(PersonDetailTableViewController.personEditDetail))
         
-        /*itemsToken = person?.observe( { change in
-
-            self.clearView()
-        })*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //print("viewWillAppear PersonDetailTableViewController")
-        
+        configureViewPersonne()
+        super.viewWillAppear(animated)
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonDetailTableViewController")
