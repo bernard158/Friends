@@ -25,28 +25,17 @@ class PersonsTableViewController: UITableViewController {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
+        // ********
         alert.addAction(UIAlertAction(title: "Créer une nouvelle personne", style: .default) { _ in
-            //Création d'une personne vide
-            //let newPerson: Person = Person(prenom: "", nom: "Sans nom")
-            /*newPerson.save()
-            self.tableView.reloadData()
-            
-            // sélectionner la nouvelle personne
-            let index = self.persons!.index(of: newPerson)
-            self.tableView.selectRow(at: IndexPath(item: index!, section: 0), animated: true, scrollPosition: .middle)
-             //ouvrir la saisie
-             self.performSegue(withIdentifier: "personMasterDetail", sender: self)*/
             print("new person")
             let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
             let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
             editView.person = Person() // personne vierge
-            //editView.detailView = self
-            //let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
             editView.masterView = self
             let split = self.splitViewController as? PersonsSplitViewController
             let detail = split?.detailViewController?.viewControllers.first as? PersonDetailTableViewController
             editView.detailView = detail
-
+            
             editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
             editViewNav.preferredContentSize = CGSize(width: 500, height: 800)
             
@@ -54,6 +43,7 @@ class PersonsTableViewController: UITableViewController {
             
         })
         
+        // ********
         alert.addAction(UIAlertAction(title: "Importer des contacts", style: .default) { _ in
             let importContacts = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactsModal")
             //let  importContacts:contactsTableViewController = importContacts.childViewControllers.first as! contactsTableViewController
@@ -67,6 +57,7 @@ class PersonsTableViewController: UITableViewController {
             
         })
         
+        // ********
         alert.addAction(UIAlertAction(title: "Annuler", style: .cancel) { _ in
             
         })
@@ -90,6 +81,7 @@ class PersonsTableViewController: UITableViewController {
         if persons!.count > 0 {
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            //tableView(tableView, didSelectRowAt: indexPath)
             if UIDevice().userInterfaceIdiom == .pad { // iPad
                 self.performSegue(withIdentifier: "personMasterDetail", sender: self)
             }
@@ -99,7 +91,6 @@ class PersonsTableViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Recherche par nom ou prénom"
-        //navigationItem.searchController = searchController
         
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
@@ -108,27 +99,8 @@ class PersonsTableViewController: UITableViewController {
             tableView.tableHeaderView = searchController.searchBar
         }
         
-        searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
-        
-        
-        
-        /*
-         if UIDevice().userInterfaceIdiom == .pad { // iPad
-         tableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
-         performSegue(withIdentifier: "personMasterDetail", sender: self)
-         }*/
-        /*
-         definesPresentationContext = true
-         
-         // Setup the Scope Bar
-         searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-         searchController.searchBar.delegate = self
-         
-         // Setup the search footer
-         tableView.tableFooterView = searchFooter
-         */
-        
-        
+        //searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
+
     }
     
     //---------------------------------------------------------------------------
@@ -146,7 +118,7 @@ class PersonsTableViewController: UITableViewController {
          }
          }*/
         let searchBar = searchController.searchBar
-        searchController.isActive = true
+        //searchController.isActive = true
         searchBar.text = currentSearchbarText
         updateSearchResults(for: searchController)
         tableView.reloadData()
@@ -174,8 +146,6 @@ class PersonsTableViewController: UITableViewController {
                 }
             }
         }
-        //searchController.searchBar.isHidden = false
-        
         itemsToken = persons?.observe( { change in
             //print("itemToken")
             switch change {
@@ -183,7 +153,7 @@ class PersonsTableViewController: UITableViewController {
                 print()
             default:
                 self.tableView.reloadData()
-           }
+            }
         })
         
         
@@ -238,7 +208,7 @@ class PersonsTableViewController: UITableViewController {
                     if newIndexPath.row == -1 {
                         newIndexPath.row = 0
                     }
-                    tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .middle)
+                    tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .top)
                     //print(newIndexPath)
                     //let indexPath2 = tableView.indexPathForSelectedRow
                     //print(indexPath2)
@@ -317,11 +287,7 @@ class PersonsTableViewController: UITableViewController {
                 //Sur un iphone, l'app recharge la liste complète avant de basculer sur l'écran Détail.
                 // Pour éviter le clignotement d'écran occasionné, on bloque le reloadData
                 if UIDevice().userInterfaceIdiom == .phone { // iPhone
-                    //print("prepare segue okForReload = \(okForReload)")
                     updateSearchResults(for: searchController)
-                    okForReload = false
-                    searchController.isActive = false
-                    okForReload = true
                 } else { //iPad
                     //on masque le clavier
                     searchController.searchBar.resignFirstResponder()

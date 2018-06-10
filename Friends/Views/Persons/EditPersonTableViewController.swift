@@ -23,15 +23,21 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     @IBAction func SavePerson(_ sender: Any) {
         dismiss(animated: true, completion: {
             self.person!.save()
+            //mise à jour de la vue détail (iPad)
+            self.detailView?.person = self.person!
             self.detailView?.configureViewPersonne()
             
             //sélection de la ligne créee ou modifiée
-            if let index = self.masterView?.persons?.index(of: self.person!) {
-                self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .middle)
-                self.detailView?.person = self.person!
-            }
             
             self.masterView?.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if let index = self.masterView?.persons?.index(of: self.person!) {
+                    print(index)
+                    print((self.masterView?.persons?.count)!)
+                    let indexPath = IndexPath(row: index, section: 0)
+                    self.masterView?.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+                }
+            }
         })
     }
     //---------------------------------------------------------------------------
