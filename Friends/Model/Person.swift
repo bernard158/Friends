@@ -77,6 +77,17 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
+    public var strDateNais: String {
+        return strDateFormat(dateNais)
+    }
+    
+    //---------------------------------------------------------------------------
+    public var strAge: String {
+        guard dateNais != nil else { return "" }
+        return String(age()!)
+    }
+    
+    //---------------------------------------------------------------------------
     public func age() -> Int? {
         if let dateNaisDate = dateNais {
             let now = Date()

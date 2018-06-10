@@ -195,6 +195,17 @@ public func attrStr(str: String, lineSpacing: CGFloat = 6.0, fontSize:CGFloat = 
 }
 
 //---------------------------------------------------------------------------
+public func strDateFormat(_ date: Date?) -> String {
+    guard let date = date else { return "" }
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = DateFormatter.Style.medium
+    dateFormatter.timeStyle = DateFormatter.Style.none
+    
+    return dateFormatter.string(from: date)
+}
+
+//---------------------------------------------------------------------------
 // MARK: - Extensions
 
 //---------------------------------------------------------------------------

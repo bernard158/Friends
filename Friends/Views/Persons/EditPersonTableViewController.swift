@@ -16,6 +16,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     public var masterView: PersonsTableViewController?
     var sections: [Section] = []
     var previousPosition:CGRect = CGRect()
+    var dateTextField: UITextField?
     
     
     //---------------------------------------------------------------------------
@@ -23,11 +24,14 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         dismiss(animated: true, completion: {
             self.person!.save()
             self.detailView?.configureViewPersonne()
+            
+            //sélection de la ligne créee ou modifiée
+            if let index = self.masterView?.persons?.index(of: self.person!) {
+                self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .middle)
+                self.detailView?.person = self.person!
+            }
+            
             self.masterView?.tableView.reloadData()
-            /* DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-             self.detailView?.configureViewPersonne()
-             self.masterView?.tableView.reloadData()
-             }*/
         })
     }
     //---------------------------------------------------------------------------
@@ -82,14 +86,21 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         lignePrenom.sujet = "prenom"
         lignePrenom.placeHolder = "Prénom"
         
+        let ligneDate = Ligne()
+        ligneDate.cellIdentifier = "textFieldCell"
+        ligneDate.sujet = "dateNais"
+        ligneDate.placeHolder = "Date de naissance"
+        
         sectionNomPrenom.lignes.append(ligneNom)
         sectionNomPrenom.lignes.append(lignePrenom)
+        sectionNomPrenom.lignes.append(ligneDate)
+        
         sections.append(sectionNomPrenom)
         
         //section adresses ---------------------------------------
         let sectionAdresses = Section(title: "Adresse")
         let ligneAdresses = Ligne()
-        ligneAdresses.cellIdentifier = "textViewCell"
+        ligneAdresses.cellIdentifier = "editTextViewCell"
         ligneAdresses.sujet = "addresses"
         
         sectionAdresses.lignes.append(ligneAdresses)
@@ -98,7 +109,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section phones ---------------------------------------
         let sectionPhones = Section(title: "Téléphones")
         let lignePhones = Ligne()
-        lignePhones.cellIdentifier = "textViewCell"
+        lignePhones.cellIdentifier = "editTextViewCell"
         lignePhones.sujet = "phones"
         
         sectionPhones.lignes.append(lignePhones)
@@ -107,7 +118,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section emails ---------------------------------------
         let sectionEmails = Section(title: "Emails")
         let ligneEmails = Ligne()
-        ligneEmails.cellIdentifier = "textViewCell"
+        ligneEmails.cellIdentifier = "editTextViewCell"
         ligneEmails.sujet = "emails"
         
         sectionEmails.lignes.append(ligneEmails)
@@ -116,7 +127,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section socialProfiles ---------------------------------------
         let sectionSocialProfiles = Section(title: "Réseaux sociaux")
         let ligneSocialProfiles = Ligne()
-        ligneSocialProfiles.cellIdentifier = "textViewCell"
+        ligneSocialProfiles.cellIdentifier = "editTextViewCell"
         ligneSocialProfiles.sujet = "socialProfiles"
         
         sectionSocialProfiles.lignes.append(ligneSocialProfiles)
@@ -125,7 +136,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section urls ---------------------------------------
         let sectionUrls = Section(title: "URLs")
         let ligneUrls = Ligne()
-        ligneUrls.cellIdentifier = "textViewCell"
+        ligneUrls.cellIdentifier = "editTextViewCell"
         ligneUrls.sujet = "urls"
         
         sectionUrls.lignes.append(ligneUrls)
@@ -134,7 +145,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section Aime ---------------------------------------
         let sectionAime = Section(title: "Aime")
         let ligneAime = Ligne()
-        ligneAime.cellIdentifier = "textViewCell"
+        ligneAime.cellIdentifier = "editTextViewCell"
         ligneAime.sujet = "likeYes"
         
         sectionAime.lignes.append(ligneAime)
@@ -143,7 +154,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section AimePas ---------------------------------------
         let sectionAimePas = Section(title: "N'aime pas")
         let ligneAimePas = Ligne()
-        ligneAimePas.cellIdentifier = "textViewCell"
+        ligneAimePas.cellIdentifier = "editTextViewCell"
         ligneAimePas.sujet = "likeNo"
         
         sectionAimePas.lignes.append(ligneAimePas)
@@ -152,7 +163,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //section note ---------------------------------------
         let sectionNote = Section(title: "Note")
         let ligneNote = Ligne()
-        ligneNote.cellIdentifier = "textViewCell"
+        ligneNote.cellIdentifier = "editTextViewCell"
         ligneNote.sujet = "note"
         
         sectionNote.lignes.append(ligneNote)
@@ -199,13 +210,28 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
                 textField.text = person!.nom
             case "prenom":
                 textField.text = person!.prenom
-            default:
+            case "dateNais":
+               // textField.isEnabled = false
+                textField.text = strDateFormat(person!.dateNais)
+                dateTextField = textField
+                let datePickerView:UIDatePicker = UIDatePicker()
+                datePickerView.datePickerMode = UIDatePickerMode.date
+                if let date = person?.dateNais {
+                    datePickerView.date = date
+                }
+                textField.inputView = datePickerView
+                datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControlEvents.valueChanged )
+                
+                    
+                    
+          default:
                 print("switch default")
             }
         }
         
-        //textViewCell
-        if (aLigne.cellIdentifier == "textViewCell") {
+        
+        //editTextViewCell
+        if (aLigne.cellIdentifier == "editTextViewCell") {
             let cell = cell as! EditableTextViewCell
             let textView = cell.viewWithTag(1001) as! BindableUITextView
             textView.addBorder()
@@ -282,7 +308,6 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         return cell
     }
     
-   
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
@@ -292,6 +317,19 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         } else {
             return 35.0
         }
+    }
+    
+    // MARK: - UIDatePicker
+   //---------------------------------------------------------------------------
+   // Make a dateFormatter in which format you would like to display the selected date in the textfield.
+    @objc func datePickerValueChanged(sender:UIDatePicker) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        
+        dateTextField!.text = dateFormatter.string(from: sender.date)
+        person?.dateNais = sender.date
     }
     
     // MARK: - UITextField delegate

@@ -245,26 +245,14 @@ class GiftDetailTableViewController: UITableViewController {
         
         guard let cadeau = gift else { return cell }
         
-        //Titre Nom prénom, photo date nais age
+        //Titre  photo date
         if (aLigne.cellIdentifier == "CellTitre") {
             let labelNom = cell.viewWithTag(1001) as! UILabel
             labelNom.text = cadeau.name
-            //let labelPrenom = cell.viewWithTag(1002) as! UILabel
-            //labelPrenom.text = personne.prenom
             let labelJourMois = cell.viewWithTag(1003) as! UILabel
-            //xxx labelJourMois.text = Date.getDayMonth(personne.dateNais)
-            //let labelAge = cell.viewWithTag(1004) as! UILabel
-            //xxx labelAge.text = Date.calculateAge(personne.dateNais)
-            let df = DateFormatter()
-            df.dateFormat = "dd-MM-yyyy"
-            if let dateCadeau = cadeau.date {
-                let strDate = df.string(from: dateCadeau)
-                labelJourMois.text = strDate
-                //labelAge.text = String(personne.age()!)
-            } else {
-                labelJourMois.text = ""
-                //labelAge.text = ""
-            }
+            labelJourMois.text = strDateFormat(cadeau.date)
+
+            
             //image
             var image = UIImage()
             let imageView = cell.viewWithTag(1000) as! UIImageView
@@ -291,16 +279,6 @@ class GiftDetailTableViewController: UITableViewController {
                 textView.attributedText = attrStr(str: "\(String(cadeau.prix)) €")
             case "note":
                 textView.attributedText = attrStr(str: cadeau.note)
-                /*case "addresses":
-                 textView.attributedText = attrStr(str: personne.addresses)
-                 case "phones":
-                 textView.attributedText = attrStr(str: personne.phones)
-                 case "urls":
-                 textView.attributedText = attrStr(str: personne.urls)
-                 case "likeYes":
-                 textView.attributedText = attrStr(str: personne.likeYes)
-                 case "likeNo":
-                 textView.attributedText = attrStr(str: personne.likeNo)*/
                 
             default:
                 print("default switch")

@@ -269,16 +269,9 @@ class PersonDetailTableViewController: UITableViewController {
             //xxx labelJourMois.text = Date.getDayMonth(personne.dateNais)
             let labelAge = cell.viewWithTag(1004) as! UILabel
             //xxx labelAge.text = Date.calculateAge(personne.dateNais)
-            let df = DateFormatter()
-            df.dateFormat = "dd-MM-yyyy"
-            if let dateNais = personne.dateNais {
-                let strDate = df.string(from: dateNais)
-                labelJourMois.text = strDate
-                labelAge.text = String(personne.age()!)
-            } else {
-                labelJourMois.text = ""
-                labelAge.text = ""
-            }
+            labelJourMois.text = person?.strDateNais
+            labelAge.text = person?.strAge
+
             //image
             var image = UIImage()
             let imageView = cell.viewWithTag(1000) as! UIImageView

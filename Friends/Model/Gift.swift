@@ -66,4 +66,11 @@ extension Gift {
         }
         return "\(name): \(pour) \(strRetour)"
     }
+    
+    public var strDateCadeau: String {
+        return strDateFormat(date)
+    }
+    
+    //---------------------------------------------------------------------------
+
 }

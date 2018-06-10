@@ -936,7 +936,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="textViewCell" rowHeight="85" id="gpA-Sk-67b" userLabel="textViewCell" customClass="EditableTextViewCell" customModule="Friends" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="editTextViewCell" rowHeight="85" id="gpA-Sk-67b" customClass="EditableTextViewCell" customModule="Friends" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gpA-Sk-67b" id="cvH-5e-KPX">
@@ -979,7 +979,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ERY-VK-VGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4520.8000000000002" y="-604.04797601199402"/>
+            <point key="canvasLocation" x="4520.5" y="-604.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZJT-g7-VeC">
