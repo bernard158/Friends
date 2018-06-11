@@ -15,7 +15,6 @@ class PersonsTableViewController: UITableViewController {
     private var itemsToken: NotificationToken?
     
     let searchController = UISearchController(searchResultsController: nil)
-    var realm: Realm?
     var currentSearchbarText = ""
     
     //---------------------------------------------------------------------------
@@ -75,8 +74,8 @@ class PersonsTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
-        realm = try! Realm()
-        persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
+        let realm = RealmDB.getRealm()!
+        persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
         if persons!.count > 0 {
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
@@ -99,7 +98,7 @@ class PersonsTableViewController: UITableViewController {
         }
         
         //searchController.searchBar.setValue("Annuler", forKey: "cancelButtonText")
-
+        
     }
     
     //---------------------------------------------------------------------------
@@ -110,7 +109,7 @@ class PersonsTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     override func viewWillAppear(_ animated: Bool) {
-       // print("viewWillAppear PersonsTableViewController")
+        // print("viewWillAppear PersonsTableViewController")
         /* if splitViewController!.isCollapsed {
          if let selectionIndexPath = tableView.indexPathForSelectedRow {
          tableView.deselectRow(at: selectionIndexPath, animated: animated)
@@ -193,8 +192,9 @@ class PersonsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
         let person = persons![indexPath.row]
-        try! realm?.write {
-            realm?.delete(person)
+        let realm = RealmDB.getRealm()!
+        try! realm.write {
+            realm.delete(person)
             //tableView.reloadData()
         }
         
@@ -209,9 +209,6 @@ class PersonsTableViewController: UITableViewController {
                         newIndexPath.row = 0
                     }
                     tableView.selectRow(at: newIndexPath, animated: true, scrollPosition: .top)
-                    //print(newIndexPath)
-                    //let indexPath2 = tableView.indexPathForSelectedRow
-                    //print(indexPath2)
                     
                     self.performSegue(withIdentifier: "personMasterDetail", sender: self)
                 }
@@ -249,11 +246,12 @@ class PersonsTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        let realm = RealmDB.getRealm()!
         if (searchBarIsEmpty()) {
-            persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
+            persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
         } else {
             let strSearch = searchText.lowercased()
-            persons = realm!.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(by: ["nom", "prenom"])
+            persons = realm.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(by: ["nom", "prenom"])
         }
         tableView.reloadData()
         

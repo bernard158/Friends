@@ -130,14 +130,10 @@ extension Person {
     
     //---------------------------------------------------------------------------
     public func save() {
-        let realm = try! Realm()
+        let realm = RealmDB.getRealm()!
         try! realm.write {
             realm.add(self, update: true)
         }
-        /*let realm = try! Realm()
-         realm.beginWrite()
-         realm.add(self, update: true)
-         try! realm.commitWrite()*/
     }
     
     //---------------------------------------------------------------------------
@@ -150,8 +146,8 @@ extension Person {
     
     //---------------------------------------------------------------------------
     public func cadeauxRecusSortedByDonateur() -> String {
-        let realm = try! Realm()
-        
+        let realm = RealmDB.getRealm()!
+
         var strRetour = ""
         let donateurNonConnu = Person(prenom: "", nom: "?")
         
@@ -201,8 +197,8 @@ extension Person {
     
     //---------------------------------------------------------------------------
     public func cadeauxOffertsSortedByBeneficiaire() -> String {
-        let realm = try! Realm()
-        
+        let realm = RealmDB.getRealm()!
+
         var strRetour = ""
         let beneficiaireNonConnu = Person(prenom: "", nom: "?")
 

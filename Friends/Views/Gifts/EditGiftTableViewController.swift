@@ -23,7 +23,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
             //mise à jour de la vue détail (iPad)
             self.detailView?.gift = self.gift!
             self.detailView?.configureViewCadeau()
-            print(self.detailView)
+            //print(self.detailView)
 
             //sélection de la ligne créee ou modifiée
             
@@ -34,6 +34,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
                     print((self.masterView?.gifts?.count)!)
                     let indexPath = IndexPath(row: index, section: 0)
                     self.masterView?.tableViewMasterCadeaux.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+                    self.masterView?.performSegue(withIdentifier: "giftMasterDetail", sender: self.masterView)
                 }
             }
         })

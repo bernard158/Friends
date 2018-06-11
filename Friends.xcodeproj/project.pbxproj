@@ -22,6 +22,7 @@
 		A16981F420BAC385005AC0B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16981F320BAC384005AC0B6 /* Utils.swift */; };
 		A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A777F20B9792C00F53A52 /* PersonsSplitViewController.swift */; };
 		A1971C2B20C173A000D5E82F /* EditPersonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1971C2A20C173A000D5E82F /* EditPersonTableViewController.swift */; };
+		A1BF2B1320CF0A7E0065FFBE /* RealmDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF2B1220CF0A7E0065FFBE /* RealmDB.swift */; };
 		A1E5703C20B6F30700F11D25 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703B20B6F30700F11D25 /* Person.swift */; };
 		A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */; };
 		A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703F20B7254E00F11D25 /* ImportContacts.swift */; };
@@ -48,6 +49,7 @@
 		A16981F320BAC384005AC0B6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A16A777F20B9792C00F53A52 /* PersonsSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsSplitViewController.swift; sourceTree = "<group>"; };
 		A1971C2A20C173A000D5E82F /* EditPersonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonTableViewController.swift; sourceTree = "<group>"; };
+		A1BF2B1220CF0A7E0065FFBE /* RealmDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDB.swift; sourceTree = "<group>"; };
 		A1E5703B20B6F30700F11D25 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsTableViewController.swift; sourceTree = "<group>"; };
 		A1E5703F20B7254E00F11D25 /* ImportContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContacts.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			children = (
 				A1E5703B20B6F30700F11D25 /* Person.swift */,
 				A1116C4520BBFB3A004B312B /* Gift.swift */,
+				A1BF2B1220CF0A7E0065FFBE /* RealmDB.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */,
 				A1971C2B20C173A000D5E82F /* EditPersonTableViewController.swift in Sources */,
 				A1116C4B20BC2083004B312B /* GiftViewController.swift in Sources */,
+				A1BF2B1320CF0A7E0065FFBE /* RealmDB.swift in Sources */,
 				A1F6ECD520CEB10B00960CAF /* PersonPickerTableViewController.swift in Sources */,
 				A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */,
 				A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */,

@@ -19,9 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        //demoPopulate(deleteRealm: false, populate: true)
-        //demoPopulate(deleteRealm: false, populate: false)
-        demoPopulate(deleteRealm: true, populate: true)
+        let populate = false
+        if populate {
+            demoPopulate(deleteRealm: true, populate: true)
+        } else {
+            demoPopulate(deleteRealm: false, populate: false)
+            
+        }
         return true
     }
     
@@ -49,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func demoPopulate(deleteRealm:Bool, populate: Bool) {
         
-        let realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
+        let realm = RealmDB.getRealm()!
         if deleteRealm {
             realm.beginWrite()
             realm.deleteAll()

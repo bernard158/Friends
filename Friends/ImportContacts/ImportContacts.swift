@@ -17,7 +17,7 @@ class ContactIOS {
     
     //-------------------------------------------------------
     var isAlreadyImported: Bool {
-        let realm = try! Realm()
+        let realm = RealmDB.getRealm()!
         let persons = realm.objects(Person.self)
             .filter("originalID = %d", contact.identifier)
         return persons.count > 0
@@ -278,7 +278,7 @@ class ContactIOS {
         if let imageData = contact.imageData {
             aPerson.imageData = imageData
         }
-        let realm = try! Realm()
+        let realm = RealmDB.getRealm()!
         try! realm.write {
             realm.add(aPerson)
         }

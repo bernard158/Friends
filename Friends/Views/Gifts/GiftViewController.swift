@@ -13,7 +13,6 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     public var gifts: Results<Gift>?
     private var itemsToken: NotificationToken?
-    var realm: Realm?
     
     @IBOutlet weak var tableViewMasterCadeaux: UITableView!
     //---------------------------------------------------------------------------
@@ -43,8 +42,8 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        realm = try! Realm()
-        gifts = realm!.objects(Gift.self).sorted(by: ["nom"])
+        let realm = RealmDB.getRealm()!
+        gifts = realm.objects(Gift.self).sorted(by: ["nom"])
         
         if gifts!.count > 0 {
             let indexPath = IndexPath(row: 0, section: 0)
@@ -130,8 +129,9 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
         let gift = gifts![indexPath.row]
-        try! realm?.write {
-            realm?.delete(gift)
+        let realm = RealmDB.getRealm()!
+        try! realm.write {
+            realm.delete(gift)
             //tableView.reloadData()
         }
         

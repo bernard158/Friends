@@ -92,7 +92,7 @@ extension Gift {
 
     //---------------------------------------------------------------------------
     public func save() {
-        let realm = try! Realm()
+        let realm = RealmDB.getRealm()!
         try! realm.write {
             realm.add(self, update: true)
         }

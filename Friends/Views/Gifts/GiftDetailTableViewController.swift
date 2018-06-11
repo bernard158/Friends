@@ -79,7 +79,7 @@ class GiftDetailTableViewController: UITableViewController {
         
         //section Offert par ---------------------------------------
         //if !cadeau.donateurs.isEmpty {
-        let sectionDonateurs = Section(title: cadeau.donateurs.isEmpty ? "" : "Offert par")
+        let sectionDonateurs = Section(title: cadeau.donateurs.isEmpty ? "Offert par" : "Offert par")
         for person in cadeau.donateurs.sorted(by: ["nom", "prenom"]) {
             let ligneDonateurs = Ligne()
             ligneDonateurs.sujet = "donateurs"
@@ -98,7 +98,7 @@ class GiftDetailTableViewController: UITableViewController {
         
         //section Offert à ---------------------------------------
         //if !cadeau.beneficiaires.isEmpty {
-        let sectionBeneficiaire = Section(title: cadeau.beneficiaires.isEmpty ? "" : "Offert à")
+        let sectionBeneficiaire = Section(title: cadeau.beneficiaires.isEmpty ? "Offert à" : "Offert à")
         for person in cadeau.beneficiaires.sorted(by: ["nom", "prenom"]) {
             let ligneBeneficiaire = Ligne()
             ligneBeneficiaire.sujet = "beneficiaires"
@@ -117,7 +117,7 @@ class GiftDetailTableViewController: UITableViewController {
         
         //section Idée pour ---------------------------------------
         //if !cadeau.personnesIdee.isEmpty {
-        let sectionIdees = Section(title: cadeau.personnesIdee.isEmpty ? "" : "Idée pour")
+        let sectionIdees = Section(title: cadeau.personnesIdee.isEmpty ? "Idée pour" : "Idée pour")
         for person in cadeau.personnesIdee.sorted(by: ["nom", "prenom"]) {
             let ligneIdee = Ligne()
             ligneIdee.sujet = "personneIdee"
@@ -202,6 +202,7 @@ class GiftDetailTableViewController: UITableViewController {
         personPicker.gift = gift
         personPicker.operation = "addDonateurs"
         personPicker.detailView = self
+        personPicker.title = "Ajout donateurs"
         
         viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
         viewNav.preferredContentSize = CGSize(width: 500, height: 800)
@@ -217,7 +218,8 @@ class GiftDetailTableViewController: UITableViewController {
         personPicker.gift = gift
         personPicker.operation = "addBeneficiaires"
         personPicker.detailView = self
-        
+        personPicker.title = "Ajout bénéficiaires"
+
         viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
         viewNav.preferredContentSize = CGSize(width: 500, height: 800)
         
@@ -233,7 +235,8 @@ class GiftDetailTableViewController: UITableViewController {
         personPicker.gift = gift
         personPicker.operation = "addIdees"
         personPicker.detailView = self
-        
+        personPicker.title = "Ajout idée pour"
+
         viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
         viewNav.preferredContentSize = CGSize(width: 500, height: 800)
         
@@ -372,6 +375,21 @@ class GiftDetailTableViewController: UITableViewController {
     }
     
     //---------------------------------------------------------------------------
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let aLigne = sections[indexPath.section].lignes[indexPath.row]
+        if aLigne.sujet == "addDonateur" {
+            addDonateurButtonClicked(UIButton())
+        }
+        else if aLigne.sujet == "addBeneficiaire" {
+            addBeneficiaireButtonClicked(UIButton())
+        }
+        else if aLigne.sujet == "addPersonneIdee" {
+            addIdeeButtonClicked(UIButton())
+        }
+
+    }
+    
+    //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = navigationController?.navigationBar.barTintColor
@@ -385,8 +403,8 @@ class GiftDetailTableViewController: UITableViewController {
         //print("commit")
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let aPerson = aLigne.objectRef as! Person
-        let realm = try! Realm()
-        
+        let realm = RealmDB.getRealm()!
+
         try! realm.write {
             switch aLigne.sujet {
             case "donateurs":

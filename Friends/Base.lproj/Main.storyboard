@@ -304,7 +304,7 @@
                                             <rect key="frame" x="16" y="3" width="343" height="30"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -1337,7 +1337,7 @@
         <image name="Stats" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AYG-B2-JSK"/>
+        <segue reference="UuW-Vk-UQp"/>
         <segue reference="dx9-f4-jO1"/>
     </inferredMetricsTieBreakers>
 </document>

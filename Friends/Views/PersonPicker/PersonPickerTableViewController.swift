@@ -21,7 +21,8 @@ class PersonPickerTableViewController: UITableViewController {
     //---------------------------------------------------------------------------
     @IBAction func donePersonPicker(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        try! realm!.write {
+        let realm = RealmDB.getRealm()!
+        try! realm.write {
             
             switch operation {
             case "addDonateurs":
@@ -78,8 +79,8 @@ class PersonPickerTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        realm = try! Realm()
-        persons = realm!.objects(Person.self).sorted(by: ["nom", "prenom"])
+        let realm = RealmDB.getRealm()!
+        persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
         for _ in persons! {
             checkmarks.append(false)
         }
