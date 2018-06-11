@@ -16,7 +16,6 @@ class PersonsTableViewController: UITableViewController {
     
     let searchController = UISearchController(searchResultsController: nil)
     var realm: Realm?
-    var okForReload = true
     var currentSearchbarText = ""
     
     //---------------------------------------------------------------------------
@@ -111,7 +110,7 @@ class PersonsTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear PersonsTableViewController")
+       // print("viewWillAppear PersonsTableViewController")
         /* if splitViewController!.isCollapsed {
          if let selectionIndexPath = tableView.indexPathForSelectedRow {
          tableView.deselectRow(at: selectionIndexPath, animated: animated)
@@ -156,7 +155,6 @@ class PersonsTableViewController: UITableViewController {
             }
         })
         
-        
         super.viewWillAppear(animated)
     }
     
@@ -165,14 +163,17 @@ class PersonsTableViewController: UITableViewController {
         //print("viewDidAppear PersonsTableViewController")
     }
     
+    //---------------------------------------------------------------------------
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonsTableViewController")
         itemsToken?.invalidate()
     }
+    //---------------------------------------------------------------------------
     override func viewDidDisappear(_ animated: Bool) {
         // print("viewDidDisappear PersonsTableViewController")
         
     }
+    
     //---------------------------------------------------------------------------
     // MARK: - Table view data source
     
@@ -196,7 +197,6 @@ class PersonsTableViewController: UITableViewController {
             realm?.delete(person)
             //tableView.reloadData()
         }
-        //print(indexPath)
         
         if UIDevice().userInterfaceIdiom == .pad { // iPad
             var newIndexPath = IndexPath(row: 0, section: 0)
@@ -216,7 +216,6 @@ class PersonsTableViewController: UITableViewController {
                     self.performSegue(withIdentifier: "personMasterDetail", sender: self)
                 }
             }
-            
         }
     }
     
@@ -256,15 +255,16 @@ class PersonsTableViewController: UITableViewController {
             let strSearch = searchText.lowercased()
             persons = realm!.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(by: ["nom", "prenom"])
         }
-        if okForReload {
-            tableView.reloadData()
-        }
+        tableView.reloadData()
+        
     }
     
+    //---------------------------------------------------------------------------
     func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
+    //---------------------------------------------------------------------------
     func isFiltering() -> Bool {
         let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
         return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)

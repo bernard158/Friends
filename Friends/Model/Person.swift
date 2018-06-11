@@ -29,7 +29,9 @@ class Person: Object {
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var originalID = ""
     
-    
+    //non enregistrable
+    public var checked = false
+
     //---------------------------------------------------------------------------
     convenience init(prenom: String, nom: String) {
         self.init()
@@ -88,7 +90,34 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
-    public func age() -> Int? {
+    public func cadeauxOffertsAppendGift(_ gift: Gift) {
+        //le cadeau est-il déjà dans les cadeaux offerts ?
+        for cadeau in cadeauxOfferts {
+            if cadeau == gift { return }
+        }
+        cadeauxOfferts.append(gift)
+    }
+    
+    //---------------------------------------------------------------------------
+    public func cadeauxRecusAppendGift(_ gift: Gift) {
+        //le cadeau est-il déjà dans les cadeaux recus ?
+        for cadeau in cadeauxRecus {
+            if cadeau == gift { return }
+        }
+        cadeauxRecus.append(gift)
+    }
+    
+    //---------------------------------------------------------------------------
+    public func cadeauxIdeesAppendGift(_ gift: Gift) {
+        //le cadeau est-il déjà dans les cadeaux idées ?
+        for cadeau in cadeauxIdees {
+            if cadeau == gift { return }
+        }
+        cadeauxIdees.append(gift)
+    }
+    
+    //---------------------------------------------------------------------------
+  public func age() -> Int? {
         if let dateNaisDate = dateNais {
             let now = Date()
             let calendar = Calendar.current
@@ -158,7 +187,7 @@ extension Person {
            }
             
             for aCadeau in cadeaux {
-                strRetour += aCadeau.name
+                strRetour += aCadeau.nom
                 if aCadeau == cadeaux.last {
                     strRetour += "\n"
                 } else {
@@ -208,7 +237,7 @@ extension Person {
             }
 
             for aCadeau in cadeaux {
-                strRetour += aCadeau.name
+                strRetour += aCadeau.nom
                 if aCadeau == cadeaux.last {
                     strRetour += "\n"
                 } else {
@@ -227,7 +256,7 @@ extension Person {
         var strRetour = ""
         
         for aCadeau in sortedCadeaux {
-            strRetour += aCadeau.name
+            strRetour += aCadeau.nom
             if aCadeau == sortedCadeaux.last {
                 strRetour += ""
             } else {

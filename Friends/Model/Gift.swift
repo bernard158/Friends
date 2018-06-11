@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 class Gift: Object {
-    @objc dynamic var name = ""
+    @objc dynamic var nom = ""
     @objc dynamic var date: Date?
     @objc dynamic var note = ""
     @objc dynamic var prix: Double = 0.0
@@ -23,12 +23,31 @@ class Gift: Object {
     let donateurs = LinkingObjects(fromType: Person.self, property: "cadeauxOfferts")
     let personnesIdee = LinkingObjects(fromType: Person.self, property: "cadeauxIdees")
     
-    convenience init(_ name: String) {
+    //---------------------------------------------------------------------------
+   convenience init(_ nom: String) {
         self.init()
-        self.name = name
+        self.nom = nom
     }
     
-    override static func primaryKey() -> String? {
+    // Contructeur de copie pour déconnecter de Realm
+    //---------------------------------------------------------------------------
+    convenience init(_ gift: Gift) {
+        self.init()
+        self.nom = gift.nom
+        self.date = gift.date
+        self.note = gift.note
+        self.prix = gift.prix
+        self.magasin = gift.magasin
+        self.url = gift.url
+        self.imageData = gift.imageData
+        self.id = gift.id
+        //self.beneficiaires = gift.beneficiaires
+        //self.donateurs = gift.donateurs
+        //self.personnesIdee = gift.personnesIdee
+    }
+    
+    //---------------------------------------------------------------------------
+   override static func primaryKey() -> String? {
         return "id"
     }
 
@@ -37,7 +56,7 @@ class Gift: Object {
 extension Gift {
     public var giftFrom: String {
         if donateurs.count == 0 {
-            return name
+            return nom
         }
         var strRetour = ""
         let deLaPart = "de la part de"
@@ -48,12 +67,12 @@ extension Gift {
                 strRetour += ", "
             }
         }
-        return "\(name): \(deLaPart) \(strRetour)"
+        return "\(nom): \(deLaPart) \(strRetour)"
     }
     
     public var giftFor: String {
         if beneficiaires.count == 0 {
-            return name
+            return nom
         }
         var strRetour = ""
         let pour = "à"
@@ -64,13 +83,22 @@ extension Gift {
                 strRetour += ", "
             }
         }
-        return "\(name): \(pour) \(strRetour)"
+        return "\(nom): \(pour) \(strRetour)"
     }
     
     public var strDateCadeau: String {
         return strDateFormat(date)
     }
+
+    //---------------------------------------------------------------------------
+    public func save() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(self, update: true)
+        }
+    }
     
     //---------------------------------------------------------------------------
+
 
 }

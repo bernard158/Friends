@@ -14,7 +14,7 @@ class GiftDetailTableViewController: UITableViewController {
     var sections: [Section] = []
     var gift: Gift? {
         didSet {
-            configureViewCadeau()
+            //configureViewCadeau()
         }
     }
     
@@ -31,15 +31,38 @@ class GiftDetailTableViewController: UITableViewController {
     }
     
     //---------------------------------------------------------------------------
+    override func viewWillAppear(_ animated: Bool) {
+       // print("viewWillAppear GiftDetailTableViewController")
+        configureViewCadeau()
+        super.viewWillAppear(animated)
+    }
+    
+   //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     //---------------------------------------------------------------------------
+    @objc func giftEditDetail() {
+        //print("giftEditDetail")
+        let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditGift")
+        let  editView:EditGiftTableViewController = editViewNav.childViewControllers.first as! EditGiftTableViewController
+        editView.gift = Gift(gift!) // contructeur de copie
+        editView.detailView = self
+        let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
+        editView.masterView = (leftNavController.topViewController as? GiftViewController)
+        
+        editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        editViewNav.preferredContentSize = CGSize(width: 500, height: 800)
+        
+        self.present(editViewNav, animated: true, completion: nil)
+    }
+
+    //---------------------------------------------------------------------------
     func configureViewCadeau() {
         
-        print("configureViewCadeau")
+        //print("configureViewCadeau")
         clearView()
         
         // Update the user interface for the detail item.
@@ -172,47 +195,49 @@ class GiftDetailTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     @objc func addDonateurButtonClicked(_ sender:UIButton) {
-        print("addDonateurButtonClicked")
+        //print("addDonateurButtonClicked")
         
-        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
-         if let indexPath = tableView.indexPath(for: cell) {
-         let aContact = contacts![indexPath.row]
-         //print(aContact.contact)
-         aContact.isImported = true
-         aContact.addToRealm()
-         tableView.reloadRows(at: [indexPath], with: .automatic)
-         }
-         }*/
+        let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
+        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        personPicker.gift = gift
+        personPicker.operation = "addDonateurs"
+        personPicker.detailView = self
+        
+        viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        viewNav.preferredContentSize = CGSize(width: 500, height: 800)
+        
+        self.present(viewNav, animated: true, completion: nil)
     }
     
     //---------------------------------------------------------------------------
     @objc func addBeneficiaireButtonClicked(_ sender:UIButton) {
-        print("addBeneficiaireButtonClicked")
+        //print("addBeneficiaireButtonClicked")
+        let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
+        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        personPicker.gift = gift
+        personPicker.operation = "addBeneficiaires"
+        personPicker.detailView = self
         
-        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
-         if let indexPath = tableView.indexPath(for: cell) {
-         let aContact = contacts![indexPath.row]
-         //print(aContact.contact)
-         aContact.isImported = true
-         aContact.addToRealm()
-         tableView.reloadRows(at: [indexPath], with: .automatic)
-         }
-         }*/
+        viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        viewNav.preferredContentSize = CGSize(width: 500, height: 800)
+        
+        self.present(viewNav, animated: true, completion: nil)
     }
     
     //---------------------------------------------------------------------------
     @objc func addIdeeButtonClicked(_ sender:UIButton) {
-        print("addIdeeButtonClicked")
+        //print("addIdeeButtonClicked")
         
-        /*if let superview = sender.superview, let cell = superview.superview as? UITableViewCell {
-         if let indexPath = tableView.indexPath(for: cell) {
-         let aContact = contacts![indexPath.row]
-         //print(aContact.contact)
-         aContact.isImported = true
-         aContact.addToRealm()
-         tableView.reloadRows(at: [indexPath], with: .automatic)
-         }
-         }*/
+        let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
+        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        personPicker.gift = gift
+        personPicker.operation = "addIdees"
+        personPicker.detailView = self
+        
+        viewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        viewNav.preferredContentSize = CGSize(width: 500, height: 800)
+        
+        self.present(viewNav, animated: true, completion: nil)
     }
     
 
@@ -248,7 +273,7 @@ class GiftDetailTableViewController: UITableViewController {
         //Titre  photo date
         if (aLigne.cellIdentifier == "CellTitre") {
             let labelNom = cell.viewWithTag(1001) as! UILabel
-            labelNom.text = cadeau.name
+            labelNom.text = cadeau.nom
             let labelJourMois = cell.viewWithTag(1003) as! UILabel
             labelJourMois.text = strDateFormat(cadeau.date)
 
@@ -332,7 +357,6 @@ class GiftDetailTableViewController: UITableViewController {
             }
         }
         
-        
         return cell
     }
     
@@ -358,7 +382,7 @@ class GiftDetailTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        print("commit")
+        //print("commit")
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let aPerson = aLigne.objectRef as! Person
         let realm = try! Realm()
@@ -387,31 +411,13 @@ class GiftDetailTableViewController: UITableViewController {
     }
     
     
-    // MARK: - Navigation
-    
+    //---------------------------------------------------------------------------
+   // MARK: - Navigation
+    //---------------------------------------------------------------------------
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     //---------------------------------------------------------------------------
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editGift" {
-            segue.destination.title = "Editer cadeau"
-        }
-    }
-    //---------------------------------------------------------------------------
-    @objc func giftEditDetail() {
-        print("giftEditDetail")
-        /* let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
-         let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
-         editView.person = Person(person: person!) // contructeur de copie
-         editView.detailView = self
-         let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
-         editView.masterView = (leftNavController.topViewController as? PersonsTableViewController)
-         
-         editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-         editViewNav.preferredContentSize = CGSize(width: 500, height: 800)
-         
-         self.present(editViewNav, animated: true, completion: nil)
-         */
-    }
+    
     //---------------------------------------------------------------------------
     
     

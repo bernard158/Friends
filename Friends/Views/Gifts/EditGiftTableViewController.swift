@@ -1,46 +1,45 @@
 //
-//  EditPersonTableViewController.swift
+//  EditGiftTableViewController.swift
 //  Friends
 //
-//  Created by bernard on 01/06/2018.
+//  Created by bernard on 11/06/2018.
 //  Copyright © 2018 bernard. All rights reserved.
 //
 
 import UIKit
 
-
-class EditPersonTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
+class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
     
-    public var person: Person? // reçoit un  objec détaché de realm
-    public var detailView: PersonDetailTableViewController?
-    public var masterView: PersonsTableViewController?
+    public var gift: Gift? // reçoit un  objec détaché de realm
+    public var detailView: GiftDetailTableViewController?
+    public var masterView: GiftViewController?
     var sections: [Section] = []
     var dateTextField: UITextField?
     
-    
     //---------------------------------------------------------------------------
-    @IBAction func SavePerson(_ sender: Any) {
+    @IBAction func SaveGift(_ sender: Any) {
         dismiss(animated: true, completion: {
-            self.person!.save()
+            self.gift!.save()
             //mise à jour de la vue détail (iPad)
-            self.detailView?.person = self.person!
-            self.detailView?.configureViewPersonne()
-            
+            self.detailView?.gift = self.gift!
+            self.detailView?.configureViewCadeau()
+            print(self.detailView)
+
             //sélection de la ligne créee ou modifiée
             
-            self.masterView?.tableView.reloadData()
+            self.masterView?.tableViewMasterCadeaux.reloadData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if let index = self.masterView?.persons?.index(of: self.person!) {
+                if let index = self.masterView?.gifts!.index(of: self.gift!) {
                     print(index)
-                    print((self.masterView?.persons?.count)!)
+                    print((self.masterView?.gifts?.count)!)
                     let indexPath = IndexPath(row: index, section: 0)
-                    self.masterView?.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+                    self.masterView?.tableViewMasterCadeaux.selectRow(at: indexPath, animated: true, scrollPosition: .top)
                 }
             }
         })
     }
     //---------------------------------------------------------------------------
-    @IBAction func cancelEditPerson(_ sender: Any) {
+    @IBAction func cancelEditGift(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -54,7 +53,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        configureViewPersonne()
+        configureViewCadeau()
     }
     
     //---------------------------------------------------------------------------
@@ -71,104 +70,60 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         //print("ClearView")
     }
     
+ //---------------------------------------------------------------------------
+   /* override func viewWillAppear(_ animated: Bool) {
+        //print("viewWillAppear PersonDetailTableViewController")
+        configureViewCadeau()
+        super.viewWillAppear(animated)
+    }*/
+    
     //---------------------------------------------------------------------------
-    func configureViewPersonne() {
+    func configureViewCadeau() {
         
-        //print("configureViewPersonne")
+        //print("configureViewCadeau")
         clearView()
         
         // Update the user interface for the detail item.
         
         //section nom prénom ---------------------------------------
-        let sectionNomPrenom = Section(title: "")
+        let sectionNom = Section(title: "")
         let ligneNom = Ligne()
-        ligneNom.cellIdentifier = "textFieldCell"
+        ligneNom.cellIdentifier = "giftTextFieldCell"
         ligneNom.sujet = "nom"
-        ligneNom.placeHolder = "Nom"
-        
-        let lignePrenom = Ligne()
-        lignePrenom.cellIdentifier = "textFieldCell"
-        lignePrenom.sujet = "prenom"
-        lignePrenom.placeHolder = "Prénom"
+        ligneNom.placeHolder = "Nom du cadeau"
         
         let ligneDate = Ligne()
-        ligneDate.cellIdentifier = "textFieldCell"
-        ligneDate.sujet = "dateNais"
-        ligneDate.placeHolder = "Date de naissance"
+        ligneDate.cellIdentifier = "giftTextFieldCell"
+        ligneDate.sujet = "date"
+        ligneDate.placeHolder = "Date"
         
-        sectionNomPrenom.lignes.append(ligneNom)
-        sectionNomPrenom.lignes.append(lignePrenom)
-        sectionNomPrenom.lignes.append(ligneDate)
+        sectionNom.lignes.append(ligneNom)
+        sectionNom.lignes.append(ligneDate)
         
-        sections.append(sectionNomPrenom)
+        sections.append(sectionNom)
         
-        //section adresses ---------------------------------------
-        let sectionAdresses = Section(title: "Adresse")
-        let ligneAdresses = Ligne()
-        ligneAdresses.cellIdentifier = "editTextViewCell"
-        ligneAdresses.sujet = "addresses"
+        //section Magasin ---------------------------------------
+        let sectionMagasin = Section(title: "Magasin")
+        let ligneMagasin = Ligne()
+        ligneMagasin.cellIdentifier = "giftEditTextViewCell"
+        ligneMagasin.sujet = "magasin"
         
-        sectionAdresses.lignes.append(ligneAdresses)
-        sections.append(sectionAdresses)
-        
-        //section phones ---------------------------------------
-        let sectionPhones = Section(title: "Téléphones")
-        let lignePhones = Ligne()
-        lignePhones.cellIdentifier = "editTextViewCell"
-        lignePhones.sujet = "phones"
-        
-        sectionPhones.lignes.append(lignePhones)
-        sections.append(sectionPhones)
-        
-        //section emails ---------------------------------------
-        let sectionEmails = Section(title: "Emails")
-        let ligneEmails = Ligne()
-        ligneEmails.cellIdentifier = "editTextViewCell"
-        ligneEmails.sujet = "emails"
-        
-        sectionEmails.lignes.append(ligneEmails)
-        sections.append(sectionEmails)
-        
-        //section socialProfiles ---------------------------------------
-        let sectionSocialProfiles = Section(title: "Réseaux sociaux")
-        let ligneSocialProfiles = Ligne()
-        ligneSocialProfiles.cellIdentifier = "editTextViewCell"
-        ligneSocialProfiles.sujet = "socialProfiles"
-        
-        sectionSocialProfiles.lignes.append(ligneSocialProfiles)
-        sections.append(sectionSocialProfiles)
+        sectionMagasin.lignes.append(ligneMagasin)
+        sections.append(sectionMagasin)
         
         //section urls ---------------------------------------
-        let sectionUrls = Section(title: "URLs")
+        let sectionUrls = Section(title: "URL")
         let ligneUrls = Ligne()
-        ligneUrls.cellIdentifier = "editTextViewCell"
+        ligneUrls.cellIdentifier = "giftEditTextViewCell"
         ligneUrls.sujet = "urls"
         
         sectionUrls.lignes.append(ligneUrls)
         sections.append(sectionUrls)
         
-        //section Aime ---------------------------------------
-        let sectionAime = Section(title: "Aime")
-        let ligneAime = Ligne()
-        ligneAime.cellIdentifier = "editTextViewCell"
-        ligneAime.sujet = "likeYes"
-        
-        sectionAime.lignes.append(ligneAime)
-        sections.append(sectionAime)
-        
-        //section AimePas ---------------------------------------
-        let sectionAimePas = Section(title: "N'aime pas")
-        let ligneAimePas = Ligne()
-        ligneAimePas.cellIdentifier = "editTextViewCell"
-        ligneAimePas.sujet = "likeNo"
-        
-        sectionAimePas.lignes.append(ligneAimePas)
-        sections.append(sectionAimePas)
-        
         //section note ---------------------------------------
         let sectionNote = Section(title: "Note")
         let ligneNote = Ligne()
-        ligneNote.cellIdentifier = "editTextViewCell"
+        ligneNote.cellIdentifier = "giftEditTextViewCell"
         ligneNote.sujet = "note"
         
         sectionNote.lignes.append(ligneNote)
@@ -179,13 +134,11 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     
     // MARK: - Table view data source
     
-    //---------------------------------------------------------------------------
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sections.count
     }
     
-    //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return sections[section].lignes.count
@@ -196,43 +149,41 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         return sections[section].sectionTitle
     }
     
+    
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
         
         //textFieldCell
-        if (aLigne.cellIdentifier == "textFieldCell") {
+        if (aLigne.cellIdentifier == "giftTextFieldCell") {
             let textField = cell.viewWithTag(1000) as! BindableUITextField
             textField.sujet = aLigne.sujet
             textField.delegate = self as UITextFieldDelegate
             textField.placeholder = aLigne.placeHolder
             switch aLigne.sujet {
             case "nom":
-                textField.text = person!.nom
-            case "prenom":
-                textField.text = person!.prenom
-            case "dateNais":
-               // textField.isEnabled = false
-                textField.text = strDateFormat(person!.dateNais)
+                textField.text = gift!.nom
+            case "date":
+                // textField.isEnabled = false
+                textField.text = strDateFormat(gift!.date)
                 dateTextField = textField
                 let datePickerView:UIDatePicker = UIDatePicker()
                 datePickerView.datePickerMode = UIDatePickerMode.date
-                if let date = person?.dateNais {
+                if let date = gift?.date {
                     datePickerView.date = date
                 }
                 textField.inputView = datePickerView
                 datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControlEvents.valueChanged )
                 
-          default:
+            default:
                 print("switch default")
             }
         }
         
         
         //editTextViewCell
-        if (aLigne.cellIdentifier == "editTextViewCell") {
+        if (aLigne.cellIdentifier == "giftEditTextViewCell") {
             let cell = cell as! EditableTextViewCell
             let textView = cell.viewWithTag(1001) as! BindableUITextView
             textView.addBorder()
@@ -241,49 +192,26 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             textView.delegate = cell
             //textView.placeholder = aLigne.placeHolder
             switch aLigne.sujet {
-            case "addresses":
-                textView.text = person!.addresses
-            case "phones":
-                textView.text = person!.phones
-            case "emails":
-                textView.text = person!.emails
-            case "socialProfiles":
-                textView.text = person!.socialProfiles
+            case "magasin":
+                textView.text = gift!.magasin
             case "urls":
-                textView.text = person!.urls
-            case "likeYes":
-                textView.text = person!.likeYes
-            case "likeNo":
-                textView.text = person!.likeNo
+                textView.text = gift!.url
             case "note":
-                textView.text = person!.note
+                textView.text = gift!.note
             default:
                 print("switch default")
-            }
-            if aLigne.sujet == "addresses" {
-                textView.text = person!.addresses
             }
             cell.callBack = {
                 textView in
                 // update data source
                 switch aLigne.sujet{
-                case "addresses":
-                    self.person!.addresses = textView.text!
-                case "phones":
-                    self.person!.phones = textView.text!
-                case "emails":
-                    self.person!.emails = textView.text!
-                case "socialProfiles":
-                    self.person!.socialProfiles = textView.text!
+                case "magasin":
+                    self.gift!.magasin = textView.text!
                 case "urls":
-                    self.person!.urls = textView.text!
-                case "likeYes":
-                    self.person!.likeYes = textView.text!
-                case "likeNo":
-                    self.person!.likeNo = textView.text!
+                    self.gift!.url = textView.text!
                 case "note":
-                    self.person!.note = textView.text!
-
+                    self.gift!.note = textView.text!
+                    
                 default:
                     print("switch default")
                 }
@@ -309,6 +237,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         return cell
     }
     
+    
     //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
@@ -321,8 +250,8 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     }
     
     // MARK: - UIDatePicker
-   //---------------------------------------------------------------------------
-   // Make a dateFormatter in which format you would like to display the selected date in the textfield.
+    //---------------------------------------------------------------------------
+    // Make a dateFormatter in which format you would like to display the selected date in the textfield.
     @objc func datePickerValueChanged(sender:UIDatePicker) {
         
         let dateFormatter = DateFormatter()
@@ -330,8 +259,9 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         dateFormatter.timeStyle = DateFormatter.Style.none
         
         dateTextField!.text = dateFormatter.string(from: sender.date)
-        person?.dateNais = sender.date
+        gift?.date = sender.date
     }
+    
     
     // MARK: - UITextField delegate
     //---------------------------------------------------------------------------
@@ -340,10 +270,8 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         let bindableTextField = textField as! BindableUITextField
         switch bindableTextField.sujet {
         case "nom":
-            person!.nom = textField.text!
-        case "prenom":
-            person!.prenom = textField.text!
-
+            gift!.nom = textField.text!
+            
         default:
             print("switch default")
         }

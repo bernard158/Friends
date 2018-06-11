@@ -31,22 +31,29 @@ class PersonDetailTableViewController: UITableViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    //---------------------------------------------------------------------------
+   override func viewWillAppear(_ animated: Bool) {
         //print("viewWillAppear PersonDetailTableViewController")
         configureViewPersonne()
         super.viewWillAppear(animated)
-
     }
+
+    //---------------------------------------------------------------------------
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonDetailTableViewController")
         //itemsToken?.invalidate()
     }
+
+    //---------------------------------------------------------------------------
     override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonDetailTableViewController")
     }
+
+    //---------------------------------------------------------------------------
     override func viewDidDisappear(_ animated: Bool) {
         //print("viewDidDisappear PersonDetailTableViewController")
     }
+
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -257,7 +264,7 @@ class PersonDetailTableViewController: UITableViewController {
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
 
-        let personne = person!
+        guard let personne = person else { return cell }
         
         //Titre Nom prénom, photo date nais age
         if (aLigne.cellIdentifier == "CellTitre") {
@@ -333,8 +340,6 @@ class PersonDetailTableViewController: UITableViewController {
                 //let aGift = aLigne.objectRef as! Gift
                 label.text = personne.ideesCadeaux()
             }
-            
-            
         }
         
         return cell
@@ -351,6 +356,7 @@ class PersonDetailTableViewController: UITableViewController {
         }
     }
     
+    //---------------------------------------------------------------------------
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = navigationController?.navigationBar.barTintColor

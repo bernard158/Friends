@@ -25,6 +25,8 @@
 		A1E5703C20B6F30700F11D25 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703B20B6F30700F11D25 /* Person.swift */; };
 		A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703D20B6FBC000F11D25 /* PersonsTableViewController.swift */; };
 		A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5703F20B7254E00F11D25 /* ImportContacts.swift */; };
+		A1F6ECD220CE71B300960CAF /* EditGiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F6ECD120CE71B300960CAF /* EditGiftTableViewController.swift */; };
+		A1F6ECD520CEB10B00960CAF /* PersonPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F6ECD420CEB10B00960CAF /* PersonPickerTableViewController.swift */; };
 		C1C4ABB5CE467A59671F6E6D /* Pods_Friends.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6203C6F17F85CC859256CE /* Pods_Friends.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +53,8 @@
 		A1E5703F20B7254E00F11D25 /* ImportContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContacts.swift; sourceTree = "<group>"; };
 		A1F69F2420BEDD4000F6F814 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1F69F2520BEDD4100F6F814 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1F6ECD120CE71B300960CAF /* EditGiftTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGiftTableViewController.swift; sourceTree = "<group>"; };
+		A1F6ECD420CEB10B00960CAF /* PersonPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonPickerTableViewController.swift; sourceTree = "<group>"; };
 		B2BA5D36410FDF1BB42F3980 /* Pods-Friends.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Friends.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Friends/Pods-Friends.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +84,7 @@
 				A1116C4820BC1E7E004B312B /* GiftSplitViewController.swift */,
 				A1116C4A20BC2083004B312B /* GiftViewController.swift */,
 				A1116C4C20BC5CA9004B312B /* GiftDetailTableViewController.swift */,
+				A1F6ECD120CE71B300960CAF /* EditGiftTableViewController.swift */,
 			);
 			path = Gifts;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 		A1626E8420B6E59E0026D04C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A1F6ECD320CEB0EA00960CAF /* PersonPicker */,
 				A1116C4720BC1E36004B312B /* Gifts */,
 				A16A777E20B978ED00F53A52 /* Persons */,
 			);
@@ -172,6 +178,14 @@
 				A1561F9620B89EF500685000 /* contactsTableViewController.swift */,
 			);
 			path = ImportContacts;
+			sourceTree = "<group>";
+		};
+		A1F6ECD320CEB0EA00960CAF /* PersonPicker */ = {
+			isa = PBXGroup;
+			children = (
+				A1F6ECD420CEB10B00960CAF /* PersonPickerTableViewController.swift */,
+			);
+			path = PersonPicker;
 			sourceTree = "<group>";
 		};
 		CD136B83376AE4725E400406 /* Pods */ = {
@@ -306,10 +320,12 @@
 				A16981F420BAC385005AC0B6 /* Utils.swift in Sources */,
 				A1561F9A20B8A05000685000 /* ToolsTableViewController.swift in Sources */,
 				A1E5704020B7254E00F11D25 /* ImportContacts.swift in Sources */,
+				A1F6ECD220CE71B300960CAF /* EditGiftTableViewController.swift in Sources */,
 				A1626E7020B6E5550026D04C /* AppDelegate.swift in Sources */,
 				A16A778020B9792C00F53A52 /* PersonsSplitViewController.swift in Sources */,
 				A1971C2B20C173A000D5E82F /* EditPersonTableViewController.swift in Sources */,
 				A1116C4B20BC2083004B312B /* GiftViewController.swift in Sources */,
+				A1F6ECD520CEB10B00960CAF /* PersonPickerTableViewController.swift in Sources */,
 				A1561F9720B89EF500685000 /* contactsTableViewController.swift in Sources */,
 				A1E5703E20B6FBC000F11D25 /* PersonsTableViewController.swift in Sources */,
 			);

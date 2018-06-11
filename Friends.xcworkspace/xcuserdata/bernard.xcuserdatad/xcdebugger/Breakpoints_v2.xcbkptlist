@@ -28,7 +28,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Views/Persons/PersonsTableViewController.swift"
-            timestampString = "550364486.823465"
+            timestampString = "550425920.388901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Views/Persons/EditPersonTableViewController.swift"
-            timestampString = "550364486.8240089"
+            timestampString = "550425920.389214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "SavePerson(_:)"
             landmarkType = "7">
          </BreakpointContent>
