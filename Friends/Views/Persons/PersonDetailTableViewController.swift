@@ -325,14 +325,15 @@ class PersonDetailTableViewController: UITableViewController {
             //Cadeaux reçus
             if aLigne.sujet == "cadeauxRecus" {
                 //let aGift = aLigne.objectRef as! Gift
-                label.text = personne.cadeauxRecusSortedByDonateur()
+                //label.text = personne.cadeauxRecusSortedByDonateur()
+                label.attributedText = personne.cadeauxRecusSortedByDonateur(color: (navigationController?.navigationBar.barTintColor)!)
                 
             }
             
             //Cadeaux offerts
             if aLigne.sujet == "cadeauxOfferts" {
                 //let aGift = aLigne.objectRef as! Gift
-                label.text = personne.cadeauxOffertsSortedByBeneficiaire()
+                label.attributedText = personne.cadeauxOffertsSortedByBeneficiaire(color: (navigationController?.navigationBar.barTintColor)!)
             }
             
             //Cadeaux idées

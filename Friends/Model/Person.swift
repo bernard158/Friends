@@ -145,10 +145,10 @@ extension Person {
     
     
     //---------------------------------------------------------------------------
-    public func cadeauxRecusSortedByDonateur() -> String {
+    public func cadeauxRecusSortedByDonateur(color: UIColor) -> NSAttributedString {
         let realm = RealmDB.getRealm()!
 
-        var strRetour = ""
+        let strRetour = NSMutableAttributedString(string: "")
         let donateurNonConnu = Person(prenom: "", nom: "?")
         
         //Liste des donateurs uniques
@@ -174,8 +174,14 @@ extension Person {
         }
         
         for aDonateur in lesDonateurs {
-            strRetour += "• de \(aDonateur.fullName) : "
-            // récupérer les cadeaux du donateur concerné
+            //Mettre le donateur en couleur
+           let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attStrDonateur = NSAttributedString(string: aDonateur.fullName, attributes: attrs)
+
+            strRetour.append(NSAttributedString(string: "• de "))
+            strRetour.append(attStrDonateur)
+            strRetour.append(NSAttributedString(string: " : "))
+           // récupérer les cadeaux du donateur concerné
             var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
             if cadeaux.isEmpty {
                 //on a un cadeau sans donateur connu
@@ -183,23 +189,22 @@ extension Person {
            }
             
             for aCadeau in cadeaux {
-                strRetour += aCadeau.nom
+                strRetour.append(NSAttributedString(string: aCadeau.nom))
                 if aCadeau == cadeaux.last {
-                    strRetour += "\n"
+                    strRetour.append(NSAttributedString(string: "\n"))
                 } else {
-                    strRetour += ", "
+                    strRetour.append(NSAttributedString(string: ", "))
                 }
             }
-            
         }
         return strRetour
     }
     
     //---------------------------------------------------------------------------
-    public func cadeauxOffertsSortedByBeneficiaire() -> String {
+    public func cadeauxOffertsSortedByBeneficiaire(color: UIColor) -> NSAttributedString {
         let realm = RealmDB.getRealm()!
 
-        var strRetour = ""
+        let strRetour = NSMutableAttributedString(string: "")
         let beneficiaireNonConnu = Person(prenom: "", nom: "?")
 
         //Liste des bénéficiaires uniques
@@ -224,7 +229,12 @@ extension Person {
         }
         
         for aBeneficiaire in lesBeneficiaires {
-            strRetour += "• à \(aBeneficiaire.fullName) : "
+            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attStrBeneficiaire = NSAttributedString(string: aBeneficiaire.fullName, attributes: attrs)
+
+            strRetour.append(NSAttributedString(string: "• à "))
+            strRetour.append(attStrBeneficiaire)
+            strRetour.append(NSAttributedString(string: " : "))
             // récupérer les cadeaux du donateur concerné
             var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", self, aBeneficiaire).sorted(byKeyPath: "date", ascending: false)
             if cadeaux.isEmpty {
@@ -233,14 +243,13 @@ extension Person {
             }
 
             for aCadeau in cadeaux {
-                strRetour += aCadeau.nom
+                strRetour.append(NSAttributedString(string: aCadeau.nom))
                 if aCadeau == cadeaux.last {
-                    strRetour += "\n"
+                    strRetour.append(NSAttributedString(string: "\n"))
                 } else {
-                    strRetour += ", "
+                    strRetour.append(NSAttributedString(string: ", "))
                 }
             }
-            
         }
         return strRetour
     }
