@@ -271,7 +271,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
         let bindableTextField = textField as! BindableUITextField
         switch bindableTextField.sujet {
         case "nom":
-            gift!.nom = textField.text!
+            gift!.nom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
         default:
             print("switch default")

@@ -7,12 +7,24 @@
 //
 
 import Foundation
+import UIKit
 import RealmSwift
 
 //---------------------------------------------------------------------------
 class Person: Object {
-    @objc dynamic var prenom = ""
-    @objc dynamic var nom = ""
+    @objc dynamic var prenom = "" {
+        didSet {
+            // Keep the case-free property in sync
+            nomPrenomUCD = getNomPrenomUCD
+        }
+    }
+    @objc dynamic var nom = "" {
+        didSet {
+            // Keep the case-free property in sync
+            nomPrenomUCD = getNomPrenomUCD
+        }
+    }
+    @objc dynamic var nomPrenomUCD = ""
     @objc dynamic var dateNais: Date?
     @objc dynamic var emails = ""
     @objc dynamic var phones = ""
@@ -87,6 +99,11 @@ extension Person {
     public var strAge: String {
         guard dateNais != nil else { return "" }
         return String(age()!)
+    }
+    
+    //---------------------------------------------------------------------------
+    public var getNomPrenomUCD: String {
+        return "\(nom) \(prenom)".uppercased().folding(options: .diacriticInsensitive, locale: .current)
     }
     
     //---------------------------------------------------------------------------

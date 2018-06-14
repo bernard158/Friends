@@ -10,7 +10,13 @@ import Foundation
 import RealmSwift
 
 class Gift: Object {
-    @objc dynamic var nom = ""
+    @objc dynamic var nom = "" {
+        didSet {
+            // Keep the case-free property in sync
+            nomUCD = getNomUCD
+        }
+    }
+    @objc dynamic var nomUCD = ""
     @objc dynamic var date: Date?
     @objc dynamic var note = ""
     @objc dynamic var prix: Double = 0.0
@@ -24,7 +30,12 @@ class Gift: Object {
     let personnesIdee = LinkingObjects(fromType: Person.self, property: "cadeauxIdees")
     
     //---------------------------------------------------------------------------
-   convenience init(_ nom: String) {
+    public var getNomUCD: String {
+        return nom.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+    }
+    
+    //---------------------------------------------------------------------------
+  convenience init(_ nom: String) {
         self.init()
         self.nom = nom
     }

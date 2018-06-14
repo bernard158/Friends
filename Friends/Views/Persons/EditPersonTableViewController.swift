@@ -340,9 +340,9 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         let bindableTextField = textField as! BindableUITextField
         switch bindableTextField.sujet {
         case "nom":
-            person!.nom = textField.text!
+            person!.nom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         case "prenom":
-            person!.prenom = textField.text!
+            person!.prenom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
         default:
             print("switch default")

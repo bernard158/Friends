@@ -43,7 +43,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         let realm = RealmDB.getRealm()!
-        gifts = realm.objects(Gift.self).sorted(by: ["nom"])
+        gifts = realm.objects(Gift.self).sorted(by: ["nomUCD"])
         
         if gifts!.count > 0 {
             let indexPath = IndexPath(row: 0, section: 0)

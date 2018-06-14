@@ -75,7 +75,7 @@ class PersonsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         let realm = RealmDB.getRealm()!
-        persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
+        persons = realm.objects(Person.self).sorted(byKeyPath: "nomPrenomUCD")
         if persons!.count > 0 {
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
@@ -248,10 +248,10 @@ class PersonsTableViewController: UITableViewController {
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         let realm = RealmDB.getRealm()!
         if (searchBarIsEmpty()) {
-            persons = realm.objects(Person.self).sorted(by: ["nom", "prenom"])
+            persons = realm.objects(Person.self).sorted(byKeyPath: "nomPrenomUCD")
         } else {
             let strSearch = searchText.lowercased()
-            persons = realm.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(by: ["nom", "prenom"])
+            persons = realm.objects(Person.self).filter("nom contains[c] %@ OR prenom contains[c] %@", strSearch, strSearch).sorted(byKeyPath: "nomPrenomUCD")
         }
         tableView.reloadData()
         
