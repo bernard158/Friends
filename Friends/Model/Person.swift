@@ -159,24 +159,82 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
-    
+    func attrStrGroupe(_ aGroup: [Person], attributes: [NSAttributedStringKey: Any]) -> NSAttributedString {
+        //Cette fonction retourne une chaîne sous la forme "Clarisse, Denis et Nathalie Rollier-Sigallet"
+        let strRetour = NSMutableAttributedString(string: "")
+        let maxIndexGroup = aGroup.count - 1
+        
+        for index in 0...maxIndexGroup {
+            let aPerson1 = aGroup[index]
+            if (index + 2) <= maxIndexGroup
+            { //2 positions après, c'est toujours le même nom
+                let aPerson3 = aGroup[index + 2]
+                if aPerson1.nom == aPerson3.nom
+                {
+                    strRetour.append(NSAttributedString(string: aPerson1.prenom, attributes: attributes))
+                    strRetour.append(NSAttributedString(string: ", "))
+                }
+                else if (index + 1) <= maxIndexGroup
+                {  //le suivant, c'est toujours le même nom
+                    let aPerson2 = aGroup[index + 1]
+                    if aPerson1.nom == aPerson2.nom {
+                        strRetour.append(NSAttributedString(string: aPerson1.prenom, attributes: attributes))
+                        strRetour.append(NSAttributedString(string: " et "))
+                    }
+                    else
+                    {    //il n'y a pas de suivant ou le suivant n'a pas le même nom
+                        strRetour.append(NSAttributedString(string: aPerson1.fullName, attributes: attributes))
+                        if index < maxIndexGroup {
+                            strRetour.append(NSAttributedString(string: ", "))
+                        }
+                    }
+                }
+            }
+            else if (index + 1) <= maxIndexGroup
+            {  //le suivant, c'est toujours le même nom
+                let aPerson2 = aGroup[index + 1]
+                if aPerson1.nom == aPerson2.nom {
+                    strRetour.append(NSAttributedString(string: aPerson1.prenom, attributes: attributes))
+                    strRetour.append(NSAttributedString(string: " et "))
+                }
+                else
+                {    //il n'y a pas de suivant ou le suivant n'a pas le même nom
+                    strRetour.append(NSAttributedString(string: aPerson1.fullName, attributes: attributes))
+                    if index < maxIndexGroup {
+                        strRetour.append(NSAttributedString(string: ", "))
+                    }
+                }
+            }
+            else
+            {    //il n'y a pas de suivant ou le suivant n'a pas le même nom
+                strRetour.append(NSAttributedString(string: aPerson1.fullName, attributes: attributes))
+                if index < maxIndexGroup {
+                    strRetour.append(NSAttributedString(string: ", "))
+                }
+            }
+
+
+        }
+        
+        return strRetour
+    }
     
     //---------------------------------------------------------------------------
-    public func cadeauxRecusSortedByDonateur(color: UIColor) -> NSAttributedString {
-        let realm = RealmDB.getRealm()!
-
-        let strRetour = NSMutableAttributedString(string: "")
-        let donateurNonConnu = Person(prenom: "", nom: "?")
-        
-        //Liste des donateurs uniques
-        var lesDonateurs = [Person]()
-        for gift in cadeauxRecus {
-            if gift.donateurs .isEmpty {
-                //cadeau sans donateur
+    /* public func cadeauxRecusSortedByDonateur(color: UIColor) -> NSAttributedString {
+     let realm = RealmDB.getRealm()!
+     
+     let strRetour = NSMutableAttributedString(string: "")
+     let donateurNonConnu = Person(prenom: "", nom: "?")
+     
+     //Liste des donateurs uniques
+     var lesDonateurs = [Person]()
+     for gift in cadeauxRecus {
+     if gift.donateurs .isEmpty {
+     //cadeau sans donateur
                 if !lesDonateurs.contains(donateurNonConnu) {
                     lesDonateurs.append(donateurNonConnu)
                 }
-
+                
             } else {
                 for aDonateur in gift.donateurs {
                     if !lesDonateurs.contains(aDonateur) {
@@ -192,18 +250,18 @@ extension Person {
         
         for aDonateur in lesDonateurs {
             //Mettre le donateur en couleur
-           let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
             let attStrDonateur = NSAttributedString(string: aDonateur.fullName, attributes: attrs)
-
+            
             strRetour.append(NSAttributedString(string: "• de "))
             strRetour.append(attStrDonateur)
             strRetour.append(NSAttributedString(string: " : "))
-           // récupérer les cadeaux du donateur concerné
+            // récupérer les cadeaux du donateur concerné
             var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
             if cadeaux.isEmpty {
                 //on a un cadeau sans donateur connu
                 cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
-           }
+            }
             
             for aCadeau in cadeaux {
                 strRetour.append(NSAttributedString(string: aCadeau.nom))
@@ -215,12 +273,183 @@ extension Person {
             }
         }
         return strRetour
+    }*/
+    
+    //---------------------------------------------------------------------------
+    public func cadeauxRecusSortedByGroupesDonateurs(color: UIColor) -> NSAttributedString {
+        let realm = RealmDB.getRealm()!
+        
+        let strRetour = NSMutableAttributedString(string: "")
+        let donateurNonConnu = [Person(prenom: "", nom: "?")]
+        
+        //Liste des groupes donateurs
+        var lesGroupes = [[Person]]()
+
+        for gift in cadeauxRecus {
+            if gift.donateurs .isEmpty {
+                //cadeau sans donateur
+                if !lesGroupes.contains(donateurNonConnu) {
+                    lesGroupes.append(donateurNonConnu)
+                }
+                
+            } else {
+                var aGroup = [Person]()
+                for aDonateur in gift.donateurs {
+                    aGroup.append(aDonateur)
+                }
+                aGroup.sort {
+                    ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
+                }
+                if !lesGroupes.contains(aGroup) {
+                    lesGroupes.append(aGroup)
+                }
+            }
+        }
+        
+        for aGroup in lesGroupes {
+            //Mettre le donateur en couleur
+            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attStrDonateur = attrStrGroupe(aGroup, attributes: attrs)
+            /*for aDonateur in aGroup {
+             attStrDonateur.append(NSAttributedString(string: aDonateur.fullName, attributes: attrs))
+             attStrDonateur.append(NSAttributedString(string: ", "))
+             }*/
+            
+            strRetour.append(NSAttributedString(string: "• de "))
+            strRetour.append(attStrDonateur)
+            strRetour.append(NSAttributedString(string: " : "))
+            // récupérer les cadeaux du donateur concerné
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aGroup.first!, self).sorted(byKeyPath: "date", ascending: false)
+            
+            // l'opérateur d'agrégation ALL n'existe pas dans realm... il faut faire le boulot à la main
+            var lesCadeaux = [Gift]()
+            for aCadeau in cadeaux {
+                var aCadeauOK = true
+                for aPerson in aGroup {
+                    if aCadeau.donateurs.count != aGroup.count {
+                        aCadeauOK = false
+                    } else if !aCadeau.donateurs.contains(aPerson) {
+                        //le cadeau ne correspond pas à ce groupe
+                        aCadeauOK = false
+                    }
+                }
+                if aCadeauOK {
+                    lesCadeaux.append(aCadeau)
+                }
+            }
+            
+            
+            if lesCadeaux.isEmpty {
+                //on a un cadeau sans bénéficiaire connu
+                cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+                for aCadeau in cadeaux {
+                    lesCadeaux.append(aCadeau)
+                }
+                
+            }
+            
+            for aCadeau in lesCadeaux {
+                strRetour.append(NSAttributedString(string: aCadeau.nom))
+                if aCadeau == lesCadeaux.last {
+                    strRetour.append(NSAttributedString(string: "\n"))
+                } else {
+                    strRetour.append(NSAttributedString(string: ", "))
+                }
+            }
+        }
+        return strRetour
+
     }
     
     //---------------------------------------------------------------------------
-    public func cadeauxOffertsSortedByBeneficiaire(color: UIColor) -> NSAttributedString {
+    public func cadeauxOffertsSortedByGroupesBeneficiaires(color: UIColor) -> NSAttributedString {
         let realm = RealmDB.getRealm()!
+        
+        let strRetour = NSMutableAttributedString(string: "")
+        let beneficiaireNonConnu = [Person(prenom: "", nom: "?")]
 
+        //Liste des groupes beneficiaires
+        var lesGroupes = [[Person]]()
+
+        for gift in cadeauxOfferts {
+            if gift.beneficiaires.isEmpty {
+                //cadeau sans beneficiaires
+                if !lesGroupes.contains(beneficiaireNonConnu) {
+                    lesGroupes.append(beneficiaireNonConnu)
+                }
+                
+            } else {
+                var aGroup = [Person]()
+                for aBeneficiaire in gift.beneficiaires {
+                    aGroup.append(aBeneficiaire)
+                }
+                aGroup.sort {
+                    ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
+                }
+                if !lesGroupes.contains(aGroup) {
+                    lesGroupes.append(aGroup)
+                }
+            }
+        }
+        
+        for aGroup in lesGroupes {
+            print("----------------------")
+            for aPerson in aGroup {
+                print(aPerson.fullName)
+            }
+            //Mettre le beneficiaire en couleur
+            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attStrBeneficaires = attrStrGroupe(aGroup, attributes: attrs)
+            
+            strRetour.append(NSAttributedString(string: "• à "))
+            strRetour.append(attStrBeneficaires)
+            strRetour.append(NSAttributedString(string: " : "))
+            // récupérer les cadeaux des beneficiaire concernés
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires IN %@", self, aGroup).sorted(byKeyPath: "date", ascending: false)
+            
+            // l'opérateur d'agrégation ALL n'existe pas dans realm... il faut faire le boulot à la main
+            var lesCadeaux = [Gift]()
+            for aCadeau in cadeaux {
+                var aCadeauOK = true
+                for aPerson in aGroup {
+                    if aCadeau.beneficiaires.count != aGroup.count {
+                        aCadeauOK = false
+                    } else if !aCadeau.beneficiaires.contains(aPerson) {
+                        //le cadeau ne correspond pas à ce groupe
+                        aCadeauOK = false
+                    }
+                }
+                if aCadeauOK {
+                    lesCadeaux.append(aCadeau)
+                }
+            }
+
+            
+            if lesCadeaux.isEmpty {
+                //on a un cadeau sans bénéficiaire connu
+                cadeaux = realm.objects(Gift.self).filter("ANY beneficiaires.@count == %d AND ANY donateurs == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+                for aCadeau in cadeaux {
+                    lesCadeaux.append(aCadeau)
+                }
+
+            }
+            
+            for aCadeau in lesCadeaux {
+                strRetour.append(NSAttributedString(string: aCadeau.nom))
+                if aCadeau == lesCadeaux.last {
+                    strRetour.append(NSAttributedString(string: "\n"))
+                } else {
+                    strRetour.append(NSAttributedString(string: ", "))
+                }
+            }
+        }
+        return strRetour
+    }
+    
+    //---------------------------------------------------------------------------
+    /*public func cadeauxOffertsSortedByBeneficiaire(color: UIColor) -> NSAttributedString {
+        let realm = RealmDB.getRealm()!
+        
         let strRetour = NSMutableAttributedString(string: "")
         let beneficiaireNonConnu = Person(prenom: "", nom: "?")
 
@@ -269,7 +498,7 @@ extension Person {
             }
         }
         return strRetour
-    }
+    }*/
 
     //---------------------------------------------------------------------------
     public func ideesCadeaux() -> String {
