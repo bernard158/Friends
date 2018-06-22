@@ -9,8 +9,10 @@
 import UIKit
 import RealmSwift
 
-class PersonDetailTableViewController: UITableViewController {
+class PersonDetailTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
+    var imagePicker: UIImagePickerController!
+
     var person: Person? {
         didSet {
             //configureViewPersonne()
@@ -238,6 +240,90 @@ class PersonDetailTableViewController: UITableViewController {
     }
     
     
+    @objc func addImageButtonClicked(_ sender:UIButton) {
+        //print("addImageButtonClicked")
+        imagePicker = UIImagePickerController()
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Prendre une photo", style: .default) { _ in
+            print("Prendre une photo")
+            self.openCamera()
+        })
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Choisir une image", style: .default) { _ in
+            self.openGallery()
+        })
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Afficher en plein écran", style: .default) { _ in
+            self.fullScreen()
+        })
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Annuler", style: .cancel) { _ in
+            
+        })
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = sender as UIButton
+        }
+        present(alert, animated: true)
+
+    }
+    
+    func openGallery() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+
+    func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            imagePicker.delegate = self
+            self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            self .present(self.imagePicker, animated: true, completion: nil)
+        }
+        else {
+            let alert = UIAlertController(title: "Appareil photo", message: "Il n'y a pas d'appareil photo sur ce matériel", preferredStyle: .alert)
+            
+            // ********
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                alert.dismiss(animated: true, completion: nil)
+            })
+            present(alert, animated: true)
+        }
+    }
+    //---------------------------------------------------------------------------
+    func fullScreen() {
+
+    }
+    //---------------------------------------------------------------------------
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        var imageView = info[UIImagePickerControllerEditedImage] as! UIImage
+        imageView = resizeImage(image: imageView, newDim: 256*3)
+        
+        if let imageData = UIImageJPEGRepresentation(imageView, 0.75) {
+ 
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                person!.imageData = imageData
+            }
+            dismiss(animated:true, completion: nil)
+
+        }
+
+        //userPhotoImageView.contentMode = .scaleAspectFill
+        //userPhotoImageView.image = imageView
+        //dismiss(animated:true, completion: nil)
+    }
+
     // MARK: - Table view data source
     
     //---------------------------------------------------------------------------
@@ -291,6 +377,12 @@ class PersonDetailTableViewController: UITableViewController {
             //affectation de l'image réduite
             imageView.backgroundColor = UIColor.white
             imageView.image = scaledImageRound(image, dim: 90, borderWidth: 3.0, borderColor: UIColor.white, imageView: imageView)
+            
+            
+            //var imageButton = UIButton()
+            let imageButton = cell.viewWithTag(1010) as! UIButton
+            imageButton.addTarget(self, action: #selector(PersonDetailTableViewController.addImageButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+            
         }
         
         if (aLigne.cellIdentifier == "baseTextViewCell") {
@@ -389,6 +481,7 @@ class PersonDetailTableViewController: UITableViewController {
 
 //---------------------------------------------------------------------------
 // MARK: - Autres classes
+
 
 //---------------------------------------------------------------------------
 

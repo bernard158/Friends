@@ -24,6 +24,10 @@
 	<true/>
 	<key>NSContactsUsageDescription</key>
 	<string>Accès à vos contacts</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Cette application utilise l&apos;appareil photo</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Vous pouvez sélectionner des photos de votre bibliothèque</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

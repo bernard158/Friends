@@ -21,7 +21,7 @@ class Ligne {
     var photoData: Data
     var accessoryType:UITableViewCellAccessoryType
     var deletable:Bool
-
+    
     init() {
         self.sujet = ""
         self.objectRef = nil as AnyObject?
@@ -50,30 +50,30 @@ class Section {
 // MARK: - Fonctions
 func colorWithHexString (hex:String, alpha: CGFloat = 1.0) -> UIColor {
     return UIColor.gray
-
+    
     /*xxx
- var cString:NSString = hex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercased()
-    
-    if (cString.hasPrefix("#")) {
-        cString = (cString as NSString).substring(from: 1)
-    }
-    
-    if (countElements(cString) != 6) {
-        return UIColor.gray
-    }
-    
-    var rString = (cString as NSString).substring(to: 2)
-    var gString = ((cString as NSString).substring(from: 2) as NSString).substring(to: 2)
-    var bString = ((cString as NSString).substring(from: 4) as NSString).substring(to: 2)
-    
-    var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
-    Scanner(string: rString).scanHexInt32(&r)
-    Scanner(string: gString).scanHexInt32(&g)
-    Scanner(string: bString).scanHexInt32(&b)
-    
-    
-    return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
-*/
+     var cString:NSString = hex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercased()
+     
+     if (cString.hasPrefix("#")) {
+     cString = (cString as NSString).substring(from: 1)
+     }
+     
+     if (countElements(cString) != 6) {
+     return UIColor.gray
+     }
+     
+     var rString = (cString as NSString).substring(to: 2)
+     var gString = ((cString as NSString).substring(from: 2) as NSString).substring(to: 2)
+     var bString = ((cString as NSString).substring(from: 4) as NSString).substring(to: 2)
+     
+     var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
+     Scanner(string: rString).scanHexInt32(&r)
+     Scanner(string: gString).scanHexInt32(&g)
+     Scanner(string: bString).scanHexInt32(&b)
+     
+     
+     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
+     */
 }
 
 //---------------------------------------------------------------------------
@@ -134,7 +134,7 @@ func scaledImageRound(_ image: UIImage, dim: CGFloat, borderWidth: CGFloat, bord
     imageView.layer.borderColor = UIColor.white.cgColor
     
     return scaledImage
-
+    
 }
 
 //---------------------------------------------------------------------------
@@ -160,8 +160,8 @@ func squareImageWithImage(_ image: UIImage, newSize: CGSize) -> UIImage {
     
     //make the final clipping rect based on the calculated values
     let clipRect = CGRect(x: -offset.x, y: -offset.y,
-        width: (ratio * image.size.width) + delta,
-        height: (ratio * image.size.height) + delta)
+                          width: (ratio * image.size.width) + delta,
+                          height: (ratio * image.size.height) + delta)
     
     //for retina consideration
     if UIScreen.main.responds(to: #selector(NSDecimalNumberBehaviors.scale)) {
@@ -175,6 +175,51 @@ func squareImageWithImage(_ image: UIImage, newSize: CGSize) -> UIImage {
     UIGraphicsEndImageContext()
     
     return newImage!;
+}
+
+//---------------------------------------------------------------------------
+func resizeImage(image: UIImage, newDim: CGFloat) -> UIImage {
+    
+    if image.size.height >= newDim && image.size.width >= newDim {
+        
+        UIGraphicsBeginImageContext(CGSize(width:newDim, height:newDim))
+        image.draw(in: CGRect(x:0, y:0, width:newDim, height:newDim))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+        
+    }
+    else if image.size.height >= newDim && image.size.width < newDim
+    {
+        
+        UIGraphicsBeginImageContext(CGSize(width:image.size.width, height:newDim))
+        image.draw(in: CGRect(x:0, y:0, width:image.size.width, height:newDim))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+        
+    }
+    else if image.size.width >= newDim && image.size.height < newDim
+    {
+        
+        UIGraphicsBeginImageContext(CGSize(width:newDim, height:image.size.height))
+        image.draw(in: CGRect(x:0, y:0, width:newDim, height:image.size.height))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+        
+    }
+    else
+    {
+        return image
+    }
+    
 }
 
 //---------------------------------------------------------------------------
@@ -220,4 +265,18 @@ extension String {
     }
 }
 
+
+/*extension UIImage {
+ func renderResizedImage (newWidth: CGFloat) -> UIImage {
+ let scale = newWidth / self.size.width
+ let newHeight = self.size.height * scale
+ let newSize = CGSize(width: newWidth, height: newHeight)
+ 
+ let renderer = UIGraphicsImageRenderer(size: newSize)
+ 
+ let image = renderer.image { (context) in
+ self.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
+ }
+ return image
+ }*/
 
