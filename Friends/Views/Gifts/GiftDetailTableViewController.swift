@@ -8,13 +8,144 @@
 
 import UIKit
 import RealmSwift
+import CollieGallery
 
-class GiftDetailTableViewController: UITableViewController {
+class GiftDetailTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var sections: [Section] = []
     var gift: Gift? {
         didSet {
             //configureViewCadeau()
+        }
+    }
+    var imagePicker: UIImagePickerController!
+
+    @IBAction func addImageButtonClicked(_ sender: UIButton) {
+        //print("addImageButtonClicked")
+        imagePicker = UIImagePickerController()
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Prendre une photo", style: .default) { _ in
+            print("Prendre une photo")
+            self.openCamera()
+        })
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Choisir une image", style: .default) { _ in
+            self.openGallery()
+        })
+        
+        // ********
+        if gift!.imageData != nil {
+            // ********
+            alert.addAction(UIAlertAction(title: "Afficher en plein écran", style: .default) { _ in
+                self.fullScreen()
+            })
+            
+            // ********
+            alert.addAction(UIAlertAction(title: "Supprimer la photo", style: .destructive) { _ in
+                let realm = RealmDB.getRealm()!
+                try! realm.write {
+                    self.gift!.imageData = nil
+                }
+                self.tableView.reloadData()
+            })
+            
+        }
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "Annuler", style: .cancel) { _ in
+            
+        })
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = sender as UIButton
+        }
+        present(alert, animated: true)
+
+    }
+    //---------------------------------------------------------------------------
+
+    func openGallery() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    //---------------------------------------------------------------------------
+    func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            imagePicker.delegate = self
+            self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            self .present(self.imagePicker, animated: true, completion: nil)
+        }
+        else {
+            let alert = UIAlertController(title: "Appareil photo", message: "Il n'y a pas d'appareil photo sur ce matériel", preferredStyle: .alert)
+            
+            // ********
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                alert.dismiss(animated: true, completion: nil)
+            })
+            present(alert, animated: true)
+        }
+    }
+    
+    //---------------------------------------------------------------------------
+    func fullScreen() {
+        
+        var pictures = [CollieGalleryPicture]()
+        var image = UIImage()
+        
+        if gift!.imageData != nil {
+            image = UIImage(data: gift!.imageData!)!
+        } else {
+            image = UIImage(named: "noImage.png")!
+        }
+        
+        let picture = CollieGalleryPicture(image: image)
+        pictures.append(picture)
+        
+        let options = CollieGalleryOptions()
+        //options.enableSave = false
+        let customAction = CollieGalleryCustomAction(title: "Supprimer l'image", imageName: "") { () -> () in
+            
+            print("Supprimer image CollieGalleryCustomAction Tapped!")
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                self.gift!.imageData = nil
+            }
+            self.tableView.reloadData()
+            self.dismiss(animated:true, completion: nil)
+        }
+        
+        options.customActions = [customAction]
+        options.excludedActions = [UIActivityType.assignToContact, UIActivityType.copyToPasteboard, UIActivityType.print, UIActivityType.saveToCameraRoll]
+        //options.enableZoom = false
+        
+        let gallery = CollieGallery(pictures: pictures, options: options)
+        
+        
+        gallery.presentInViewController(self.splitViewController!)
+    }
+    
+    //---------------------------------------------------------------------------
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        var image = info[UIImagePickerControllerEditedImage] as! UIImage
+        image = resizeImage(image: image, targetSize: CGSize(width: 1536, height: 1536))
+        
+        if let imageData = UIImageJPEGRepresentation(image, 0.70) {
+            
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                gift!.imageData = imageData
+            }
+            dismiss(animated:true, completion: nil)
         }
     }
     

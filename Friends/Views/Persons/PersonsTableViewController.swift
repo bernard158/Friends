@@ -158,21 +158,21 @@ class PersonsTableViewController: UITableViewController {
     }
     
     //---------------------------------------------------------------------------
-    override func viewDidAppear(_ animated: Bool) {
+    /*override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonsTableViewController")
     }
-    
+    */
     //---------------------------------------------------------------------------
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonsTableViewController")
         itemsToken?.invalidate()
     }
     //---------------------------------------------------------------------------
-    override func viewDidDisappear(_ animated: Bool) {
+    /*override func viewDidDisappear(_ animated: Bool) {
         // print("viewDidDisappear PersonsTableViewController")
         
     }
-    
+    */
     //---------------------------------------------------------------------------
     // MARK: - Table view data source
     
@@ -270,7 +270,6 @@ class PersonsTableViewController: UITableViewController {
     
     //---------------------------------------------------------------------------
     // MARK: - Navigation
-    
     //---------------------------------------------------------------------------
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -281,7 +280,8 @@ class PersonsTableViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! PersonDetailTableViewController
                 controller.person = persons![indexPath.row]
-                
+                searchController.isActive = false
+
                 //Sur un iphone, l'app recharge la liste complète avant de basculer sur l'écran Détail.
                 // Pour éviter le clignotement d'écran occasionné, on bloque le reloadData
                 if UIDevice().userInterfaceIdiom == .phone { // iPhone

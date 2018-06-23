@@ -8,18 +8,20 @@
 
 import UIKit
 import RealmSwift
+import CollieGallery
+
 
 class PersonDetailTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var imagePicker: UIImagePickerController!
-
+    
     var person: Person? {
         didSet {
             //configureViewPersonne()
         }
     }
     var sections: [Section] = []
-
+    
     
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
@@ -34,28 +36,28 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     }
     
     //---------------------------------------------------------------------------
-   override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         //print("viewWillAppear PersonDetailTableViewController")
         configureViewPersonne()
         super.viewWillAppear(animated)
     }
-
+    
     //---------------------------------------------------------------------------
     override func viewWillDisappear(_ animated: Bool) {
         //print("viewWillDisappear PersonDetailTableViewController")
         //itemsToken?.invalidate()
     }
-
+    
     //---------------------------------------------------------------------------
     override func viewDidAppear(_ animated: Bool) {
         //print("viewDidAppear PersonDetailTableViewController")
     }
-
+    
     //---------------------------------------------------------------------------
     override func viewDidDisappear(_ animated: Bool) {
         //print("viewDidDisappear PersonDetailTableViewController")
     }
-
+    
     //---------------------------------------------------------------------------
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -257,9 +259,22 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
         })
         
         // ********
-        alert.addAction(UIAlertAction(title: "Afficher en plein écran", style: .default) { _ in
-            self.fullScreen()
-        })
+        if person!.imageData != nil {
+            // ********
+            alert.addAction(UIAlertAction(title: "Afficher en plein écran", style: .default) { _ in
+                self.fullScreen()
+            })
+            
+            // ********
+            alert.addAction(UIAlertAction(title: "Supprimer la photo", style: .destructive) { _ in
+                let realm = RealmDB.getRealm()!
+                try! realm.write {
+                    self.person!.imageData = nil
+                }
+                self.tableView.reloadData()
+            })
+            
+        }
         
         // ********
         alert.addAction(UIAlertAction(title: "Annuler", style: .cancel) { _ in
@@ -270,10 +285,11 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             popoverController.sourceView = sender as UIButton
         }
         present(alert, animated: true)
-
+        
     }
     
-    func openGallery() {
+    //---------------------------------------------------------------------------
+   func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -281,7 +297,8 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             self.present(imagePicker, animated: true, completion: nil)
         }
     }
-
+    
+    //---------------------------------------------------------------------------
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             imagePicker.delegate = self
@@ -299,31 +316,62 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             present(alert, animated: true)
         }
     }
+    
     //---------------------------------------------------------------------------
     func fullScreen() {
-
+        
+        
+        var pictures = [CollieGalleryPicture]()
+        
+        var image = UIImage()
+        if person!.imageData != nil {
+            image = UIImage(data: person!.imageData!)!
+        } else {
+            image = UIImage(named: "noImage.png")!
+        }
+        
+        let picture = CollieGalleryPicture(image: image)
+        pictures.append(picture)
+        
+        let options = CollieGalleryOptions()
+        //options.enableSave = false
+        let customAction = CollieGalleryCustomAction(title: "Supprimer l'image", imageName: "") { () -> () in
+            
+            print("Supprimer image Action Tapped!")
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                self.person!.imageData = nil
+            }
+            self.tableView.reloadData()
+            self.dismiss(animated:true, completion: nil)
+        }
+        
+        options.customActions = [customAction]
+        options.excludedActions = [UIActivityType.assignToContact, UIActivityType.copyToPasteboard, UIActivityType.print, UIActivityType.saveToCameraRoll]
+        //options.enableZoom = false
+        
+        let gallery = CollieGallery(pictures: pictures, options: options)
+        
+        
+        gallery.presentInViewController(self.splitViewController!)
     }
+    
     //---------------------------------------------------------------------------
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        var imageView = info[UIImagePickerControllerEditedImage] as! UIImage
-        imageView = resizeImage(image: imageView, newDim: 256*3)
+        var image = info[UIImagePickerControllerEditedImage] as! UIImage
+        image = resizeImage(image: image, targetSize: CGSize(width: 1536, height: 1536))
         
-        if let imageData = UIImageJPEGRepresentation(imageView, 0.75) {
- 
+        if let imageData = UIImageJPEGRepresentation(image, 0.70) {
+            
             let realm = RealmDB.getRealm()!
             try! realm.write {
                 person!.imageData = imageData
             }
             dismiss(animated:true, completion: nil)
-
         }
-
-        //userPhotoImageView.contentMode = .scaleAspectFill
-        //userPhotoImageView.image = imageView
-        //dismiss(animated:true, completion: nil)
     }
-
+    
     // MARK: - Table view data source
     
     //---------------------------------------------------------------------------
@@ -349,6 +397,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
         
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: aLigne.cellIdentifier, for: indexPath) as UITableViewCell
+        cell.accessoryType = .none
 
         guard let personne = person else { return cell }
         
@@ -364,7 +413,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             //xxx labelAge.text = Date.calculateAge(personne.dateNais)
             labelJourMois.text = person?.strDateNais
             labelAge.text = person?.strAge
-
+            
             //image
             var image = UIImage()
             let imageView = cell.viewWithTag(1000) as! UIImageView
@@ -418,19 +467,22 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             if aLigne.sujet == "cadeauxRecus" {
                 //label.attributedText = personne.cadeauxRecusSortedByDonateur(color: (navigationController?.navigationBar.barTintColor)!)
                 label.attributedText = personne.cadeauxRecusSortedByGroupesDonateurs(color: (navigationController?.navigationBar.barTintColor)!)
-
+                cell.accessoryType = .disclosureIndicator
+                
             }
             
             //Cadeaux offerts
             if aLigne.sujet == "cadeauxOfferts" {
                 //let aGift = aLigne.objectRef as! Gift
                 label.attributedText = personne.cadeauxOffertsSortedByGroupesBeneficiaires(color: (navigationController?.navigationBar.barTintColor)!)
+                cell.accessoryType = .disclosureIndicator
             }
             
             //Cadeaux idées
             if aLigne.sujet == "cadeauxIdees" {
                 //let aGift = aLigne.objectRef as! Gift
                 label.text = personne.ideesCadeaux()
+                cell.accessoryType = .disclosureIndicator
             }
         }
         

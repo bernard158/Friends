@@ -9,14 +9,24 @@
 import UIKit
 import RealmSwift
 
-class GiftViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GiftViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
     public var gifts: Results<Gift>?
     private var itemsToken: NotificationToken?
     
-    @IBOutlet weak var tableViewMasterCadeaux: UITableView!
     //---------------------------------------------------------------------------
-    @IBAction func addGift(_ sender: Any) {
+    @IBOutlet weak var tableViewMasterCadeaux: UITableView!
+    @IBOutlet weak var searchField: UITextField!
+    
+    //---------------------------------------------------------------------------
+    @IBAction func showAll(_ sender: Any) {
+        searchField.text = ""
+        searchField.resignFirstResponder()
+        nomEditChange(searchField)
+    }
+    
+    //---------------------------------------------------------------------------
+   @IBAction func addGift(_ sender: Any) {
         print("addGift")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditGift")
         let  editView:EditGiftTableViewController = editViewNav.childViewControllers.first as! EditGiftTableViewController
@@ -31,13 +41,15 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.present(editViewNav, animated: true, completion: nil)
     }
-
+    
     //---------------------------------------------------------------------------
     @IBAction func nomEditChange(_ sender: UITextField) {
-        if sender.text!.count >= 2 {
-            print("nomEditchange")
+        let strSearch = sender.text!
+        if (strSearch.count >= 2) || (strSearch.count == 0){
+            //print("nomEditchange")
+            filterContentForSearchText(strSearch)
         }
-  }
+    }
     //---------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +96,19 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //---------------------------------------------------------------------------
+    func filterContentForSearchText(_ searchText: String) {
+        let realm = RealmDB.getRealm()!
+        if (searchText.count == 0) {
+            gifts = realm.objects(Gift.self).sorted(by: ["nomUCD"])
+        } else {
+            let strSearch = searchText.lowercased()
+            gifts = realm.objects(Gift.self).filter("nom contains[c] %@", strSearch).sorted(byKeyPath: "nomUCD")
+        }
+        tableViewMasterCadeaux.reloadData()
+        
+    }
+    
+   //---------------------------------------------------------------------------
   // MARK: - Table view data source
     
     //---------------------------------------------------------------------------
@@ -155,25 +180,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //---------------------------------------------------------------------------
-    /*func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-     if searchBarIsEmpty() {
-     gifts = realm!.objects(Gift.self).sorted(by: ["name"])
-        } else {
-            let strSearch = searchText.lowercased()
-            gifts = realm!.objects(Gift.self).filter("nom contains[c] %@ ", strSearch)
-        }
-        tableView.reloadData()
-    }
-    
-    func searchBarIsEmpty() -> Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func isFiltering() -> Bool {
-        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
-    }
-    */
+    // MARK: - Navigation
     //---------------------------------------------------------------------------
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -186,15 +193,34 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
+    //---------------------------------------------------------------------------
+    // MARK: - UITextField
+    //---------------------------------------------------------------------------
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    /*   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // figure out what the new string will be after the pending edit
+        let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
+        
+        // Do whatever you want here
+        if ((updatedString?.count)! > 2) || (updatedString?.count == 0) {
+            filterContentForSearchText(updatedString!)
+        }
+
+        // Return true so that the change happens
+        return true
+    }
+*/
+/*    @objc func textFieldDidChange(_ textField: UITextField) {
+        print("textFieldDidChange")
+        let strSearch = textField.text!
+        if (strSearch.count > 2) || (strSearch.count == 0) {
+            filterContentForSearchText(strSearch)
+        }
+    }*/
 }
 
-//---------------------------------------------------------------------------
-/*extension GiftTableViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        //let searchBar = searchController.searchBar
-        //let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-        filterContentForSearchText(searchController.searchBar.text!, scope: "")
-    }
-}*/
+
 

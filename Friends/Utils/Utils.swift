@@ -178,48 +178,30 @@ func squareImageWithImage(_ image: UIImage, newSize: CGSize) -> UIImage {
 }
 
 //---------------------------------------------------------------------------
-func resizeImage(image: UIImage, newDim: CGFloat) -> UIImage {
+func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    let size = image.size
     
-    if image.size.height >= newDim && image.size.width >= newDim {
-        
-        UIGraphicsBeginImageContext(CGSize(width:newDim, height:newDim))
-        image.draw(in: CGRect(x:0, y:0, width:newDim, height:newDim))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-        
-    }
-    else if image.size.height >= newDim && image.size.width < newDim
-    {
-        
-        UIGraphicsBeginImageContext(CGSize(width:image.size.width, height:newDim))
-        image.draw(in: CGRect(x:0, y:0, width:image.size.width, height:newDim))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-        
-    }
-    else if image.size.width >= newDim && image.size.height < newDim
-    {
-        
-        UIGraphicsBeginImageContext(CGSize(width:newDim, height:image.size.height))
-        image.draw(in: CGRect(x:0, y:0, width:newDim, height:image.size.height))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-        
-    }
-    else
-    {
-        return image
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+    
+    // Figure out what our orientation is, and use that to form the rectangle
+    var newSize: CGSize
+    if(widthRatio > heightRatio) {
+        newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+    } else {
+        newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
     }
     
+    // This is the rect that we've calculated out and this is what is actually used below
+    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+    
+    // Actually do the resizing to the rect using the ImageContext stuff
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return newImage!
 }
 
 //---------------------------------------------------------------------------

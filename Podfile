@@ -8,6 +8,7 @@ target 'Friends' do
   use_frameworks!
 
   # Pods for Friends
-  pod 'RealmSwift'
+  pod "RealmSwift"
+  pod "CollieGallery"
 
 end
