@@ -480,6 +480,7 @@
 			baseConfigurationReference = B2BA5D36410FDF1BB42F3980 /* Pods-Friends.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQJ433XG8T;
 				INFOPLIST_FILE = Friends/Info.plist;
@@ -490,6 +491,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sbd.Friends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -500,6 +502,7 @@
 			baseConfigurationReference = 3873059C352E6CB5AD41BA74 /* Pods-Friends.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQJ433XG8T;
 				INFOPLIST_FILE = Friends/Info.plist;
@@ -510,6 +513,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sbd.Friends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

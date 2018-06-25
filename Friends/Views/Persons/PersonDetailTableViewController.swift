@@ -481,7 +481,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             //Cadeaux idées
             if aLigne.sujet == "cadeauxIdees" {
                 //let aGift = aLigne.objectRef as! Gift
-                label.text = personne.ideesCadeaux()
+                label.attributedText = personne.ideesCadeaux()
                 cell.accessoryType = .disclosureIndicator
             }
         }

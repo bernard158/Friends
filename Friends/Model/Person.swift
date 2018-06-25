@@ -43,7 +43,7 @@ class Person: Object {
     
     //non enregistrable
     public var checked = false
-
+    
     //---------------------------------------------------------------------------
     convenience init(prenom: String, nom: String) {
         self.init()
@@ -134,7 +134,7 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
-  public func age() -> Int? {
+    public func age() -> Int? {
         if let dateNaisDate = dateNais {
             let now = Date()
             let calendar = Calendar.current
@@ -212,68 +212,10 @@ extension Person {
                     strRetour.append(NSAttributedString(string: ", "))
                 }
             }
-
-
         }
         
         return strRetour
     }
-    
-    //---------------------------------------------------------------------------
-    /* public func cadeauxRecusSortedByDonateur(color: UIColor) -> NSAttributedString {
-     let realm = RealmDB.getRealm()!
-     
-     let strRetour = NSMutableAttributedString(string: "")
-     let donateurNonConnu = Person(prenom: "", nom: "?")
-     
-     //Liste des donateurs uniques
-     var lesDonateurs = [Person]()
-     for gift in cadeauxRecus {
-     if gift.donateurs .isEmpty {
-     //cadeau sans donateur
-                if !lesDonateurs.contains(donateurNonConnu) {
-                    lesDonateurs.append(donateurNonConnu)
-                }
-                
-            } else {
-                for aDonateur in gift.donateurs {
-                    if !lesDonateurs.contains(aDonateur) {
-                        lesDonateurs.append(aDonateur)
-                    }
-                }
-            }
-        }
-        //on trie les donnateurs alpha
-        lesDonateurs.sort {
-            ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
-        }
-        
-        for aDonateur in lesDonateurs {
-            //Mettre le donateur en couleur
-            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
-            let attStrDonateur = NSAttributedString(string: aDonateur.fullName, attributes: attrs)
-            
-            strRetour.append(NSAttributedString(string: "• de "))
-            strRetour.append(attStrDonateur)
-            strRetour.append(NSAttributedString(string: " : "))
-            // récupérer les cadeaux du donateur concerné
-            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aDonateur, self).sorted(byKeyPath: "date", ascending: false)
-            if cadeaux.isEmpty {
-                //on a un cadeau sans donateur connu
-                cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
-            }
-            
-            for aCadeau in cadeaux {
-                strRetour.append(NSAttributedString(string: aCadeau.nom))
-                if aCadeau == cadeaux.last {
-                    strRetour.append(NSAttributedString(string: "\n"))
-                } else {
-                    strRetour.append(NSAttributedString(string: ", "))
-                }
-            }
-        }
-        return strRetour
-    }*/
     
     //---------------------------------------------------------------------------
     public func cadeauxRecusSortedByGroupesDonateurs(color: UIColor) -> NSAttributedString {
@@ -284,7 +226,7 @@ extension Person {
         
         //Liste des groupes donateurs
         var lesGroupes = [[Person]]()
-
+        
         for gift in cadeauxRecus {
             if gift.donateurs .isEmpty {
                 //cadeau sans donateur
@@ -310,10 +252,6 @@ extension Person {
             //Mettre le donateur en couleur
             let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
             let attStrDonateur = attrStrGroupe(aGroup, attributes: attrs)
-            /*for aDonateur in aGroup {
-             attStrDonateur.append(NSAttributedString(string: aDonateur.fullName, attributes: attrs))
-             attStrDonateur.append(NSAttributedString(string: ", "))
-             }*/
             
             strRetour.append(NSAttributedString(string: "• de "))
             strRetour.append(attStrDonateur)
@@ -348,17 +286,11 @@ extension Person {
                 
             }
             
-            for aCadeau in lesCadeaux {
-                strRetour.append(NSAttributedString(string: aCadeau.nom))
-                if aCadeau == lesCadeaux.last {
-                    strRetour.append(NSAttributedString(string: "\n"))
-                } else {
-                    strRetour.append(NSAttributedString(string: ", "))
-                }
-            }
+            let strCadeaux = attrStrCadeaux(lesCadeaux: lesCadeaux)
+            strRetour.append(strCadeaux)
         }
         return strRetour
-
+        
     }
     
     //---------------------------------------------------------------------------
@@ -367,10 +299,10 @@ extension Person {
         
         let strRetour = NSMutableAttributedString(string: "")
         let beneficiaireNonConnu = [Person(prenom: "", nom: "?")]
-
+        
         //Liste des groupes beneficiaires
         var lesGroupes = [[Person]]()
-
+        
         for gift in cadeauxOfferts {
             if gift.beneficiaires.isEmpty {
                 //cadeau sans beneficiaires
@@ -393,10 +325,10 @@ extension Person {
         }
         
         for aGroup in lesGroupes {
-            print("----------------------")
+           /* print("----------------------")
             for aPerson in aGroup {
                 print(aPerson.fullName)
-            }
+            }*/
             //Mettre le beneficiaire en couleur
             let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
             let attStrBeneficaires = attrStrGroupe(aGroup, attributes: attrs)
@@ -423,7 +355,7 @@ extension Person {
                     lesCadeaux.append(aCadeau)
                 }
             }
-
+            
             
             if lesCadeaux.isEmpty {
                 //on a un cadeau sans bénéficiaire connu
@@ -431,87 +363,53 @@ extension Person {
                 for aCadeau in cadeaux {
                     lesCadeaux.append(aCadeau)
                 }
-
+                
             }
             
-            for aCadeau in lesCadeaux {
-                strRetour.append(NSAttributedString(string: aCadeau.nom))
-                if aCadeau == lesCadeaux.last {
-                    strRetour.append(NSAttributedString(string: "\n"))
-                } else {
-                    strRetour.append(NSAttributedString(string: ", "))
-                }
-            }
+            let strCadeaux = attrStrCadeaux(lesCadeaux: lesCadeaux)
+            strRetour.append(strCadeaux)
         }
         return strRetour
     }
     
     //---------------------------------------------------------------------------
-    /*public func cadeauxOffertsSortedByBeneficiaire(color: UIColor) -> NSAttributedString {
-        let realm = RealmDB.getRealm()!
+    public func ideesCadeaux() -> NSAttributedString {
         
         let strRetour = NSMutableAttributedString(string: "")
-        let beneficiaireNonConnu = Person(prenom: "", nom: "?")
-
-        //Liste des bénéficiaires uniques
-        var lesBeneficiaires = [Person]()
-        for gift in cadeauxOfferts {
-            if gift.beneficiaires .isEmpty {
-                //cadeau sans bénéficiaire
-                if !lesBeneficiaires.contains(beneficiaireNonConnu) {
-                    lesBeneficiaires.append(beneficiaireNonConnu)
-                }
-            } else {
-                for aBeneficiaire in gift.beneficiaires {
-                    if !lesBeneficiaires.contains(aBeneficiaire) {
-                        lesBeneficiaires.append(aBeneficiaire)
-                    }
-                }
-            }
-        }
-        //on trie les bénéficiaires alpha
-        lesBeneficiaires.sort {
-            ($0.nom + $0.prenom) < ($1.nom + $1.prenom)
-        }
+        let cadeaux = cadeauxIdees.sorted(byKeyPath: "date", ascending: false)
         
-        for aBeneficiaire in lesBeneficiaires {
-            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
-            let attStrBeneficiaire = NSAttributedString(string: aBeneficiaire.fullName, attributes: attrs)
-
-            strRetour.append(NSAttributedString(string: "• à "))
-            strRetour.append(attStrBeneficiaire)
-            strRetour.append(NSAttributedString(string: " : "))
-            // récupérer les cadeaux du donateur concerné
-            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", self, aBeneficiaire).sorted(byKeyPath: "date", ascending: false)
-            if cadeaux.isEmpty {
-                //on a un cadeau sans bénéficiaire connu
-                cadeaux = realm.objects(Gift.self).filter("ANY beneficiaires.@count == %d AND ANY donateurs == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
-            }
-
-            for aCadeau in cadeaux {
-                strRetour.append(NSAttributedString(string: aCadeau.nom))
-                if aCadeau == cadeaux.last {
-                    strRetour.append(NSAttributedString(string: "\n"))
-                } else {
-                    strRetour.append(NSAttributedString(string: ", "))
-                }
-            }
+        //On tranforme en tableau de cadeaux pour appel fontion attrStrCadeaux
+        var lesCadeaux = [Gift]()
+        for aCadeau in cadeaux {
+            lesCadeaux.append(aCadeau)
         }
+        let strCadeaux = attrStrCadeaux(lesCadeaux: lesCadeaux)
+        strRetour.append(strCadeaux)
+
         return strRetour
-    }*/
-
+    }
+    
     //---------------------------------------------------------------------------
-    public func ideesCadeaux() -> String {
-        let sortedCadeaux = cadeauxIdees.sorted(byKeyPath: "date", ascending: false)
+    private func attrStrCadeaux(lesCadeaux: [Gift]) -> NSAttributedString {
         
-        var strRetour = ""
-        
-        for aCadeau in sortedCadeaux {
-            strRetour += aCadeau.nom
-            if aCadeau == sortedCadeaux.last {
-                strRetour += ""
+        let strRetour = NSMutableAttributedString(string: "")
+
+        for aCadeau in lesCadeaux {
+            if let imageData = aCadeau.imageData { // si on a une image du cadeau, on l'affiche en tout petit
+                let imageAttachment = NSTextAttachment()
+                imageAttachment.image = resizeImage(image: UIImage(data: imageData)!, targetSize: CGSize(width: 50, height: 36))
+                
+                // wrap the attachment in its own attributed string so we can append it
+                let imageString = NSAttributedString(attachment: imageAttachment)
+                strRetour.append(imageString)
+                strRetour.append(NSAttributedString(string: "\u{a0}")) // espace insécable - non breaking space
+            }
+            
+            strRetour.append(NSAttributedString(string: aCadeau.nom))
+            if aCadeau == lesCadeaux.last {
+                strRetour.append(NSAttributedString(string: "\n"))
             } else {
-                strRetour += ", "
+                strRetour.append(NSAttributedString(string: ", "))
             }
         }
         return strRetour

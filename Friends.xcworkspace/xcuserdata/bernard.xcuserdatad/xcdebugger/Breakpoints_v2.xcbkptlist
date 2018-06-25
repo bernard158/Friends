@@ -27,22 +27,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Friends/Views/Persons/PersonsTableViewController.swift"
-            timestampString = "551463959.110738"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "prepare(for:sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Friends/Views/Persons/EditPersonTableViewController.swift"
             timestampString = "551463959.1109591"
             startingColumnNumber = "9223372036854775807"
@@ -60,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Model/Person.swift"
-            timestampString = "551392018.009991"
+            timestampString = "551651435.550168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "cadeauxOffertsSortedByGroupesBeneficiaires(color:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -76,7 +60,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Model/Person.swift"
-            timestampString = "551392018.010181"
+            timestampString = "551651435.550392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "169"
@@ -92,7 +76,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Views/Gifts/GiftViewController.swift"
-            timestampString = "551463959.11121"
+            timestampString = "551651435.55054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
@@ -108,7 +92,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Friends/Views/Gifts/GiftViewController.swift"
-            timestampString = "551463959.111542"
+            timestampString = "551651435.55085"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "208"
