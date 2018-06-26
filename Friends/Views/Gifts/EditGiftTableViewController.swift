@@ -267,14 +267,18 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
     // MARK: - UITextField delegate
     //---------------------------------------------------------------------------
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print("textFieldDidEndEditing")
+        //print("textFieldDidEndEditing")
         let bindableTextField = textField as! BindableUITextField
-        switch bindableTextField.sujet {
-        case "nom":
-            gift!.nom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-        default:
-            print("switch default")
+        if !bindableTextField.sujet.isEmpty {
+            switch bindableTextField.sujet {
+            case "nom":
+                gift!.nom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            case "date":
+                print()
+                
+            default:
+                print("switch default textFieldDidEndEditing EditGiftTableViewController")
+            }
         }
     }
     

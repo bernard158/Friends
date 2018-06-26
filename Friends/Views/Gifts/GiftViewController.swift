@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class GiftViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-
+    
     public var gifts: Results<Gift>?
     private var itemsToken: NotificationToken?
     
@@ -26,7 +26,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //---------------------------------------------------------------------------
-   @IBAction func addGift(_ sender: Any) {
+    @IBAction func addGift(_ sender: Any) {
         print("addGift")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditGift")
         let  editView:EditGiftTableViewController = editViewNav.childViewControllers.first as! EditGiftTableViewController
@@ -81,12 +81,13 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
             case .initial:
                 print()
             default:
-                self.tableViewMasterCadeaux.reloadData()
+                print()
+                //self.tableViewMasterCadeaux.reloadData()
             }
         })
         
+        self.tableViewMasterCadeaux.reloadData()
         super.viewWillAppear(animated)
-        
     }
     
     //---------------------------------------------------------------------------
@@ -108,8 +109,8 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-   //---------------------------------------------------------------------------
-  // MARK: - Table view data source
+    //---------------------------------------------------------------------------
+    // MARK: - Table view data source
     
     //---------------------------------------------------------------------------
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -117,10 +118,10 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 1
     }
     
-   //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gifts?.count ?? 0
-
+        
     }
     
     //---------------------------------------------------------------------------
@@ -148,7 +149,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         imageView.image = image
         
         return cell
-
+        
     }
     //---------------------------------------------------------------------------
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -157,15 +158,13 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         let realm = RealmDB.getRealm()!
         try! realm.write {
             realm.delete(gift)
-            //tableView.reloadData()
         }
         
-        // il faut attendre un peu pour que la sélection se fasse !!!
         if UIDevice().userInterfaceIdiom == .pad { // iPad
             var newIndexPath = IndexPath(row: 0, section: 0)
             
             // il faut attendre un peu pour que la sélection se fasse !!!
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 if !self.gifts!.isEmpty {
                     newIndexPath.row = indexPath.row - 1
                     if newIndexPath.row == -1 {
@@ -176,6 +175,8 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.performSegue(withIdentifier: "giftMasterDetail", sender: self)
                 }
             }
+        } else {
+            tableView.reloadData()
         }
     }
     
@@ -201,25 +202,25 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         return true
     }
     /*   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // figure out what the new string will be after the pending edit
-        let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
-        
-        // Do whatever you want here
-        if ((updatedString?.count)! > 2) || (updatedString?.count == 0) {
-            filterContentForSearchText(updatedString!)
-        }
-
-        // Return true so that the change happens
-        return true
-    }
-*/
-/*    @objc func textFieldDidChange(_ textField: UITextField) {
-        print("textFieldDidChange")
-        let strSearch = textField.text!
-        if (strSearch.count > 2) || (strSearch.count == 0) {
-            filterContentForSearchText(strSearch)
-        }
-    }*/
+     // figure out what the new string will be after the pending edit
+     let updatedString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
+     
+     // Do whatever you want here
+     if ((updatedString?.count)! > 2) || (updatedString?.count == 0) {
+     filterContentForSearchText(updatedString!)
+     }
+     
+     // Return true so that the change happens
+     return true
+     }
+     */
+    /*    @objc func textFieldDidChange(_ textField: UITextField) {
+     print("textFieldDidChange")
+     let strSearch = textField.text!
+     if (strSearch.count > 2) || (strSearch.count == 0) {
+     filterContentForSearchText(strSearch)
+     }
+     }*/
 }
 
 

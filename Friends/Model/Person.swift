@@ -14,13 +14,11 @@ import RealmSwift
 class Person: Object {
     @objc dynamic var prenom = "" {
         didSet {
-            // Keep the case-free property in sync
             nomPrenomUCD = getNomPrenomUCD
         }
     }
     @objc dynamic var nom = "" {
         didSet {
-            // Keep the case-free property in sync
             nomPrenomUCD = getNomPrenomUCD
         }
     }
@@ -98,7 +96,13 @@ extension Person {
     //---------------------------------------------------------------------------
     public var strAge: String {
         guard dateNais != nil else { return "" }
-        return String(age()!)
+        var str = String(age()!)
+        if age()! <= 1 {
+            str += " an"
+        } else {
+            str += " ans"
+        }
+        return str
     }
     
     //---------------------------------------------------------------------------
@@ -149,6 +153,7 @@ extension Person {
     public func save() {
         let realm = RealmDB.getRealm()!
         try! realm.write {
+            nomPrenomUCD = getNomPrenomUCD
             realm.add(self, update: true)
         }
     }
@@ -390,20 +395,27 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
+    // retourne la liste des cadeaux avec leur image si il y a lieu
     private func attrStrCadeaux(lesCadeaux: [Gift]) -> NSAttributedString {
         
         let strRetour = NSMutableAttributedString(string: "")
 
         for aCadeau in lesCadeaux {
-            if let imageData = aCadeau.imageData { // si on a une image du cadeau, on l'affiche en tout petit
+            /*if let imageData = aCadeau.imageData { // si on a une image du cadeau, on l'affiche en tout petit
                 let imageAttachment = NSTextAttachment()
                 imageAttachment.image = resizeImage(image: UIImage(data: imageData)!, targetSize: CGSize(width: 50, height: 36))
+                
+                if let image = imageAttachment.image{
+                    let font = UIFont.systemFont(ofSize: 16) //set accordingly to your font
+                   let y = (font.ascender-font.capHeight/2-image.size.height/2)
+                    imageAttachment.bounds = CGRect(x: 0, y: y, width: image.size.width, height: image.size.height).integral
+                }
                 
                 // wrap the attachment in its own attributed string so we can append it
                 let imageString = NSAttributedString(attachment: imageAttachment)
                 strRetour.append(imageString)
                 strRetour.append(NSAttributedString(string: "\u{a0}")) // espace insécable - non breaking space
-            }
+            }*/
             
             strRetour.append(NSAttributedString(string: aCadeau.nom))
             if aCadeau == lesCadeaux.last {

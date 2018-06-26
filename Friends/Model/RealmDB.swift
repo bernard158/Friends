@@ -59,24 +59,29 @@ func migrateFrom1To2(_ migration: Migration) {
 }
 //---------------------------------------
 
-
 class RealmDB {
     
     static func getRealm() -> Realm? {
         /*
-            let conf = Realm.Configuration(
-            schemaVersion: 1,
-            deleteRealmIfMigrationNeeded: true,
-            objectTypes: [Person.self, Gift.self])
-        */
+         let conf = Realm.Configuration(
+         schemaVersion: 1,
+         deleteRealmIfMigrationNeeded: true,
+         objectTypes: [Person.self, Gift.self])
+         */
         let conf = Realm.Configuration(
             schemaVersion: 2,
             migrationBlock: migrationBlock,
-            objectTypes: [Person.self, Gift.self])
-
+            shouldCompactOnLaunch: { totalBytes, usedBytes in
+                // totalBytes refers to the size of the file on disk in bytes (data + free space)
+                // usedBytes refers to the number of bytes used by data in the file
+                
+                // Compact if the file is over 100MB in size and less than 50% 'used'
+                let oneHundredMB = 100 * 1024 * 1024
+                return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.8
+        },
+            objectTypes: [Person.self, Gift.self]
+        )
+        
         return try! Realm(configuration: conf)
-
     }
-    
-
 }

@@ -214,7 +214,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             case "prenom":
                 textField.text = person!.prenom
             case "dateNais":
-               // textField.isEnabled = false
+                //textField.is = false
                 textField.text = strDateFormat(person!.dateNais)
                 dateTextField = textField
                 let datePickerView:UIDatePicker = UIDatePicker()

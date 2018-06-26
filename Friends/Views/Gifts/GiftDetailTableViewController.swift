@@ -145,6 +145,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
             try! realm.write {
                 gift!.imageData = imageData
             }
+            //tableView.reloadData()
             dismiss(animated:true, completion: nil)
         }
     }
