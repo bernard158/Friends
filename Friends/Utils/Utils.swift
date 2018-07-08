@@ -211,6 +211,7 @@ func currencyFormatter() ->  NumberFormatter {
     return formatter
 }
 
+//---------------------------------------------------------------------------
 public func attrStr(str: String, lineSpacing: CGFloat = 6.0, fontSize:CGFloat = 14.0)   -> NSAttributedString {
     let style = NSMutableParagraphStyle()
     style.lineSpacing = lineSpacing // change line spacing between paragraph like 36 or 48

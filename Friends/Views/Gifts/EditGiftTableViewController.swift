@@ -178,7 +178,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
                 datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControlEvents.valueChanged )
                 
             default:
-                print("switch default")
+                print("switch default 02")
             }
         }
         
@@ -200,7 +200,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
             case "note":
                 textView.text = gift!.note
             default:
-                print("switch default")
+                print("switch default 03")
             }
             cell.callBack = {
                 textView in
@@ -214,7 +214,7 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
                     self.gift!.note = textView.text!
                     
                 default:
-                    print("switch default")
+                    print("switch default 04")
                 }
                 // tell table view we're starting layout updates
                 tableView.beginUpdates()

@@ -72,7 +72,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
         editView.person = Person(person: person!) // contructeur de copie
         editView.detailView = self
         let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
-        editView.masterView = (leftNavController.topViewController as? PersonsTableViewController)
+        editView.masterView = (leftNavController.topViewController as? PersonsViewController)
         
         editViewNav.modalPresentationStyle = UIModalPresentationStyle.formSheet
         editViewNav.preferredContentSize = CGSize(width: 500, height: 800)

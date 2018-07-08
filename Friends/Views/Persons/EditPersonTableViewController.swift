@@ -13,7 +13,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
     
     public var person: Person? // reçoit un  objec détaché de realm
     public var detailView: PersonDetailTableViewController?
-    public var masterView: PersonsTableViewController?
+    public var masterView: PersonsViewController?
     var sections: [Section] = []
     var dateTextField: UITextField?
     
@@ -28,13 +28,13 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             
             //sélection de la ligne créee ou modifiée
             
-            self.masterView?.tableView.reloadData()
+            self.masterView?.tableViewMasterPersons.reloadData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if let index = self.masterView?.persons?.index(of: self.person!) {
                     print(index)
                     print((self.masterView?.persons?.count)!)
                     let indexPath = IndexPath(row: index, section: 0)
-                    self.masterView?.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+                    self.masterView?.tableViewMasterPersons.selectRow(at: indexPath, animated: true, scrollPosition: .top)
                 }
             }
         })
@@ -226,7 +226,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
                 datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControlEvents.valueChanged )
                 
           default:
-                print("switch default")
+                print("switch default 01")
             }
         }
         
@@ -258,7 +258,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             case "note":
                 textView.text = person!.note
             default:
-                print("switch default")
+                print("switch default 05")
             }
             if aLigne.sujet == "addresses" {
                 textView.text = person!.addresses
@@ -285,7 +285,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
                     self.person!.note = textView.text!
 
                 default:
-                    print("switch default")
+                    print("switch default 06")
                 }
                 // tell table view we're starting layout updates
                 tableView.beginUpdates()
@@ -345,7 +345,7 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             person!.prenom = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
         default:
-            print("switch default")
+            print("switch default 07")
         }
     }
     
