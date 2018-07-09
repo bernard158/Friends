@@ -32,7 +32,7 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
    }
     //---------------------------------------------------------------------------
     @IBAction func addPerson(_ sender: Any) {
-        print("add person")
+        //print("add person")
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -102,40 +102,6 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
     //---------------------------------------------------------------------------
     override func viewWillAppear(_ animated: Bool) {
         // print("viewWillAppear PersonsTableViewController")
-        /* if splitViewController!.isCollapsed {
-         if let selectionIndexPath = tableView.indexPathForSelectedRow {
-         tableView.deselectRow(at: selectionIndexPath, animated: animated)
-         }
-         }*/
-        /*let searchBar = searchController.searchBar
-         //searchController.isActive = true
-         searchBar.text = currentSearchbarText
-         updateSearchResults(for: searchController)
-         tableView.reloadData()
-         
-         if UIDevice().userInterfaceIdiom == .phone { // iPhone
-         // SearchBar text
-         searchBar.barStyle = .blackTranslucent
-         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
-         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(15)
-         
-         // SearchBar placeholder
-         let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
-         textFieldInsideUISearchBarLabel?.textColor = UIColor.gray
-         
-         } else { // iPad
-         searchController.searchBar.backgroundColor = UIColor.white
-         }
-         for subView in searchController.searchBar.subviews {
-         for subViewOne in subView.subviews {
-         if let textField = subViewOne as? UITextField {
-         //textField.textColor = UIColor.white
-         //use the code below if you want to change placeholder
-         let textFieldInsideUISearchBarLabel = textField.value(forKey: "placeholderLabel") as? UILabel
-         textFieldInsideUISearchBarLabel?.adjustsFontSizeToFitWidth = true
-         }
-         }
-         }*/
         itemsToken = persons?.observe( { change in
             //print("itemToken")
             switch change {
@@ -217,11 +183,11 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath)
         
         let person = persons![indexPath.row]
-        
+
         let labelNom = cell.viewWithTag(1001) as! UILabel
         labelNom.text = person.fullName
         
-        //Image
+      //Image
         var image = UIImage()
         let imageView = cell.viewWithTag(1000) as! UIImageView
         imageView.contentMode = .scaleAspectFit

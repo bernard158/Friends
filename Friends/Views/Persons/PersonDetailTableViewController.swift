@@ -66,7 +66,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     
     //---------------------------------------------------------------------------
     @objc func personEditDetail() {
-        print("personEditDetail")
+        //print("personEditDetail")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
         let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
         editView.person = Person(person: person!) // contructeur de copie
