@@ -154,11 +154,23 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     //---------------------------------------------------------------------------
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
-        let gift = gifts![indexPath.row]
-        let realm = RealmDB.getRealm()!
-        try! realm.write {
-            realm.delete(gift)
-        }
+        let alert = UIAlertController(title: "Suppression", message: "Voulez-vous réellement supprimer ce cadeau ?", preferredStyle: .alert)
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            let gift = self.gifts![indexPath.row]
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                realm.delete(gift)
+            }
+            tableView.reloadData()
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: "Annuler", style: .default) { _ in
+            alert.dismiss(animated: true, completion: nil)
+            return
+        })
+        present(alert, animated: true)
         
         if UIDevice().userInterfaceIdiom == .pad { // iPad
             var newIndexPath = IndexPath(row: 0, section: 0)

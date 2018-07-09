@@ -167,11 +167,11 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
                 textField.text = gift!.nom
             case "date":
                 // textField.isEnabled = false
-                textField.text = strDateFormat(gift!.date)
+                textField.text = strDateFormat(gift!.getDate())
                 dateTextField = textField
                 let datePickerView:UIDatePicker = UIDatePicker()
                 datePickerView.datePickerMode = UIDatePickerMode.date
-                if let date = gift?.date {
+                if let date = gift?.getDate() {
                     datePickerView.date = date
                 }
                 textField.inputView = datePickerView
@@ -260,7 +260,9 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
         dateFormatter.timeStyle = DateFormatter.Style.none
         
         dateTextField!.text = dateFormatter.string(from: sender.date)
-        gift?.date = sender.date
+        
+        let components = sender.date.componentsDMY()
+        gift?.setDate(year: components.year!, month: components.month!, day: components.day!)
     }
     
     

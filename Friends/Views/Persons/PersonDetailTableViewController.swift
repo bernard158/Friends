@@ -408,9 +408,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             let labelPrenom = cell.viewWithTag(1002) as! UILabel
             labelPrenom.text = personne.prenom
             let labelJourMois = cell.viewWithTag(1003) as! UILabel
-            //xxx labelJourMois.text = Date.getDayMonth(personne.dateNais)
             let labelAge = cell.viewWithTag(1004) as! UILabel
-            //xxx labelAge.text = Date.calculateAge(personne.dateNais)
             labelJourMois.text = person?.strDateNais
             labelAge.text = person?.strAge
             

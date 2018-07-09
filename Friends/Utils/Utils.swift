@@ -248,6 +248,28 @@ extension String {
     }
 }
 
+extension Date {
+    public func componentsDMY() -> DateComponents {
+        let calendar = Calendar.current
+        let components: DateComponents = calendar.dateComponents([Calendar.Component.day, Calendar.Component.month, Calendar.Component.year], from: self)
+        //print("Jour : \(components.day!) - Mois : \(components.month!) - Année : \(components.year!)")
+        
+        return components
+    }
+}
+
+extension DateComponents {
+    public func stringYMD() -> String? {
+        var strRetour: String?
+        if self.isValidDate(in: Calendar.current) {
+            strRetour = String(format: "%04d-%02d-%02d", arguments: [year!, month!, day!])
+        } else {
+            strRetour = nil
+        }
+        return strRetour
+    }
+}
+
 
 /*extension UIImage {
  func renderResizedImage (newWidth: CGFloat) -> UIImage {

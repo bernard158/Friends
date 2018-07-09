@@ -23,7 +23,8 @@ class Person: Object {
         }
     }
     @objc dynamic var nomPrenomUCD = ""
-    @objc dynamic var dateNais: Date?
+    //@objc dynamic var dateNais: Date?
+    @objc dynamic var dateNaisStr: String?
     @objc dynamic var emails = ""
     @objc dynamic var phones = ""
     @objc dynamic var addresses = ""
@@ -55,7 +56,8 @@ class Person: Object {
         self.init()
         self.prenom = person.prenom
         self.nom = person.nom
-        self.dateNais = person.dateNais
+        //self.dateNais = person.dateNais
+        self.dateNaisStr = person.dateNaisStr
         self.emails = person.emails
         self.phones = person.phones
         self.addresses = person.addresses
@@ -90,12 +92,18 @@ extension Person {
     
     //---------------------------------------------------------------------------
     public var strDateNais: String {
-        return strDateFormat(dateNais)
+        let df = DateFormatter()
+        df.dateFormat = "yyyy'-'MM'-'dd"
+        
+        if let str = dateNaisStr, let aDateNais = df.date(from: str) {
+            return strDateFormat(aDateNais)
+        }
+        return ""
     }
     
     //---------------------------------------------------------------------------
     public var strAge: String {
-        guard dateNais != nil else { return "" }
+        guard dateNaisStr != nil else { return "" }
         var str = String(age()!)
         if age()! <= 1 {
             str += " an"
@@ -108,6 +116,12 @@ extension Person {
     //---------------------------------------------------------------------------
     public var getNomPrenomUCD: String {
         return "\(nom) \(prenom)".uppercased().folding(options: .diacriticInsensitive, locale: .current)
+    }
+    
+    //---------------------------------------------------------------------------
+    public func setDateNais(year: Int, month: Int, day: Int) {
+        let dateComponents = DateComponents(calendar: nil, timeZone: nil, era: nil, year: year, month: month, day: day, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+        dateNaisStr = dateComponents.stringYMD()
     }
     
     //---------------------------------------------------------------------------
@@ -138,12 +152,26 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
+    public func getDate() -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy'-'MM'-'dd"
+        
+        if let str = dateNaisStr, let aDateNais = df.date(from: str) {
+            return aDateNais
+        }
+        return nil
+    }
+    
+    //---------------------------------------------------------------------------
     public func age() -> Int? {
-        if let dateNaisDate = dateNais {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy'-'MM'-'dd"
+        
+        if let aDateNais = getDate() {
             let now = Date()
             let calendar = Calendar.current
             
-            let ageComponents = calendar.dateComponents([.year], from: dateNaisDate, to: now)
+            let ageComponents = calendar.dateComponents([.year], from: aDateNais, to: now)
             return ageComponents.year!
         }
         return nil
@@ -262,7 +290,7 @@ extension Person {
             strRetour.append(attStrDonateur)
             strRetour.append(NSAttributedString(string: " : "))
             // récupérer les cadeaux du donateur concerné
-            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aGroup.first!, self).sorted(byKeyPath: "date", ascending: false)
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires == %@", aGroup.first!, self).sorted(byKeyPath: "dateStr", ascending: false)
             
             // l'opérateur d'agrégation ALL n'existe pas dans realm... il faut faire le boulot à la main
             var lesCadeaux = [Gift]()
@@ -284,7 +312,7 @@ extension Person {
             
             if lesCadeaux.isEmpty {
                 //on a un cadeau sans bénéficiaire connu
-                cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+                cadeaux = realm.objects(Gift.self).filter("ANY donateurs.@count == %d AND ANY beneficiaires == %@", 0, self).sorted(byKeyPath: "dateStr", ascending: false)
                 for aCadeau in cadeaux {
                     lesCadeaux.append(aCadeau)
                 }
@@ -330,10 +358,10 @@ extension Person {
         }
         
         for aGroup in lesGroupes {
-           /* print("----------------------")
-            for aPerson in aGroup {
-                print(aPerson.fullName)
-            }*/
+            /* print("----------------------")
+             for aPerson in aGroup {
+             print(aPerson.fullName)
+             }*/
             //Mettre le beneficiaire en couleur
             let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
             let attStrBeneficaires = attrStrGroupe(aGroup, attributes: attrs)
@@ -342,7 +370,7 @@ extension Person {
             strRetour.append(attStrBeneficaires)
             strRetour.append(NSAttributedString(string: " : "))
             // récupérer les cadeaux des beneficiaire concernés
-            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires IN %@", self, aGroup).sorted(byKeyPath: "date", ascending: false)
+            var cadeaux = realm.objects(Gift.self).filter("ANY donateurs == %@ AND ANY beneficiaires IN %@", self, aGroup).sorted(byKeyPath: "dateStr", ascending: false)
             
             // l'opérateur d'agrégation ALL n'existe pas dans realm... il faut faire le boulot à la main
             var lesCadeaux = [Gift]()
@@ -364,7 +392,7 @@ extension Person {
             
             if lesCadeaux.isEmpty {
                 //on a un cadeau sans bénéficiaire connu
-                cadeaux = realm.objects(Gift.self).filter("ANY beneficiaires.@count == %d AND ANY donateurs == %@", 0, self).sorted(byKeyPath: "date", ascending: false)
+                cadeaux = realm.objects(Gift.self).filter("ANY beneficiaires.@count == %d AND ANY donateurs == %@", 0, self).sorted(byKeyPath: "dateStr", ascending: false)
                 for aCadeau in cadeaux {
                     lesCadeaux.append(aCadeau)
                 }
@@ -381,7 +409,7 @@ extension Person {
     public func ideesCadeaux() -> NSAttributedString {
         
         let strRetour = NSMutableAttributedString(string: "")
-        let cadeaux = cadeauxIdees.sorted(byKeyPath: "date", ascending: false)
+        let cadeaux = cadeauxIdees.sorted(byKeyPath: "dateStr", ascending: false)
         
         //On tranforme en tableau de cadeaux pour appel fontion attrStrCadeaux
         var lesCadeaux = [Gift]()
@@ -390,7 +418,7 @@ extension Person {
         }
         let strCadeaux = attrStrCadeaux(lesCadeaux: lesCadeaux)
         strRetour.append(strCadeaux)
-
+        
         return strRetour
     }
     
@@ -399,23 +427,23 @@ extension Person {
     private func attrStrCadeaux(lesCadeaux: [Gift]) -> NSAttributedString {
         
         let strRetour = NSMutableAttributedString(string: "")
-
+        
         for aCadeau in lesCadeaux {
             /*if let imageData = aCadeau.imageData { // si on a une image du cadeau, on l'affiche en tout petit
-                let imageAttachment = NSTextAttachment()
-                imageAttachment.image = resizeImage(image: UIImage(data: imageData)!, targetSize: CGSize(width: 50, height: 36))
-                
-                if let image = imageAttachment.image{
-                    let font = UIFont.systemFont(ofSize: 16) //set accordingly to your font
-                   let y = (font.ascender-font.capHeight/2-image.size.height/2)
-                    imageAttachment.bounds = CGRect(x: 0, y: y, width: image.size.width, height: image.size.height).integral
-                }
-                
-                // wrap the attachment in its own attributed string so we can append it
-                let imageString = NSAttributedString(attachment: imageAttachment)
-                strRetour.append(imageString)
-                strRetour.append(NSAttributedString(string: "\u{a0}")) // espace insécable - non breaking space
-            }*/
+             let imageAttachment = NSTextAttachment()
+             imageAttachment.image = resizeImage(image: UIImage(data: imageData)!, targetSize: CGSize(width: 50, height: 36))
+             
+             if let image = imageAttachment.image{
+             let font = UIFont.systemFont(ofSize: 16) //set accordingly to your font
+             let y = (font.ascender-font.capHeight/2-image.size.height/2)
+             imageAttachment.bounds = CGRect(x: 0, y: y, width: image.size.width, height: image.size.height).integral
+             }
+             
+             // wrap the attachment in its own attributed string so we can append it
+             let imageString = NSAttributedString(attachment: imageAttachment)
+             strRetour.append(imageString)
+             strRetour.append(NSAttributedString(string: "\u{a0}")) // espace insécable - non breaking space
+             }*/
             
             strRetour.append(NSAttributedString(string: aCadeau.nom))
             if aCadeau == lesCadeaux.last {

@@ -410,7 +410,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
             let labelNom = cell.viewWithTag(1001) as! UILabel
             labelNom.text = cadeau.nom
             let labelJourMois = cell.viewWithTag(1003) as! UILabel
-            labelJourMois.text = strDateFormat(cadeau.date)
+            labelJourMois.text = strDateFormat(cadeau.getDate())
 
             
             //image

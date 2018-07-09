@@ -261,9 +261,10 @@ class ContactIOS {
         aPerson.urls = str.removeLastCR()
         
         //Date de naissance
-        let calendar = NSCalendar.current
-        if let birthday = contact.birthday, let date = calendar.date(from: birthday) {
-            aPerson.dateNais = date
+        //let calendar = NSCalendar.current
+        if let birthday: DateComponents = contact.birthday/*, let date = calendar.date(from: birthday)*/ {
+            //aPerson.dateNais = date
+            aPerson.setDateNais(year: birthday.year!, month: birthday.month!, day: birthday.day!)
         }
         
         //NOTE

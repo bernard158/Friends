@@ -68,12 +68,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         df.dateFormat = "dd'-'MM'-'yyyy"
         
         let sylvette = Person(prenom: "Sylvette", nom: "David")
-        sylvette.dateNais = df.date(from: "08-02-1954")
+        sylvette.setDateNais(year: 1954, month: 2, day: 8)
         sylvette.addresses = "4 rue de la Voûte - 07290 Quintenas"
         sylvette.urls = "FDQ : familles-de-quintenas.com"
         
         let bernard = Person(prenom: "Bernard", nom: "David")
-        bernard.dateNais = df.date(from: "15-08-1952")
+        bernard.dateNaisStr = "1952-08-15"
         bernard.addresses = "4 rue de la Voûte - 07290 Quintenas"
         
         let annette = Person(prenom: "Annette", nom: "David")
@@ -110,19 +110,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! realm.write {
                 //création des cadeaux
                 let montreBreitling = Gift("Montre Breitling")
-                montreBreitling.date = df.date(from: "15-08-2010")
+                montreBreitling.dateStr = "2010-08-15"
                 montreBreitling.note = "Offert à Bernard le jour de son anniversaire à Arles, avec Annette et Fabien"
                 sylvette.cadeauxOfferts.append(montreBreitling)
                 bernard.cadeauxRecus.append(montreBreitling)
                 
                 let montreHermes = Gift("Montre Hermès")
-                montreHermes.date = df.date(from: "08-02-2008")
+                montreHermes.dateStr = "2008-02-08"
                 montreHermes.note = "Offert à Sylvette lors d'une ballade à Nice"
                 bernard.cadeauxOfferts.append(montreHermes)
                 sylvette.cadeauxRecus.append(montreHermes)
                 
                 let moto = Gift("Moto Yamaha")
-                moto.date = df.date(from: "15-08-1998")
+                moto.dateStr = "1998-08-15"
                 moto.note = "Quel cadeau de rêve !!!"
                 moto.url = "http://www.yam34.com"
                 moto.magasin = "YAM34 - 250 Rue de la Jasse, 34130 Mauguio"
@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 bernard.cadeauxRecus.append(moto)
                 
                 let tomates = Gift("Tomates séchées")
-                tomates.date = df.date(from: "25-12-2013")
+                tomates.dateStr = "2013-12-25"
                 sylvette.cadeauxOfferts.append(tomates)
                 bernard.cadeauxOfferts.append(tomates)
                 nathalie.cadeauxRecus.append(tomates)
@@ -140,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 philippe.cadeauxRecus.append(tomates)
                 
                 let marcon = Gift("Stage Marcon")
-                marcon.date = df.date(from: "05-07-2014")
+                marcon.dateStr = "2014-07-05"
                 marcon.magasin = "Régis Marcon - Saint-Bonnet-le-Froid"
                 marcon.url = "http://www.regismarcon.fr/stages.php"
                 nathalie.cadeauxOfferts.append(marcon)
@@ -150,47 +150,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 sylvette.cadeauxRecus.append(marcon)
                 
                 let robeChambre = Gift("Robe de chambre")
-                robeChambre.date = df.date(from: "08-02-2018")
+                robeChambre.dateStr = "2018-02-08"
                 bernard.cadeauxOfferts.append(robeChambre)
                 sylvette.cadeauxRecus.append(robeChambre)
                 
                 let ficus = Gift("Ficus")
-                ficus.date = df.date(from: "08-02-2013")
+                ficus.dateStr = "2013-02-08"
                 bernard.cadeauxOfferts.append(ficus)
                 sylvette.cadeauxRecus.append(ficus)
                 
                 let sicile = Gift("Sicile")
-                sicile.date = df.date(from: "30-05-2014")
+                sicile.dateStr = "2014-05-30"
                 bernard.cadeauxOfferts.append(sicile)
                 sylvette.cadeauxRecus.append(sicile)
                 
                 let montreCK = Gift("Montre Calvin Klein")
-                montreCK.date = df.date(from: "04-02-2007")
+                montreCK.dateStr = "2007-02-04"
                 bernard.cadeauxOfferts.append(montreCK)
                 sylvette.cadeauxRecus.append(montreCK)
                 
                 let theiere = Gift("Théière Mariage")
-                theiere.date = df.date(from: "24-12-2011")
+                theiere.dateStr = "2011-12-24"
                 sylvette.cadeauxOfferts.append(theiere)
                 jacqueline.cadeauxRecus.append(theiere)
                 
                 let jars = Gift("Plat Jars rouge")
-                jars.date = df.date(from: "24-12-2011")
+                jars.dateStr = "2011-11-24"
                 sylvette.cadeauxOfferts.append(jars)
                 nathalie.cadeauxRecus.append(jars)
                 
                 let sexCity = Gift("Sex and the city")
-                sexCity.date = df.date(from: "24-12-2004")
+                sexCity.dateStr = "2004-12-24"
                 bernard.cadeauxOfferts.append(sexCity)
                 sylvette.cadeauxRecus.append(sexCity)
                 
                 let chaussons = Gift("Chaussons Isotoner")
-                chaussons.date = df.date(from: "24-12-2004")
+                chaussons.dateStr = "2004-12-24"
                 sylvette.cadeauxOfferts.append(chaussons)
                 nathalie.cadeauxRecus.append(chaussons)
                 
                 let gourmiBox = Gift("GourmiBox")
-                gourmiBox.date = df.date(from: "24-12-2017")
+                gourmiBox.dateStr = "2017-12-24"
                 philippe.cadeauxOfferts.append(gourmiBox)
                 sylvette.cadeauxRecus.append(gourmiBox)
                 jacqueline.cadeauxRecus.append(gourmiBox)
@@ -198,7 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 bernard.cadeauxRecus.append(gourmiBox)
                 
                 let sets = Gift("Sets de table")
-                sets.date = df.date(from: "24-12-2016")
+                sets.dateStr = "2016-12-24"
                 philippe.cadeauxOfferts.append(sets)
                 sylvette.cadeauxRecus.append(sets)
                 jacqueline.cadeauxRecus.append(sets)

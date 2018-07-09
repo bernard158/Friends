@@ -17,7 +17,8 @@ class Gift: Object {
         }
     }
     @objc dynamic var nomUCD = ""
-    @objc dynamic var date: Date?
+    //@objc dynamic var date: Date?
+    @objc dynamic var dateStr: String?
     @objc dynamic var note = ""
     @objc dynamic var prix: Double = 0.0
     @objc dynamic var magasin = ""
@@ -45,7 +46,7 @@ class Gift: Object {
     convenience init(_ gift: Gift) {
         self.init()
         self.nom = gift.nom
-        self.date = gift.date
+        self.dateStr = gift.dateStr
         self.note = gift.note
         self.prix = gift.prix
         self.magasin = gift.magasin
@@ -98,11 +99,28 @@ extension Gift {
     }
     
     public var strDateCadeau: String {
-        return strDateFormat(date)
+        return strDateFormat(getDate())
     }
 
     //---------------------------------------------------------------------------
-    public func save() {
+    public func getDate() -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy'-'MM'-'dd"
+        
+        if let str = dateStr, let aDate = df.date(from: str) {
+            return aDate
+        }
+        return nil
+    }
+    
+    //---------------------------------------------------------------------------
+    public func setDate(year: Int, month: Int, day: Int) {
+        let dateComponents = DateComponents(calendar: nil, timeZone: nil, era: nil, year: year, month: month, day: day, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+        dateStr = dateComponents.stringYMD()
+    }
+    
+    //---------------------------------------------------------------------------
+   public func save() {
         let realm = RealmDB.getRealm()!
         try! realm.write {
             nomUCD = getNomUCD

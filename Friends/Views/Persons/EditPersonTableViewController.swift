@@ -214,12 +214,14 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             case "prenom":
                 textField.text = person!.prenom
             case "dateNais":
-                //textField.is = false
-                textField.text = strDateFormat(person!.dateNais)
+                if let date = person?.getDate() {
+                    textField.text = strDateFormat(date)
+                }
+                //textField.text = strDateFormat(person!.dateNais)
                 dateTextField = textField
                 let datePickerView:UIDatePicker = UIDatePicker()
                 datePickerView.datePickerMode = UIDatePickerMode.date
-                if let date = person?.dateNais {
+                if let date = person?.getDate() {
                     datePickerView.date = date
                 }
                 textField.inputView = datePickerView
@@ -328,10 +330,12 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.none
-        
+
         dateTextField!.text = dateFormatter.string(from: sender.date)
-        person?.dateNais = sender.date
-    }
+ 
+        let components = sender.date.componentsDMY()
+        person?.setDateNais(year: components.year!, month: components.month!, day: components.day!)
+}
     
     // MARK: - UITextField delegate
     //---------------------------------------------------------------------------
@@ -348,16 +352,5 @@ class EditPersonTableViewController: UITableViewController, UITextFieldDelegate,
             print("switch default 07")
         }
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

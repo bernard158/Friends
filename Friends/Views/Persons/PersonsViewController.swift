@@ -174,12 +174,23 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
     //---------------------------------------------------------------------------
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
-        let person = persons![indexPath.row]
-        let realm = RealmDB.getRealm()!
-        try! realm.write {
-            realm.delete(person)
-            //tableView.reloadData()
-        }
+        let alert = UIAlertController(title: "Suppression", message: "Voulez-vous réellement supprimer cette personne ?", preferredStyle: .alert)
+        
+        // ********
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            let person = self.persons![indexPath.row]
+            let realm = RealmDB.getRealm()!
+            try! realm.write {
+                realm.delete(person)
+            }
+            tableView.reloadData()
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: "Annuler", style: .default) { _ in
+            alert.dismiss(animated: true, completion: nil)
+            return
+        })
+        present(alert, animated: true)
         
         if UIDevice().userInterfaceIdiom == .pad { // iPad
             var newIndexPath = IndexPath(row: 0, section: 0)
