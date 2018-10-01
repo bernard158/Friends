@@ -68,7 +68,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     @objc func personEditDetail() {
         //print("personEditDetail")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
-        let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
+        let  editView:EditPersonTableViewController = editViewNav.children.first as! EditPersonTableViewController
         editView.person = Person(person: person!) // contructeur de copie
         editView.detailView = self
         let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
@@ -290,9 +290,9 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     
     //---------------------------------------------------------------------------
    func openGallery() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
             imagePicker.allowsEditing = true
             self.present(imagePicker, animated: true, completion: nil)
         }
@@ -300,9 +300,9 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     
     //---------------------------------------------------------------------------
     func openCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             imagePicker.delegate = self
-            self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
             self .present(self.imagePicker, animated: true, completion: nil)
         }
@@ -347,7 +347,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
         }
         
         options.customActions = [customAction]
-        options.excludedActions = [UIActivityType.assignToContact, UIActivityType.copyToPasteboard, UIActivityType.print, UIActivityType.saveToCameraRoll]
+        options.excludedActions = [UIActivity.ActivityType.assignToContact, UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.print, UIActivity.ActivityType.saveToCameraRoll]
         //options.enableZoom = false
         
         let gallery = CollieGallery(pictures: pictures, options: options)
@@ -357,12 +357,15 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
     }
     
     //---------------------------------------------------------------------------
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
-        var image = info[UIImagePickerControllerEditedImage] as! UIImage
+        var image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.editedImage)] as! UIImage
         image = resizeImage(image: image, targetSize: CGSize(width: 1536, height: 1536))
         
-        if let imageData = UIImageJPEGRepresentation(image, 0.70) {
+        if let imageData = image.jpegData(compressionQuality: 0.70) {
             
             let realm = RealmDB.getRealm()!
             try! realm.write {
@@ -428,7 +431,7 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
             
             //var imageButton = UIButton()
             let imageButton = cell.viewWithTag(1010) as! UIButton
-            imageButton.addTarget(self, action: #selector(PersonDetailTableViewController.addImageButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+            imageButton.addTarget(self, action: #selector(PersonDetailTableViewController.addImageButtonClicked(_:)), for: UIControl.Event.touchUpInside)
             
         }
         
@@ -537,3 +540,13 @@ class PersonDetailTableViewController: UITableViewController, UINavigationContro
 
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

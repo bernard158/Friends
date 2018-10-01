@@ -170,12 +170,12 @@ class EditGiftTableViewController: UITableViewController, UITextFieldDelegate, U
                 textField.text = strDateFormat(gift!.getDate())
                 dateTextField = textField
                 let datePickerView:UIDatePicker = UIDatePicker()
-                datePickerView.datePickerMode = UIDatePickerMode.date
+                datePickerView.datePickerMode = UIDatePicker.Mode.date
                 if let date = gift?.getDate() {
                     datePickerView.date = date
                 }
                 textField.inputView = datePickerView
-                datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControlEvents.valueChanged )
+                datePickerView.addTarget(self, action: #selector(EditPersonTableViewController.datePickerValueChanged), for: UIControl.Event.valueChanged )
                 
             default:
                 print("switch default 02")

@@ -141,7 +141,7 @@ class PersonPickerTableViewController: UITableViewController {
 
         checkmarks[indexPath.row] = !(checkmarks[indexPath.row])
         tableView.selectRow(at: nil, animated: true, scrollPosition: .top)
-        tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
     }
     
     

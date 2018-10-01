@@ -68,9 +68,9 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     //---------------------------------------------------------------------------
 
     func openGallery() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
             imagePicker.allowsEditing = true
             self.present(imagePicker, animated: true, completion: nil)
         }
@@ -78,9 +78,9 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     
     //---------------------------------------------------------------------------
     func openCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             imagePicker.delegate = self
-            self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
             self .present(self.imagePicker, animated: true, completion: nil)
         }
@@ -124,7 +124,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
         }
         
         options.customActions = [customAction]
-        options.excludedActions = [UIActivityType.assignToContact, UIActivityType.copyToPasteboard, UIActivityType.print, UIActivityType.saveToCameraRoll]
+        options.excludedActions = [UIActivity.ActivityType.assignToContact, UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.print, UIActivity.ActivityType.saveToCameraRoll]
         //options.enableZoom = false
         
         let gallery = CollieGallery(pictures: pictures, options: options)
@@ -134,12 +134,15 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     }
     
     //---------------------------------------------------------------------------
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
-        var image = info[UIImagePickerControllerEditedImage] as! UIImage
+        var image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.editedImage)] as! UIImage
         image = resizeImage(image: image, targetSize: CGSize(width: 1536, height: 1536))
         
-        if let imageData = UIImageJPEGRepresentation(image, 0.70) {
+        if let imageData = image.jpegData(compressionQuality: 0.70) {
             
             let realm = RealmDB.getRealm()!
             try! realm.write {
@@ -179,7 +182,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     @objc func giftEditDetail() {
         //print("giftEditDetail")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditGift")
-        let  editView:EditGiftTableViewController = editViewNav.childViewControllers.first as! EditGiftTableViewController
+        let  editView:EditGiftTableViewController = editViewNav.children.first as! EditGiftTableViewController
         editView.gift = Gift(gift!) // contructeur de copie
         editView.detailView = self
         let leftNavController = splitViewController!.viewControllers.first as! UINavigationController
@@ -330,7 +333,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
         //print("addDonateurButtonClicked")
         
         let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
-        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        let  personPicker:PersonPickerTableViewController = viewNav.children.first as! PersonPickerTableViewController
         personPicker.gift = gift
         personPicker.operation = "addDonateurs"
         personPicker.detailView = self
@@ -346,7 +349,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     @objc func addBeneficiaireButtonClicked(_ sender:UIButton) {
         //print("addBeneficiaireButtonClicked")
         let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
-        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        let  personPicker:PersonPickerTableViewController = viewNav.children.first as! PersonPickerTableViewController
         personPicker.gift = gift
         personPicker.operation = "addBeneficiaires"
         personPicker.detailView = self
@@ -363,7 +366,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
         //print("addIdeeButtonClicked")
         
         let viewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "personPicker")
-        let  personPicker:PersonPickerTableViewController = viewNav.childViewControllers.first as! PersonPickerTableViewController
+        let  personPicker:PersonPickerTableViewController = viewNav.children.first as! PersonPickerTableViewController
         personPicker.gift = gift
         personPicker.operation = "addIdees"
         personPicker.detailView = self
@@ -475,20 +478,20 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
             if aLigne.sujet == "addDonateur" {
                 label.text = "Ajouter un donateur"
                 //le bouton add --------------------------------------------------
-                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addDonateurButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addDonateurButtonClicked(_:)), for: UIControl.Event.touchUpInside)
                 
             }
             
             //Bénéficiaires
             if aLigne.sujet == "addBeneficiaire" {
                 label.text = "Ajouter un bénéficiaire"
-                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addBeneficiaireButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addBeneficiaireButtonClicked(_:)), for: UIControl.Event.touchUpInside)
           }
             
             //Idée pour
             if aLigne.sujet == "addPersonneIdee" {
                 label.text = "Ajouter comme idée pour"
-                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addIdeeButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                addButton!.addTarget(self, action: #selector(GiftDetailTableViewController.addIdeeButtonClicked(_:)), for: UIControl.Event.touchUpInside)
             }
         }
         
@@ -531,7 +534,7 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     }
     
     //---------------------------------------------------------------------------
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
         let aLigne = sections[indexPath.section].lignes[indexPath.row]
         let aPerson = aLigne.objectRef as! Person
@@ -571,4 +574,14 @@ class GiftDetailTableViewController: UITableViewController, UINavigationControll
     //---------------------------------------------------------------------------
     
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

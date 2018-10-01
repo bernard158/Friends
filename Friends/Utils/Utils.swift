@@ -19,7 +19,7 @@ class Ligne {
     var label: String
     var cellIdentifier: String
     var photoData: Data
-    var accessoryType:UITableViewCellAccessoryType
+    var accessoryType:UITableViewCell.AccessoryType
     var deletable:Bool
     
     init() {
@@ -30,7 +30,7 @@ class Ligne {
         self.label = ""
         self.cellIdentifier = ""
         self.photoData = Data()
-        accessoryType = UITableViewCellAccessoryType.none
+        accessoryType = UITableViewCell.AccessoryType.none
         deletable = false
     }
     
@@ -216,7 +216,7 @@ public func attrStr(str: String, lineSpacing: CGFloat = 6.0, fontSize:CGFloat = 
     let style = NSMutableParagraphStyle()
     style.lineSpacing = lineSpacing // change line spacing between paragraph like 36 or 48
     
-    let myAttributes = [ NSAttributedStringKey.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedStringKey.paragraphStyle: style ]
+    let myAttributes = [ NSAttributedString.Key.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedString.Key.paragraphStyle: style ]
     let attrString = NSAttributedString(string: str, attributes: myAttributes)
     
     return attrString

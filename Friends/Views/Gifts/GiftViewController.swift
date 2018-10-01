@@ -29,7 +29,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func addGift(_ sender: Any) {
         print("addGift")
         let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditGift")
-        let  editView:EditGiftTableViewController = editViewNav.childViewControllers.first as! EditGiftTableViewController
+        let  editView:EditGiftTableViewController = editViewNav.children.first as! EditGiftTableViewController
         editView.gift = Gift() // personne vierge
         editView.masterView = self
         let split = self.splitViewController as? GiftsSplitViewController
@@ -152,7 +152,7 @@ class GiftViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     //---------------------------------------------------------------------------
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
         let alert = UIAlertController(title: "Suppression", message: "Voulez-vous réellement supprimer ce cadeau ?", preferredStyle: .alert)
         

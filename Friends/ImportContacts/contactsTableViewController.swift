@@ -82,7 +82,7 @@ class contactsTableViewController: UITableViewController {
             importButton!.removeTarget(nil, action: nil, for: .allEvents)
         } else {
             importButton!.setTitle("import", for: .normal)
-            importButton!.addTarget(self, action: #selector(contactsTableViewController.importButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+            importButton!.addTarget(self, action: #selector(contactsTableViewController.importButtonClicked(_:)), for: UIControl.Event.touchUpInside)
         }
         
         //l'image' --------------------------------------------------

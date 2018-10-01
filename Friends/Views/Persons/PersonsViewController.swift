@@ -40,7 +40,7 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(UIAlertAction(title: "Créer une nouvelle personne", style: .default) { _ in
             print("new person")
             let editViewNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditPerson")
-            let  editView:EditPersonTableViewController = editViewNav.childViewControllers.first as! EditPersonTableViewController
+            let  editView:EditPersonTableViewController = editViewNav.children.first as! EditPersonTableViewController
             editView.person = Person() // personne vierge
             editView.masterView = self
             let split = self.splitViewController as? PersonsSplitViewController
@@ -138,7 +138,7 @@ class PersonsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     //---------------------------------------------------------------------------
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //print("commit")
         let alert = UIAlertController(title: "Suppression", message: "Voulez-vous réellement supprimer cette personne ?", preferredStyle: .alert)
         

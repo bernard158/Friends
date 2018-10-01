@@ -1,10 +1,10 @@
 PODS:
   - CollieGallery (0.6.0)
-  - Realm (3.7.4):
-    - Realm/Headers (= 3.7.4)
-  - Realm/Headers (3.7.4)
-  - RealmSwift (3.7.4):
-    - Realm (= 3.7.4)
+  - Realm (3.10.0):
+    - Realm/Headers (= 3.10.0)
+  - Realm/Headers (3.10.0)
+  - RealmSwift (3.10.0):
+    - Realm (= 3.10.0)
 
 DEPENDENCIES:
   - CollieGallery
@@ -18,8 +18,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   CollieGallery: b8fcf63af6b31add2f435f5aee4742ae3b84cb3b
-  Realm: a469bb59e33f9926102ccaea4349822c53b9117e
-  RealmSwift: a45861b21c180f5cf0f122144b9759fa8dde3e9e
+  Realm: 85ab9e4f779d66f6e9ffeb118dc25b7f130c96ac
+  RealmSwift: 69121c8b86d0ae005fb779efdb10e606732e1c74
 
 PODFILE CHECKSUM: a641bdad84ca2f1f9acb7787054bcbf4a325a0c3
 

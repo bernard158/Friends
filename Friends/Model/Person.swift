@@ -192,7 +192,7 @@ extension Person {
     }
     
     //---------------------------------------------------------------------------
-    func attrStrGroupe(_ aGroup: [Person], attributes: [NSAttributedStringKey: Any]) -> NSAttributedString {
+    func attrStrGroupe(_ aGroup: [Person], attributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
         //Cette fonction retourne une chaîne sous la forme "Clarisse, Denis et Nathalie Rollier-Sigallet"
         let strRetour = NSMutableAttributedString(string: "")
         let maxIndexGroup = aGroup.count - 1
@@ -283,7 +283,7 @@ extension Person {
         
         for aGroup in lesGroupes {
             //Mettre le donateur en couleur
-            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attrs: [NSAttributedString.Key: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedString.Key.foregroundColor: color]
             let attStrDonateur = attrStrGroupe(aGroup, attributes: attrs)
             
             strRetour.append(NSAttributedString(string: "• de "))
@@ -363,7 +363,7 @@ extension Person {
              print(aPerson.fullName)
              }*/
             //Mettre le beneficiaire en couleur
-            let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedStringKey.foregroundColor: color]
+            let attrs: [NSAttributedString.Key: Any] = [.font: UIFont(name: "AvenirNext-DemiBold", size: 14)!, NSAttributedString.Key.foregroundColor: color]
             let attStrBeneficaires = attrStrGroupe(aGroup, attributes: attrs)
             
             strRetour.append(NSAttributedString(string: "• à "))
