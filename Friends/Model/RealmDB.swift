@@ -19,6 +19,9 @@ func migrationBlock(migration: Migration, oldVersion: UInt64) {
     if oldVersion < 3 {
         migrateFrom2To3(migration)
     }
+    if oldVersion < 4 {
+        migrateFrom3To4(migration)
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -100,6 +103,50 @@ func migrateFrom2To3(_ migration: Migration) {
 }
 
 //---------------------------------------------------------------------------
+func migrateFrom3To4(_ migration: Migration) {
+    print("Migration from 3 to version 4")
+    
+    //Boucle sur les personnes
+    migration.enumerateObjects(ofType:
+    String(describing: Person.self)) { from, to in
+        guard let from = from,
+            let to = to
+            else { return }
+        
+        // recupérer les dates
+      /*  if from["imageData"] as? Data != nil {
+            //on crée une image sur disque et on affecte le nom à imagesFilenames
+            
+            let uuid = UUID().uuidString
+            
+            //let imagesList = to["imagesFilenames"] as! List<String>
+
+            let imagesList = to["imagesFilenames"] as! List<MigrationObject>
+
+            let imageName = migration.create("String", value: uuid)
+
+            imagesList.append(imageName)
+        }
+        */
+        
+    }
+    
+    //Boucle sur les cadeaux
+    migration.enumerateObjects(ofType:
+    String(describing: Gift.self)) { from, to in
+        guard let from = from,
+            let to = to
+            else { return }
+        
+        // recupérer les dates
+       /* if let date = from["date"] as? Date {
+            let dc = date.componentsDMY()
+            to["dateStr"] = dc.stringYMD()
+        }*/
+    }
+}
+
+//---------------------------------------------------------------------------
 class RealmDB {
     
     static func getRealm() -> Realm? {
@@ -110,7 +157,7 @@ class RealmDB {
          objectTypes: [Person.self, Gift.self])
          */
         let conf = Realm.Configuration(
-            schemaVersion: 3,
+            schemaVersion: 4,
             migrationBlock: migrationBlock,
             shouldCompactOnLaunch: { totalBytes, usedBytes in
                 // totalBytes refers to the size of the file on disk in bytes (data + free space)

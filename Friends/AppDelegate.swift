@@ -19,13 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let populate = false
-        if populate {
-            demoPopulate(deleteRealm: true, populate: true)
-        } else {
+        //let populate = false
+        //if populate {
+           // demoPopulate(deleteRealm: true, populate: true)
+        //} else {
             demoPopulate(deleteRealm: false, populate: false)
             
-        }
+       // }
         return true
     }
     

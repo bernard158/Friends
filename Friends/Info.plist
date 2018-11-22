@@ -22,10 +22,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Cette application utilise l'appareil photo</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Accès à vos contacts</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Cette application utilise l&apos;appareil photo</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Vous pouvez sélectionner des photos de votre bibliothèque</string>
 	<key>UILaunchStoryboardName</key>

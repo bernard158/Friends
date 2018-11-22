@@ -36,6 +36,7 @@ class Person: Object {
     @objc dynamic var likeYes = ""
     @objc dynamic var likeNo = ""
     @objc dynamic var note = ""
+    let imagesFilenames = List<String>()
     @objc dynamic var imageData: Data?
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var originalID = ""

@@ -8,17 +8,27 @@
 
 import Foundation
 
-/* NOTES
-vignettes photos non homothétiques
+/*
+ 
+ - PHOTOS:
+ - vignettes photos non homothétiques ???
+ - enregistrer les photos hors de la database
+ - passer en multi-photos
+ - faire la migration db
+ 
+ //INVITATIONS
+ 
+ 
  */
 
 func neSertARien () {
     
     
 }
+
 /*POUR MÉMOIRE
  
- CollieGallery.swift modifié pour hauteur des boutons sur nouveaux iphones
+ CollieGallery.swift modifié pour hauteur des boutons sur nouveaux iPhones
  - getCloseButtonFrame
  - getActionButtonFrame
  
