@@ -183,7 +183,8 @@ extension Person {
         let realm = RealmDB.getRealm()!
         try! realm.write {
             nomPrenomUCD = getNomPrenomUCD
-            realm.add(self, update: true)
+           // realm.add(self, update: true)
+            realm.add(self, update: .all)
         }
     }
     

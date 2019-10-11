@@ -124,7 +124,8 @@ extension Gift {
         let realm = RealmDB.getRealm()!
         try! realm.write {
             nomUCD = getNomUCD
-            realm.add(self, update: true)
+            //realm.add(self, update: true)
+            realm.add(self, update: .all)
         }
     }
     
