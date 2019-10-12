@@ -216,10 +216,16 @@ public func attrStr(str: String, lineSpacing: CGFloat = 6.0, fontSize:CGFloat = 
     let style = NSMutableParagraphStyle()
     style.lineSpacing = lineSpacing // change line spacing between paragraph like 36 or 48
     
-    let myAttributes = [ NSAttributedString.Key.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedString.Key.paragraphStyle: style ]
-    let attrString = NSAttributedString(string: str, attributes: myAttributes)
-    
-    return attrString
+    if #available(iOS 13.0, *) {
+        let myAttributes = [ NSAttributedString.Key.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedString.Key.paragraphStyle: style, NSAttributedString.Key.foregroundColor: UIColor.label]
+        let attrString = NSAttributedString(string: str, attributes: myAttributes)
+        return attrString
+        
+    } else {
+        let myAttributes = [ NSAttributedString.Key.font: UIFont(name: "Helvetica", size: fontSize)!, NSAttributedString.Key.paragraphStyle: style]
+        let attrString = NSAttributedString(string: str, attributes: myAttributes)
+        return attrString
+    }
 }
 
 //---------------------------------------------------------------------------
