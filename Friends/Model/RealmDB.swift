@@ -109,8 +109,8 @@ func migrateFrom3To4(_ migration: Migration) {
     //Boucle sur les personnes
     migration.enumerateObjects(ofType:
     String(describing: Person.self)) { from, to in
-        guard let from = from,
-            let to = to
+        guard let _ = from,
+            let _ = to
             else { return }
         
         // recupérer les dates
@@ -134,8 +134,8 @@ func migrateFrom3To4(_ migration: Migration) {
     //Boucle sur les cadeaux
     migration.enumerateObjects(ofType:
     String(describing: Gift.self)) { from, to in
-        guard let from = from,
-            let to = to
+        guard let _ = from,
+            let _ = to
             else { return }
         
         // recupérer les dates
